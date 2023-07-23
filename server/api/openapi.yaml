@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: Audiophile E-Commerce API
+  version: 1.0.0
+  description: This is an API for an Audio E-Commerce Site.
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      description: This method allows you to create a new user.
+      operationId: registerUser
+      requestBody:
+        description: User information to register a new account
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                address:
+                  type: string
+              required:
+                - email
+                - password
+                - firstName
+                - lastName
+                - address
+      responses:
+        "200":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: User ID of the newly registered user
+        "400":
+          description: One or more of the required fields is missing or invalid
+          content:
+            applicaton/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: An error occurred while processing the request
+  /login:
+    post:
+      summary: Login a user
+      description: Log in a user by their email and password.
+      operationId: loginUser
+      requestBody:
+        description: User email and password for logging in
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: User ID of the logged-in user
+                  token:
+                    type: string
+                    description: Token for future authentication
+        "400":
+          description: One or more of the required fields is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized. Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: An error occurred while processing the request
