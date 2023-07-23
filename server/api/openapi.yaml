@@ -12,7 +12,7 @@ components:
           type: string
           description: Error message
 paths:
-  /register:
+  /auth/register:
     post:
       summary: Register a new user
       description: This method allows you to create a new user.
@@ -61,7 +61,7 @@ paths:
                 $ref: "#/components/schemas/Error"
         "500":
           description: An error occurred while processing the request
-  /login:
+  /auth/login:
     post:
       summary: Login a user
       description: Log in a user by their email and password.
