@@ -4,7 +4,7 @@ import jwt from "../utils/jwt";
 import { userService } from "../services";
 
 export default {
-  authMiddleware: (req: Request, res: Response, next: NextFunction) => {
+  authorize: (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.headers.authorization?.split(" ")[1];
 
@@ -26,5 +26,19 @@ export default {
     } catch (err) {
       res.status(401).json({ message: "Unauthorized" });
     }
+  },
+  isAuth: (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    next();
+  },
+  isGuest: (req: Request, res: Response, next: NextFunction) => {
+    if (req.user) {
+      return res.status(400).json({ message: "Already logged in" });
+    }
+
+    next();
   },
 };
