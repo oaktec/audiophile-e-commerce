@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export default {
   generateToken: (id: number) => {
@@ -7,6 +7,12 @@ export default {
     });
   },
   verifyToken: (token: string) => {
-    return jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+    if (typeof decoded === "object" && "id" in decoded) {
+      return decoded as JwtPayload;
+    } else {
+      throw new Error("Invalid token");
+    }
   },
 };
