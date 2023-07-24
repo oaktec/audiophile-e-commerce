@@ -14,6 +14,8 @@ export default {
       throw new Error("Incorrect email or password");
     }
 
+    delete user[0].password;
+
     return user;
   },
   registerUser: async (
@@ -28,8 +30,7 @@ export default {
       throw new Error("User with that email already exists");
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await userService.create({
       email,
@@ -38,6 +39,8 @@ export default {
       lastName,
       address,
     });
+
+    delete result.password;
 
     return result;
   },
