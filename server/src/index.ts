@@ -1,4 +1,6 @@
 import express from "express";
+import { config } from "dotenv";
+config();
 
 import routes from "./routes";
 import { authMiddleware } from "./middlewares";
