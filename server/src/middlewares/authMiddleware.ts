@@ -9,7 +9,7 @@ export default {
       const token = req.headers.authorization?.split(" ")[1];
 
       if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return next();
       }
 
       const userId = jwt.verifyToken(token).id;
@@ -17,7 +17,7 @@ export default {
       const user = userService.getById(userId);
 
       if (!user) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return next();
       }
 
       req.user = user;
