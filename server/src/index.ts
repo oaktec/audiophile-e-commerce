@@ -4,7 +4,11 @@ import routes from "./routes";
 import { authMiddleware } from "./middlewares";
 import { StatusCodes } from "http-status-codes";
 
-config();
+if (process.env.NODE_ENV === "test") {
+  config({ path: ".env.test" });
+} else {
+  config();
+}
 
 const app = express();
 
@@ -22,3 +26,5 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
+
+export default app;
