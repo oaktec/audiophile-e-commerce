@@ -9,4 +9,12 @@ const pool = new Pool({
 
 export default {
   query: (text: string, params: any) => pool.query(text, params),
+  getByField: async (table: string, field: string, value: string | number) => {
+    const result = await pool.query(
+      `SELECT * FROM ${table} WHERE ${field} = $1`,
+      [value]
+    );
+
+    return result;
+  },
 };

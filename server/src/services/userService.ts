@@ -23,15 +23,13 @@ export default {
     return result.rows[0];
   },
   getById: async (id: number) => {
-    const { rows } = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+    const { rows } = await db.getByField("users", "id", id);
 
-    return rows[0];
+    return rows;
   },
   getByEmail: async (email: string) => {
-    const { rows } = await db.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+    const { rows } = await db.getByField("users", "email", email);
 
-    return rows[0];
+    return rows;
   },
 };
