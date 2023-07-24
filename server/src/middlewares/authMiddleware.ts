@@ -1,42 +1,56 @@
 import { Request, Response, NextFunction } from "express";
+import { StatusCodes } from "http-status-codes";
 
 import jwt from "../utils/jwt";
 import { userService } from "../services";
 
 export default {
-  authorize: (req: Request, res: Response, next: NextFunction) => {
+  authorize: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = req.headers.authorization?.split(" ")[1];
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return next();
+      }
+
+      const token = authHeader.split(" ")[1];
 
       if (!token) {
         return next();
       }
 
-      const userId = jwt.verifyToken(token).id;
+      const payload = jwt.verifyToken(token);
 
-      const user = userService.getById(userId);
+      if (!payload || !payload.id) {
+        return next();
+      }
+
+      const user = await userService.getById(payload.id);
 
       if (!user) {
         return next();
       }
 
       req.user = user;
-
       next();
     } catch (err) {
-      res.status(401).json({ message: "Unauthorized" });
+      console.error(err);
+      next();
     }
   },
   isAuth: (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
     }
 
     next();
   },
   isGuest: (req: Request, res: Response, next: NextFunction) => {
     if (req.user) {
-      return res.status(400).json({ message: "Already logged in" });
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Already logged in" });
     }
 
     next();
