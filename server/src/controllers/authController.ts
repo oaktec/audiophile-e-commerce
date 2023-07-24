@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import { authService } from "../services";
-import db from "../db";
+import jwt from "../utils/jwt";
 
 export default {
   loginUser: async (req: Request, res: Response) => {
@@ -16,9 +16,11 @@ export default {
 
       const result = await authService.loginUser(email, password);
 
+      const token = jwt.generateToken(result[0].id);
+
       res.status(200).json({
         id: result[0].id,
-        token: "token", // TODO: generate token
+        token,
       });
     } catch (err: any) {
       res.status(401).json({ message: err.message });
