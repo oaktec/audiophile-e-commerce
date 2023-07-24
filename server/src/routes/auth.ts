@@ -3,19 +3,19 @@ import { authController } from "../controllers";
 import { authValidationRules } from "../validators";
 import { authMiddleware } from "../middlewares";
 
-const router = Router();
+const authRouter = Router();
 
-router.post(
+authRouter.post(
   "/login",
   authMiddleware.isGuest,
   authValidationRules.loginValidationRules,
   authController.loginUser
 );
-router.post(
+authRouter.post(
   "/register",
   authMiddleware.isGuest,
   authValidationRules.registerValidationRules,
   authController.registerUser
 );
 
-export default router;
+export default authRouter;
