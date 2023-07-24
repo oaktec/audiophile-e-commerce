@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import jwt from "../utils/jwt";
 import { userService } from "../services";
+import { IUserRequest } from "../@types/global";
 
 export default {
   authorize: async (req: Request, res: Response, next: NextFunction) => {
@@ -30,14 +31,19 @@ export default {
         return next();
       }
 
-      req.user = user;
+      Object.assign(req, { user });
+
       next();
     } catch (err) {
       console.error(err);
       next();
     }
   },
-  isAuth: (req: Request, res: Response, next: NextFunction) => {
+  isAuth: (
+    req: IUserRequest<Record<string, any>>,
+    res: Response,
+    next: NextFunction
+  ) => {
     if (!req.user) {
       return res
         .status(StatusCodes.UNAUTHORIZED)

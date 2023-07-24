@@ -1,14 +1,14 @@
-import express from "express";
 import { config } from "dotenv";
-import routes from "./routes";
-import { authMiddleware } from "./middlewares";
-import { StatusCodes } from "http-status-codes";
-
 if (process.env.NODE_ENV === "test") {
   config({ path: ".env.test" });
 } else {
   config();
 }
+import express from "express";
+
+import routes from "./routes";
+import { authMiddleware } from "./middlewares";
+import { StatusCodes } from "http-status-codes";
 
 const app = express();
 
