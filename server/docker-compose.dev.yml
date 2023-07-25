@@ -1,0 +1,33 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: server
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229 # debug port
+    depends_on:
+      - db
+    environment:
+      - SERVER_PORT=${PORT}
+      - NODE_ENV=development
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: yarn debug
+
+  db:
+    container_name: postgres
+    image: postgres:15-alpine
+    ports:
+      - "${DB_HOST_PORT}:${DB_PORT}"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes:
+  data:

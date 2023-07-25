@@ -1,0 +1,39 @@
+services:
+  server:
+    container_name: server
+    image: node:18-alpine
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+    working_dir: /app
+    volumes:
+      - ./:/app
+    stdin_open: true
+    tty: true
+
+  db:
+    container_name: postgres
+    image: postgres:15-alpine
+    ports:
+      - "${DB_HOST_PORT}:${DB_PORT}"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+  db_test:
+    container_name: test_postgres
+    image: postgres:15-alpine
+    ports:
+      - "${TEST_DB_HOST_PORT}:${TEST_DB_PORT}"
+    volumes:
+      - data_test:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${TEST_DB_NAME}
+
+volumes:
+  data:
+  data_test:
