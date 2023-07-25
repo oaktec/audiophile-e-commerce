@@ -9,6 +9,7 @@ import express from "express";
 import routes from "./routes";
 import { authMiddleware } from "./middlewares";
 import { StatusCodes } from "http-status-codes";
+import db from "./db";
 
 const app = express();
 
@@ -25,6 +26,14 @@ app.use((err: any, req: any, res: any, next: any) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
+});
+
+db.query("SELECT NOW()", (err: any, res: any) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(`PostgreSQL connected: ${res.rows[0].now}`);
+  }
 });
 
 export default app;
