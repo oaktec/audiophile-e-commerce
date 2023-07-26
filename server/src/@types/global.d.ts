@@ -1,16 +1,7 @@
-import { Request } from "express";
-
 export declare global {
   namespace Express {
-    interface Request {
-      user?: {
-        id: string;
-        token: string;
-      };
+    interface User {
+      id: number;
     }
   }
-}
-
-export interface IUserRequest<T> extends Request {
-  user?: T;
 }

@@ -1,10 +1,10 @@
 import createServer from "../../src/server/createServer";
 import db from "../../src/db";
 
-export const createTestServer = (port = 7777) => {
+export const createTestServer = async (port = 7777) => {
   const server = createServer();
 
-  db.checkConnection();
+  await db.checkConnection();
 
   return server.listen(port);
 };

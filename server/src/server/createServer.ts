@@ -5,7 +5,9 @@ import cors from "cors";
 import helmet from "helmet";
 
 import routes from "../routes";
-import { authMiddleware, errorHandlingMiddleware } from "../middlewares";
+import { errorHandlingMiddleware } from "../middlewares";
+import session from "../config/session";
+import passport from "../config/passport";
 
 const createServer = () => {
   const app = express();
@@ -24,10 +26,15 @@ const createServer = () => {
     express.urlencoded({ extended: true })
   );
 
-  app.use(authMiddleware.authorize, routes);
+  app.use(session);
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use(routes);
 
   // Temporary 404 handler
-  app.get("/*", (req, res) => {
+  app.all("/*", (req, res) => {
     res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
   });
 

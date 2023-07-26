@@ -2,6 +2,33 @@ import dotenv from "dotenv";
 dotenv.config();
 import { Pool, QueryResult } from "pg";
 
+const validTables = [
+  "users",
+  "products",
+  "orders",
+  "carts",
+  "cart_items",
+  "categories",
+];
+const validFields = [
+  "id",
+  "email",
+  "password",
+  "first_name",
+  "last_name",
+  "address",
+  "name",
+  "description",
+  "price",
+  "category_id",
+  "status",
+  "cart_id",
+  "order_date",
+  "user_id",
+  "product_id",
+  "quantity",
+];
+
 const pool = new Pool({
   host:
     process.env.NODE_ENV === "test"
@@ -24,6 +51,10 @@ export default {
     callback: (err: Error, res: QueryResult) => void
   ) => pool.query(text, callback),
   getByField: async (table: string, field: string, value: string | number) => {
+    if (!validTables.includes(table) || !validFields.includes(field)) {
+      throw new Error("Invalid table or field");
+    }
+
     const result = await pool.query(
       `SELECT * FROM ${table} WHERE ${field} = $1`,
       [value]
@@ -42,4 +73,8 @@ export default {
         }
       }),
     ]),
+  sessionStorage: {
+    pool,
+    tableName: "session",
+  },
 };

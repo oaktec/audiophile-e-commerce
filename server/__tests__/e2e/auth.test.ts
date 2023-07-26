@@ -1,9 +1,11 @@
+/* eslint-disable camelcase */
 import request from "supertest";
 import { Server } from "http";
 
+import { StatusCodes } from "http-status-codes";
+
 import db from "../../src/db";
 import { clearDatabase, createTestServer } from "../utils/testHelpers";
-import { StatusCodes } from "http-status-codes";
 
 let server: Server;
 
@@ -13,7 +15,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await db.end();
-  await server.close();
+  server.close();
 });
 
 describe("auth", () => {
@@ -34,7 +36,10 @@ describe("auth", () => {
       expect(res.status).toEqual(StatusCodes.CREATED);
       expect(res.body).toEqual({
         id: expect.any(Number),
-        token: expect.any(String),
+        email: "test@user.com",
+        firstName: "Test",
+        lastName: "User",
+        address: "123 Test St",
       });
 
       const dbRes = await db.query("SELECT * FROM users");
