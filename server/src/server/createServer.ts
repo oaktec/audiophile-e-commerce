@@ -1,5 +1,8 @@
 import express from "express";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
+import morgan from "morgan";
+import cors from "cors";
+import helmet from "helmet";
 
 import routes from "../routes";
 import { authMiddleware, errorHandlingMiddleware } from "../middlewares";
@@ -7,7 +10,19 @@ import { authMiddleware, errorHandlingMiddleware } from "../middlewares";
 const createServer = () => {
   const app = express();
 
-  app.use(express.json(), express.urlencoded({ extended: true }));
+  const corsOptions = {
+    origin: process.env.CORS_CLIENT_URL,
+    credentials: true,
+    optionsSuccessStatus: StatusCodes.OK,
+  };
+
+  app.use(
+    morgan("dev"),
+    cors(corsOptions),
+    helmet(),
+    express.json(),
+    express.urlencoded({ extended: true })
+  );
 
   app.use(authMiddleware.authorize, routes);
 
