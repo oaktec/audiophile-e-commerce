@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { Pool } from "pg";
+import { Pool, QueryResult } from "pg";
 
 const pool = new Pool({
   host:
@@ -17,7 +17,12 @@ const pool = new Pool({
 });
 
 export default {
-  query: (text: string, params?: any) => pool.query(text, params),
+  query: (text: string, params?: (string | number)[]) =>
+    pool.query(text, params),
+  queryCallback: (
+    text: string,
+    callback: (err: Error, res: QueryResult) => void
+  ) => pool.query(text, callback),
   getByField: async (table: string, field: string, value: string | number) => {
     const result = await pool.query(
       `SELECT * FROM ${table} WHERE ${field} = $1`,
