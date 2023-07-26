@@ -13,10 +13,7 @@ const errorHandlingMiddleware = (
     error = err;
   } else {
     console.error(err);
-    error = createHttpError(
-      StatusCodes.INTERNAL_SERVER_ERROR,
-      err.message ?? "Unknown error occurred"
-    );
+    error = createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, err.message);
   }
 
   const errorRet = {
@@ -25,9 +22,7 @@ const errorHandlingMiddleware = (
     name: error.name || "UnknownError",
   };
 
-  console.log(errorRet);
-
-  res.status(error.statusCode).json(errorRet);
+  res.status(errorRet.status).json(errorRet);
 };
 
 export default errorHandlingMiddleware;

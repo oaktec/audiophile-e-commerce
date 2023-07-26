@@ -1,7 +1,6 @@
 import db from "../db";
 
 export default {
-  // create user, if successful, return user
   create: async ({
     email,
     password,

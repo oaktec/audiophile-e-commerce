@@ -32,4 +32,14 @@ export default {
     return result;
   },
   end: () => pool.end(),
+  checkConnection: () =>
+    new Promise<QueryResult>((resolve, reject) => [
+      pool.query("SELECT NOW()", (err: Error | null, res: QueryResult) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      }),
+    ]),
 };

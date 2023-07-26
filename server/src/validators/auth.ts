@@ -34,14 +34,14 @@ export const registerValidationRules: ValidationChain[] = [
     .withMessage("First name is required")
     .isLength({ min: 2, max: 50 })
     .withMessage("First name should be between 2 and 50 characters")
-    .matches(/^[a-zA-Z-']*$/)
+    .matches(/^[a-zA-Z-' ]*$/)
     .withMessage("First name should only include alphabetic characters"),
   body("lastName")
     .exists()
     .withMessage("Last name is required")
     .isLength({ min: 2, max: 50 })
     .withMessage("Last name should be between 2 and 50 characters")
-    .matches(/^[a-zA-Z-']*$/)
+    .matches(/^[a-zA-Z-' ]*$/)
     .withMessage("Last name should only include alphabetic characters"),
   body("address")
     .exists()

@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
+import { StatusCodes } from "http-status-codes";
 
 import { userService } from ".";
-import { StatusCodes } from "http-status-codes";
 
 export default {
   loginUser: async (email: string, password: string) => {
