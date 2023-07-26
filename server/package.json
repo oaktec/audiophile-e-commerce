@@ -9,7 +9,10 @@
     "dev-stop": "docker-compose -f docker-compose.dev.yml down",
     "debug": "nodemon --watch \"src/**/*.{ts,js}\" -e ts,js --exec node --inspect=0.0.0.0:9229 -r ts-node/register src/index.ts",
     "start": "node dist/index.js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --runInBand",
+    "docker:up": "docker-compose up -d && yarn docker:shell",
+    "docker:down": "docker-compose down",
+    "docker:shell": "docker exec -it server sh"
   },
   "keywords": [],
   "author": "Ben Eatock",
@@ -31,9 +34,11 @@
     "@types/node": "^20.4.3",
     "@types/pg": "^8.10.2",
     "@types/supertest": "^2.0.12",
+    "http-errors": "^2.0.0",
     "jest": "^29.6.1",
     "nodemon": "^3.0.1",
     "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }

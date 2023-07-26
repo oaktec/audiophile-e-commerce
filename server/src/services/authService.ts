@@ -1,17 +1,25 @@
 import bcrypt from "bcrypt";
+import createHttpError from "http-errors";
 
 import { userService } from ".";
+import { StatusCodes } from "http-status-codes";
 
 export default {
   loginUser: async (email: string, password: string) => {
     const user = await userService.getByEmail(email);
     if (user.length === 0) {
-      throw new Error("Incorrect email or password");
+      throw createHttpError(
+        StatusCodes.UNAUTHORIZED,
+        "No user found with that email and password"
+      );
     }
 
     const isMatch = await bcrypt.compare(password, user[0].password);
     if (!isMatch) {
-      throw new Error("Incorrect email or password");
+      throw createHttpError(
+        StatusCodes.UNAUTHORIZED,
+        "No user found with that email and password"
+      );
     }
 
     delete user[0].password;
@@ -27,7 +35,7 @@ export default {
   ) => {
     const user = await userService.getByEmail(email);
     if (user.length > 0) {
-      throw new Error("User with that email already exists");
+      throw createHttpError(StatusCodes.CONFLICT, "Email already in use");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

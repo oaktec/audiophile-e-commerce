@@ -36,7 +36,7 @@ export default {
       next();
     } catch (err) {
       console.error(err);
-      next();
+      next(err);
     }
   },
   isAuth: (

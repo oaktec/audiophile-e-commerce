@@ -19,6 +19,7 @@ services:
       - "${DB_HOST_PORT}:${DB_PORT}"
     volumes:
       - data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
@@ -27,9 +28,10 @@ services:
     container_name: test_postgres
     image: postgres:15-alpine
     ports:
-      - "${TEST_DB_HOST_PORT}:${TEST_DB_PORT}"
+      - "${TEST_DB_HOST_PORT}:${DB_PORT}"
     volumes:
       - data_test:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${TEST_DB_NAME}

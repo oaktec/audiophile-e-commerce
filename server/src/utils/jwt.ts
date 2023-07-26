@@ -1,3 +1,5 @@
+import createHttpError from "http-errors";
+import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 const { JWT_SECRET } = process.env;
@@ -16,13 +18,16 @@ export default {
     try {
       decoded = jwt.verify(token, JWT_SECRET);
     } catch (err) {
-      throw new Error("Invalid or expired token");
+      throw createHttpError(StatusCodes.UNAUTHORIZED, "Invalid token");
     }
 
     if (decoded && typeof decoded === "object" && "id" in decoded) {
       return decoded as JwtPayload;
     } else {
-      throw new Error("Invalid token structure");
+      throw createHttpError(
+        StatusCodes.UNAUTHORIZED,
+        "Invalid token structure"
+      );
     }
   },
 };

@@ -1,11 +1,19 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { Pool } from "pg";
 
 const pool = new Pool({
-  host: process.env.DB_HOST,
+  host:
+    process.env.NODE_ENV === "test"
+      ? process.env.TEST_DB_HOST
+      : process.env.DB_HOST,
+  database:
+    process.env.NODE_ENV === "test"
+      ? process.env.TEST_DB_NAME
+      : process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD as string | undefined,
   port: Number(process.env.DB_PORT),
-  database: process.env.DB_NAME,
 });
 
 export default {
@@ -18,4 +26,5 @@ export default {
 
     return result;
   },
+  end: () => pool.end(),
 };

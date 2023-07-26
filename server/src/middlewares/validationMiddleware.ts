@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { validationResult } from "express-validator";
+import { validationResult, ValidationError } from "express-validator";
+import createHttpError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 
 const validationMiddleware = (
@@ -9,7 +10,16 @@ const validationMiddleware = (
 ) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: errors.array() });
+    const firstError = errors.array()[0];
+    if (!firstError) {
+      return next(
+        createHttpError(
+          StatusCodes.BAD_REQUEST,
+          "An unknown validation error occurred"
+        )
+      );
+    }
+    return next(createHttpError(StatusCodes.BAD_REQUEST, firstError.msg));
   }
   next();
 };
