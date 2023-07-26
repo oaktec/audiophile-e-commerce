@@ -1,14 +1,16 @@
+import { QueryResult } from "pg";
+
 import createServer from "../../src/server/createServer";
 import db from "../../src/db";
 
-export const createTestServer = async (port = 7777) => {
+export const createTestServer = (port = 7777) => {
   const server = createServer();
 
-  db.query("SELECT NOW()", (err: any, res: any) => {
+  db.queryCallback("SELECT NOW()", (err: Error | null, res: QueryResult) => {
     if (err) {
-      console.error(err);
+      console.error(err.stack);
     } else {
-      console.log(`PostgreSQL connected: ${res.rows[0].now}`);
+      console.info(res.rows[0]);
     }
   });
 
