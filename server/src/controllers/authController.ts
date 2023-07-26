@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import createHttpError from "http-errors";
 
 import { authService } from "../services";
 import jwt from "../utils/jwt";
-import { StatusCodes } from "http-status-codes";
 import { validationMiddleware } from "../middlewares";
-import createHttpError from "http-errors";
 
 export default {
   loginUser: [
@@ -15,7 +15,7 @@ export default {
 
         const result = await authService.loginUser(email, password);
 
-        if (!result || result.length === 0) {
+        if (result.length === 0) {
           throw createHttpError(
             StatusCodes.UNAUTHORIZED,
             "No user found with that email and password"
