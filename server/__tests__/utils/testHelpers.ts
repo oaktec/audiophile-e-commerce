@@ -10,5 +10,14 @@ export const createTestServer = async (port = 7777) => {
 };
 
 export const clearDatabase = async () => {
-  await db.query("DELETE FROM users");
+  const tables = await db.query(
+    `SELECT table_name FROM information_schema.tables
+    WHERE table_schema = 'public' AND table_type = 'BASE TABLE'`
+  );
+
+  await Promise.all(
+    tables.rows.map(async (table) => {
+      await db.query(`TRUNCATE TABLE ${table.table_name} CASCADE`);
+    })
+  );
 };
