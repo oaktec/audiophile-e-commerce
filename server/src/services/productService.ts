@@ -30,4 +30,12 @@ export default {
 
     return rows.map(mapProduct);
   },
+  getByCategory: async (categoryId: number): Promise<Product[]> => {
+    const { rows } = await db.query(
+      "SELECT * FROM products WHERE category_id = $1",
+      [categoryId]
+    );
+
+    return rows.map(mapProduct);
+  },
 };

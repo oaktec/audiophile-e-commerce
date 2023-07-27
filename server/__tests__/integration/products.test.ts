@@ -7,7 +7,7 @@ import { clearDatabase, createTestServer } from "../utils/testHelpers";
 
 let server: Server;
 
-describe.only("products", () => {
+describe("products", () => {
   let categoryAID: number;
   let categoryBID: number;
 
@@ -83,6 +83,30 @@ describe.only("products", () => {
           description: null,
           price: "40",
           categoryId: categoryBID,
+        },
+      ]);
+    });
+
+    it("returns products filtered by category", async () => {
+      const response = await request(server).get(
+        `/products?category=${categoryAID}`
+      );
+
+      expect(response.status).toEqual(StatusCodes.OK);
+      expect(response.body).toEqual([
+        {
+          id: expect.any(Number),
+          name: "Test Item 1",
+          description: "This is Test Item 1",
+          price: "10",
+          categoryId: categoryAID,
+        },
+        {
+          id: expect.any(Number),
+          name: "Test Item 3",
+          description: "This is Test Item 3",
+          price: "30",
+          categoryId: categoryAID,
         },
       ]);
     });
