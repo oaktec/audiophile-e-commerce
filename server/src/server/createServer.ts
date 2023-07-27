@@ -8,18 +8,19 @@ import routes from "../routes";
 import { errorHandlingMiddleware } from "../middlewares";
 import session from "../config/session";
 import passport from "../config/passport";
+import { NODE_ENV, CORS_CLIENT_URL } from "../config";
 
 const createServer = () => {
   const app = express();
 
   const corsOptions = {
-    origin: process.env.CORS_CLIENT_URL,
+    origin: CORS_CLIENT_URL,
     credentials: true,
     optionsSuccessStatus: StatusCodes.OK,
   };
 
   let morganFormat = "";
-  switch (process.env.NODE_ENV) {
+  switch (NODE_ENV) {
     case "production":
       morganFormat = "combined";
       break;

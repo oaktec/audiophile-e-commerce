@@ -2,6 +2,17 @@ import dotenv from "dotenv";
 dotenv.config();
 import { Pool, QueryResult } from "pg";
 
+import {
+  DB_PASSWORD,
+  NODE_ENV,
+  TEST_DB_NAME,
+  DB_NAME,
+  DB_USER,
+  DB_PORT,
+  TEST_DB_HOST,
+  DB_HOST,
+} from "../config";
+
 const validTables = [
   "users",
   "products",
@@ -30,17 +41,11 @@ const validFields = [
 ];
 
 const pool = new Pool({
-  host:
-    process.env.NODE_ENV === "test"
-      ? process.env.TEST_DB_HOST
-      : process.env.DB_HOST,
-  database:
-    process.env.NODE_ENV === "test"
-      ? process.env.TEST_DB_NAME
-      : process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD as string | undefined,
-  port: Number(process.env.DB_PORT),
+  host: NODE_ENV === "test" ? TEST_DB_HOST : DB_HOST,
+  database: NODE_ENV === "test" ? TEST_DB_NAME : DB_NAME,
+  user: DB_USER,
+  password: DB_PASSWORD as string | undefined,
+  port: Number(DB_PORT),
 });
 
 export default {

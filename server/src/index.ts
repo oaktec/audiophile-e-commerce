@@ -4,9 +4,10 @@ config();
 
 import db from "./db";
 import createServer from "./server/createServer";
+import { PORT } from "./config";
 
 const startServer = async () => {
-  const port = process.env.PORT;
+  const port = PORT;
   if (!port) {
     throw new Error("Missing PORT env var. Set it and restart the server");
   }
