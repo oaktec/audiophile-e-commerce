@@ -38,4 +38,15 @@ export default {
 
     return rows.map(mapProduct);
   },
+  getById: async (id: number): Promise<Product | null> => {
+    const { rows } = await db.getByField("products", "id", id);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const product = rows[0];
+
+    return mapProduct(product);
+  },
 };

@@ -11,6 +11,8 @@ describe("products", () => {
   let categoryAID: number;
   let categoryBID: number;
 
+  let itemCID: number;
+
   beforeAll(async () => {
     server = await createTestServer();
     console.error = jest.fn();
@@ -42,6 +44,8 @@ describe("products", () => {
       "INSERT INTO products (name, price, category_id) VALUES ($1, $2, $3)",
       ["Test Item 4", 40, categoryBID]
     );
+
+    itemCID = (await db.query("SELECT * FROM products")).rows[2].id;
   });
 
   afterAll(async () => {
@@ -71,7 +75,7 @@ describe("products", () => {
           categoryId: categoryBID,
         },
         {
-          id: expect.any(Number),
+          id: itemCID,
           name: "Test Item 3",
           description: "This is Test Item 3",
           price: "30",
@@ -102,13 +106,39 @@ describe("products", () => {
           categoryId: categoryAID,
         },
         {
-          id: expect.any(Number),
+          id: itemCID,
           name: "Test Item 3",
           description: "This is Test Item 3",
           price: "30",
           categoryId: categoryAID,
         },
       ]);
+    });
+  });
+
+  describe("GET /products/:id", () => {
+    it("returns a product by id", async () => {
+      const response = await request(server).get(`/products/${itemCID}`);
+
+      expect(response.status).toEqual(StatusCodes.OK);
+      expect(response.body).toEqual({
+        id: itemCID,
+        name: "Test Item 3",
+        description: "This is Test Item 3",
+        price: "30",
+        categoryId: categoryAID,
+      });
+    });
+
+    it("returns 404 if product is not found", async () => {
+      const response = await request(server).get("/products/9992321");
+
+      expect(response.status).toEqual(StatusCodes.NOT_FOUND);
+      expect(response.body).toEqual({
+        message: "Product not found",
+        name: "NotFoundError",
+        status: 404,
+      });
     });
   });
 });

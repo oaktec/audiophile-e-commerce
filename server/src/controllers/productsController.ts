@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
+import createHttpError from "http-errors";
+
 import { productService } from "../services";
 
 export default {
@@ -15,6 +17,12 @@ export default {
     res.json(products);
   },
   getProductById: async (req: Request, res: Response, next: NextFunction) => {
-    throw new Error("Not implemented");
+    const product = await productService.getById(Number(req.params.id));
+
+    if (!product) {
+      return next(createHttpError(404, "Product not found"));
+    }
+
+    res.json(product);
   },
 };
