@@ -11,6 +11,7 @@ let server: Server;
 
 beforeAll(async () => {
   server = await createTestServer();
+  console.error = jest.fn();
 });
 
 afterAll(async () => {
