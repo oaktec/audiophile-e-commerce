@@ -14,7 +14,7 @@ passport.use(
     },
     async (email: string, password: string, done) => {
       try {
-        const user = await userService.getByEmail(email);
+        const user = await userService.getByEmail(email.toLowerCase());
 
         if (!user || !user.password) {
           return done(null, false, {

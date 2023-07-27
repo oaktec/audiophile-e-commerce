@@ -372,6 +372,30 @@ describe("auth", () => {
       });
     });
 
+    it("should recognise email as case insensitive", async () => {
+      await request(server).post("/auth/register").send({
+        email: "neEdCasEinsensitive@test.com",
+        password: "Password123!",
+        firstName: "Demo",
+        lastName: "User",
+        address: "123 Test St",
+      });
+
+      const res = await request(server).post("/auth/login").send({
+        email: "Needcaseinsensitive@test.com",
+        password: "Password123!",
+      });
+
+      expect(res.status).toEqual(StatusCodes.OK);
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          id: expect.any(Number),
+        })
+      );
+
+      expect(res.header["set-cookie"]).toBeDefined();
+    });
+
     it("should return an error if an error occurs during Passport authentication", async () => {
       jest.spyOn(userService, "getByEmail").mockImplementationOnce(() => {
         throw new Error("Something went wrong");

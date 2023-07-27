@@ -43,7 +43,6 @@ export default {
     validationMiddleware,
     async (req: Request, res: Response, next: NextFunction) => {
       const { email, password, firstName, lastName, address } = req.body;
-
       const existingUser = await userService.getByEmail(email);
       if (existingUser) {
         return next(
