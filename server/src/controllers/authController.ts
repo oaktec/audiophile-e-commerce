@@ -10,79 +10,88 @@ import { validationMiddleware } from "../middlewares";
 export default {
   loginUser: [
     (req: Request, res: Response, next: NextFunction) => {
-      try {
-        passport.authenticate(
-          "local",
-          (err: Error | null, user: Express.User | undefined) => {
+      passport.authenticate(
+        "local",
+        (err: Error | null, user: Express.User | undefined) => {
+          if (err) {
+            return next(err);
+          }
+
+          if (!user) {
+            return next(
+              createHttpError(
+                StatusCodes.BAD_REQUEST,
+                "Incorrect email or password"
+              )
+            );
+          }
+
+          req.logIn(user, (err) => {
             if (err) {
               return next(err);
             }
 
-            if (!user) {
-              return next(
-                createHttpError(
-                  StatusCodes.BAD_REQUEST,
-                  "Incorrect email or password"
-                )
-              );
-            }
-
-            req.logIn(user, (err) => {
-              if (err) {
-                return next(err);
-              }
-
-              return res.json({
-                id: user.id,
-              });
+            return res.json({
+              id: user.id,
             });
-          }
-        )(req, res, next);
-      } catch (err) {
-        next(err);
-      }
+          });
+        }
+      )(req, res, next);
     },
   ],
   registerUser: [
     validationMiddleware,
     async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const { email, password, firstName, lastName, address } = req.body;
+      const { email, password, firstName, lastName, address } = req.body;
 
-        const existingUser = await userService.getByEmail(email);
-        if (existingUser) {
-          throw createHttpError(StatusCodes.CONFLICT, "Email already in use");
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const user = await userService.create({
-          email,
-          password: hashedPassword,
-          firstName,
-          lastName,
-          address,
-        });
-
-        if (!user) {
-          return next(
-            createHttpError(
-              StatusCodes.INTERNAL_SERVER_ERROR,
-              "User could not be created"
-            )
-          );
-        }
-
-        res.status(StatusCodes.CREATED).json({
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          address: user.address,
-        });
-      } catch (err) {
-        next(err);
+      const existingUser = await userService.getByEmail(email);
+      if (existingUser) {
+        return next(
+          createHttpError(StatusCodes.CONFLICT, "Email already in use")
+        );
       }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const user = await userService.create({
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        address,
+      });
+
+      if (!user) {
+        return next(
+          createHttpError(
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            "User could not be created"
+          )
+        );
+      }
+
+      res.status(StatusCodes.CREATED).json({
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        address: user.address,
+      });
     },
   ],
+  logoutUser: (req: Request, res: Response, next: NextFunction) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      req.session.destroy((destroyErr) => {
+        if (destroyErr) {
+          return next(destroyErr);
+        }
+        return res.send({
+          message: "Successfully logged out",
+        });
+      });
+    });
+  },
 };

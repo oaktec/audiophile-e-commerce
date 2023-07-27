@@ -392,4 +392,43 @@ describe("auth", () => {
       expect(res.header["set-cookie"]).toBeUndefined();
     });
   });
+
+  describe("POST /auth/logout", () => {
+    it("should logout a user", async () => {
+      const agent = request.agent(server);
+
+      await agent.post("/auth/register").send({
+        email: "demo@user.com",
+        password: "Password123!",
+        firstName: "Demo",
+        lastName: "User",
+        address: "123 Test St",
+      });
+
+      await agent.post("/auth/login").send({
+        email: "demo@user.com",
+        password: "Password123!",
+      });
+
+      const res = await agent.post("/auth/logout");
+
+      expect(res.status).toEqual(StatusCodes.OK);
+      expect(res.body).toEqual({
+        message: "Successfully logged out",
+      });
+
+      expect(res.header["set-cookie"]).toBeUndefined();
+    });
+
+    it("should return an error if user is not logged in", async () => {
+      const res = await request(server).post("/auth/logout");
+
+      expect(res.status).toEqual(StatusCodes.UNAUTHORIZED);
+      expect(res.body).toEqual({
+        message: "You must be logged in to access this resource",
+        name: "UnauthorizedError",
+        status: StatusCodes.UNAUTHORIZED,
+      });
+    });
+  });
 });

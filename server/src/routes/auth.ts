@@ -13,5 +13,6 @@ authRouter.post(
   authValidationRules.registerValidationRules,
   authController.registerUser
 );
+authRouter.post("/logout", authMiddleware.isAuth, authController.logoutUser);
 
 export default authRouter;
