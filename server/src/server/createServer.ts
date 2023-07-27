@@ -18,8 +18,23 @@ const createServer = () => {
     optionsSuccessStatus: StatusCodes.OK,
   };
 
+  let morganFormat = "";
+  switch (process.env.NODE_ENV) {
+    case "production":
+      morganFormat = "combined";
+      break;
+    case "test":
+      break;
+    default:
+      morganFormat = "dev";
+      break;
+  }
+
+  if (morganFormat) {
+    app.use(morgan(morganFormat));
+  }
+
   app.use(
-    morgan("dev"),
     cors(corsOptions),
     helmet(),
     express.json(),
