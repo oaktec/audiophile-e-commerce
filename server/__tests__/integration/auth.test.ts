@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import request from "supertest";
 import { Server } from "http";
-
 import { StatusCodes } from "http-status-codes";
 
 import db from "../../src/db";
