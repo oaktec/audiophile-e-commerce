@@ -55,7 +55,7 @@ describe("products", () => {
   });
 
   describe("GET /products", () => {
-    it("returns all products", async () => {
+    it("returns all products if no category specified", async () => {
       const response = await request(server).get("/products");
 
       expect(response.status).toEqual(StatusCodes.OK);
@@ -114,6 +114,24 @@ describe("products", () => {
         },
       ]);
     });
+
+    it("returns 200 if category has no products", async () => {
+      const response = await request(server).get("/products?category=999");
+
+      expect(response.status).toEqual(StatusCodes.OK);
+      expect(response.body).toEqual([]);
+    });
+
+    it("returns 400 if category is not a number", async () => {
+      const response = await request(server).get("/products?category=abc");
+
+      expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual({
+        message: "Invalid category",
+        name: "BadRequestError",
+        status: 400,
+      });
+    });
   });
 
   describe("GET /products/:id", () => {
@@ -138,6 +156,17 @@ describe("products", () => {
         message: "Product not found",
         name: "NotFoundError",
         status: 404,
+      });
+    });
+
+    it("returns 400 if id is not a number", async () => {
+      const response = await request(server).get("/products/abc");
+
+      expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual({
+        message: "Invalid id",
+        name: "BadRequestError",
+        status: 400,
       });
     });
   });

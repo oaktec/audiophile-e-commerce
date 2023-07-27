@@ -7,6 +7,10 @@ import { productService } from "../services";
 export default {
   getProducts: async (req: Request, res: Response, next: NextFunction) => {
     if (req.query.category) {
+      if (isNaN(Number(req.query.category))) {
+        return next(createHttpError(400, "Invalid category"));
+      }
+
       const products = await productService.getByCategory(
         Number(req.query.category)
       );
@@ -17,7 +21,13 @@ export default {
     res.json(products);
   },
   getProductById: async (req: Request, res: Response, next: NextFunction) => {
-    const product = await productService.getById(Number(req.params.id));
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+      return next(createHttpError(400, "Invalid id"));
+    }
+
+    const product = await productService.getById(id);
 
     if (!product) {
       return next(createHttpError(404, "Product not found"));
