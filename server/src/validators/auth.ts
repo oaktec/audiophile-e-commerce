@@ -21,11 +21,6 @@ const validatePassword = (): ValidationChain =>
       "Password should have a mix of uppercase and lowercase letters, include at least one numeric digit and one special character"
     );
 
-export const loginValidationRules: ValidationChain[] = [
-  validateEmail(),
-  validatePassword(),
-];
-
 export const registerValidationRules: ValidationChain[] = [
   validateEmail(),
   validatePassword(),

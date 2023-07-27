@@ -9,7 +9,6 @@ import { validationMiddleware } from "../middlewares";
 
 export default {
   loginUser: [
-    validationMiddleware,
     (req: Request, res: Response, next: NextFunction) => {
       try {
         passport.authenticate(

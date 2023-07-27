@@ -6,12 +6,7 @@ import { authMiddleware } from "../middlewares";
 
 const authRouter = Router();
 
-authRouter.post(
-  "/login",
-  authMiddleware.isGuest,
-  authValidationRules.loginValidationRules,
-  authController.loginUser
-);
+authRouter.post("/login", authMiddleware.isGuest, authController.loginUser);
 authRouter.post(
   "/register",
   authMiddleware.isGuest,
