@@ -55,6 +55,10 @@ export default {
     text: string,
     callback: (err: Error, res: QueryResult) => void
   ) => pool.query(text, callback),
+  queryAllowUndefined: (
+    text: string,
+    params?: (string | number | undefined)[]
+  ) => pool.query(text, params),
   getByField: async (table: string, field: string, value: string | number) => {
     if (!validTables.includes(table) || !validFields.includes(field)) {
       throw new Error("Invalid table or field");

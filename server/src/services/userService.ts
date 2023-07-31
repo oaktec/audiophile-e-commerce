@@ -53,6 +53,11 @@ export default {
 
     return mapUser(user);
   },
+  getAll: async (): Promise<User[]> => {
+    const { rows } = await db.query("SELECT * FROM users");
+
+    return rows.map(mapUser);
+  },
   getById: async (id: number): Promise<User | null> => {
     const { rows } = await db.getByField("users", "id", id);
 
@@ -80,5 +85,48 @@ export default {
     const { password, ...safeUser } = user;
 
     return safeUser;
+  },
+  updateById: async (
+    id: number,
+    {
+      email,
+      password,
+      firstName,
+      lastName,
+      address,
+    }: {
+      email?: string;
+      password?: string;
+      firstName?: string;
+      lastName?: string;
+      address?: string;
+    }
+  ): Promise<User | null> => {
+    const { rows } = await db.queryAllowUndefined(
+      "UPDATE users SET email = COALESCE($1, email), password = COALESCE($2, password), first_name = COALESCE($3, first_name), last_name = COALESCE($4, last_name), address = COALESCE($5, address) WHERE id = $6 RETURNING *",
+      [email, password, firstName, lastName, address, id]
+    );
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const user = rows[0];
+
+    return mapUser(user);
+  },
+  deleteById: async (id: number): Promise<User | null> => {
+    const { rows } = await db.query(
+      "DELETE FROM users WHERE id = $1 RETURNING *",
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const user = rows[0];
+
+    return mapUser(user);
   },
 };

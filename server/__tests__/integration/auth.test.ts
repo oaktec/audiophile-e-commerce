@@ -449,7 +449,7 @@ describe("auth", () => {
 
       expect(res.status).toEqual(StatusCodes.UNAUTHORIZED);
       expect(res.body).toEqual({
-        message: "You must be logged in to access this resource",
+        message: "You must be logged in to do that",
         name: "UnauthorizedError",
         status: StatusCodes.UNAUTHORIZED,
       });

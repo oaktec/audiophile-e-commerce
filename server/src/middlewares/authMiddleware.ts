@@ -8,7 +8,7 @@ export default {
       return next(
         createHttpError(
           StatusCodes.UNAUTHORIZED,
-          "You must be logged in to access this resource"
+          "You must be logged in to do that"
         )
       );
     }
@@ -19,6 +19,21 @@ export default {
     if (req.isAuthenticated()) {
       return next(
         createHttpError(StatusCodes.BAD_REQUEST, "You are already logged in")
+      );
+    }
+
+    next();
+  },
+  isUserFromParams: (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
+
+    if (isNaN(id) || id < 0) {
+      return next(createHttpError(400, "Invalid user id"));
+    }
+
+    if (req.user?.id !== id) {
+      return next(
+        createHttpError(403, "You do not have permission to do that")
       );
     }
 

@@ -23,7 +23,7 @@ export default {
   getProductById: async (req: Request, res: Response, next: NextFunction) => {
     const id = Number(req.params.id);
 
-    if (isNaN(id)) {
+    if (isNaN(id) || id < 0) {
       return next(createHttpError(400, "Invalid id"));
     }
 

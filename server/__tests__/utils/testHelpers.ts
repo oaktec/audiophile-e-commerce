@@ -1,3 +1,6 @@
+import { Server } from "http";
+import request from "supertest";
+
 import createServer from "../../src/server/createServer";
 import db from "../../src/db";
 
@@ -20,4 +23,28 @@ export const clearDatabase = async () => {
       await db.query(`TRUNCATE TABLE ${table.table_name} CASCADE`);
     })
   );
+};
+
+export const registerAndLoginAgent = async (
+  server: Server,
+  agent: request.SuperAgentTest
+) => {
+  const response = await agent.post("/auth/register").send({
+    email: "lola@granola.com",
+    password: "lol4TheB3st1!",
+    firstName: "Lola",
+    lastName: "Granola",
+    address: "123 Lola St",
+  });
+
+  expect(response.status).toBe(201);
+
+  const loginResponse = await agent.post("/auth/login").send({
+    email: "lola@granola.com",
+    password: "lol4TheB3st1!",
+  });
+
+  expect(loginResponse.status).toBe(200);
+
+  return loginResponse;
 };
