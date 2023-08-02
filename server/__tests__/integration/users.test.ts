@@ -5,38 +5,12 @@ import { StatusCodes } from "http-status-codes";
 
 import db from "../../src/db";
 import {
-  clearDatabase,
+  clearAndPopDB,
   createTestServer,
   registerAndLoginAgent,
 } from "../utils/testHelpers";
 
 let server: Server;
-
-const testUsers = [
-  {
-    email: "demo@user.com",
-    password: "password",
-    firstName: "Demo",
-    lastName: "User",
-    address: "123 Main St",
-  },
-  {
-    email: "testy@email.com",
-    password: "testpassword",
-    firstName: "Test",
-    lastName: "User",
-    address: "1 Test St",
-  },
-];
-
-const popDB = async () => {
-  for (const user of testUsers) {
-    await db.query(
-      "INSERT INTO users (email, password, first_name, last_name, address) VALUES ($1, $2, $3, $4, $5)",
-      [user.email, user.password, user.firstName, user.lastName, user.address]
-    );
-  }
-};
 
 describe("users", () => {
   let userId: number;
@@ -48,14 +22,13 @@ describe("users", () => {
 
     console.error = jest.fn();
 
-    await popDB();
+    await clearAndPopDB();
 
     const res = await registerAndLoginAgent(server, agent);
     userId = res.body.id;
   });
 
   afterAll(async () => {
-    await clearDatabase();
     await db.end();
     server.close();
   });
@@ -125,8 +98,7 @@ describe("users", () => {
 
   describe("PUT /users/:id", () => {
     beforeEach(async () => {
-      await clearDatabase();
-      await popDB();
+      await clearAndPopDB();
 
       const res = await registerAndLoginAgent(server, agent);
       userId = res.body.id;
@@ -377,8 +349,7 @@ describe("users", () => {
 
   describe("DELETE /users/:id", () => {
     beforeEach(async () => {
-      await clearDatabase();
-      await popDB();
+      await clearAndPopDB();
 
       const res = await registerAndLoginAgent(server, agent);
       userId = res.body.id;

@@ -41,3 +41,78 @@ export const registerAndLoginAgent = async (
 
   return response;
 };
+
+export const clearAndPopDB = async () => {
+  await clearDatabase();
+
+  await db.query("INSERT INTO categories (name) VALUES ($1)", [
+    "First category",
+  ]);
+  await db.query("INSERT INTO categories (name) VALUES ($1)", [
+    "Second category",
+  ]);
+
+  const categories = await db.query("SELECT * FROM categories");
+  const categoryIds = categories.rows.map((category) => category.id);
+
+  const testProducts = [
+    {
+      name: "Test Item 1",
+      description: "This is Test Item 1",
+      price: 10,
+      categoryId: categoryIds[0],
+    },
+    {
+      name: "Test Item 2",
+      description: "This is Test Item 2",
+      price: 20,
+      categoryId: categoryIds[1],
+    },
+    {
+      name: "Test Item 3",
+      description: "This is Test Item 3",
+      price: 30,
+      categoryId: categoryIds[0],
+    },
+    {
+      name: "Test Item 4",
+      price: 40,
+      categoryId: categoryIds[1],
+    },
+  ];
+
+  const testUsers = [
+    {
+      email: "demo@user.com",
+      password: "password",
+      firstName: "Demo",
+      lastName: "User",
+      address: "123 Main St",
+    },
+    {
+      email: "testy@email.com",
+      password: "testpassword",
+      firstName: "Test",
+      lastName: "User",
+      address: "1 Test St",
+    },
+  ];
+
+  await Promise.all(
+    testProducts.map(async (product) => {
+      await db.query(
+        "INSERT INTO products (name, description, price, category_id) VALUES ($1, $2, $3, $4)",
+        [product.name, product.description, product.price, product.categoryId]
+      );
+    })
+  );
+
+  await Promise.all(
+    testUsers.map(async (user) => {
+      await db.query(
+        "INSERT INTO users (email, password, first_name, last_name, address) VALUES ($1, $2, $3, $4, $5)",
+        [user.email, user.password, user.firstName, user.lastName, user.address]
+      );
+    })
+  );
+};

@@ -20,14 +20,14 @@ afterAll(async () => {
 });
 
 describe("auth", () => {
-  afterEach(async () => {
+  beforeEach(async () => {
     await clearDatabase();
   });
 
   describe("POST /auth/register", () => {
     it("should register a new user", async () => {
       const res = await request(server).post("/auth/register").send({
-        email: "test@user.com",
+        email: "new@user.com",
         password: "Password123!",
         firstName: "Test",
         lastName: "User",
@@ -37,7 +37,7 @@ describe("auth", () => {
       expect(res.status).toEqual(StatusCodes.CREATED);
       expect(res.body).toEqual({
         id: expect.any(Number),
-        email: "test@user.com",
+        email: "new@user.com",
         firstName: "Test",
         lastName: "User",
         address: "123 Test St",
@@ -47,7 +47,7 @@ describe("auth", () => {
       expect(dbRes.rows.length).toEqual(1);
       expect(dbRes.rows[0]).toEqual({
         id: expect.any(Number),
-        email: "test@user.com",
+        email: "new@user.com",
         password: expect.any(String),
         first_name: "Test",
         last_name: "User",
