@@ -69,12 +69,18 @@ export default {
         );
       }
 
-      res.status(StatusCodes.CREATED).json({
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        address: user.address,
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+
+        return res.status(StatusCodes.CREATED).json({
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          address: user.address,
+        });
       });
     },
   ],

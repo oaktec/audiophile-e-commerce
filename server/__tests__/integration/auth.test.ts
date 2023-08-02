@@ -57,6 +57,7 @@ describe("auth", () => {
       expect(dbRes.rows[0].password).not.toEqual("Password123!");
       expect(res.body.password).toBeUndefined();
       expect(res.body.id).toEqual(dbRes.rows[0].id);
+      expect(res.header["set-cookie"]).toBeDefined();
     });
 
     it("should return an error if email is already in use", async () => {
@@ -249,11 +250,6 @@ describe("auth", () => {
         firstName: "Demo",
         lastName: "User",
         address: "123 Test St",
-      });
-
-      await agent.post("/auth/login").send({
-        email: "demo@user.com",
-        password: "Password123!",
       });
 
       const res = await agent.post("/auth/register").send({

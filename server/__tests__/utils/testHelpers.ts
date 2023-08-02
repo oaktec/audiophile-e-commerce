@@ -39,12 +39,5 @@ export const registerAndLoginAgent = async (
 
   expect(response.status).toBe(201);
 
-  const loginResponse = await agent.post("/auth/login").send({
-    email: "lola@granola.com",
-    password: "lol4TheB3st1!",
-  });
-
-  expect(loginResponse.status).toBe(200);
-
-  return loginResponse;
+  return response;
 };
