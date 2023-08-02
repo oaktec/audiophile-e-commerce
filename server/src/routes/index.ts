@@ -1,12 +1,14 @@
 import { Router } from "express";
 
 import authRouter from "./auth";
+import cartRouter from "./cart";
 import productsRouter from "./products";
 import usersRouter from "./users";
 
 const router = Router();
 
 router.use("/auth", authRouter);
+router.use("/cart", cartRouter);
 router.use("/products", productsRouter);
 router.use("/users", usersRouter);
 

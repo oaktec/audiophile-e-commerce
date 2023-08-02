@@ -1,4 +1,5 @@
+import cartService from "./cartService";
 import productService from "./productService";
 import userService from "./userService";
 
-export { productService, userService };
+export { cartService, productService, userService };

@@ -25,6 +25,10 @@ export const clearDatabase = async () => {
   );
 };
 
+export const deleteAllCarts = async (): Promise<void> => {
+  await db.query("DELETE FROM carts");
+};
+
 export const registerAndLoginAgent = async (
   server: Server,
   agent: request.SuperAgentTest
