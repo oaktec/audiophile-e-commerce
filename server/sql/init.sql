@@ -24,7 +24,7 @@ CREATE TABLE products (
 
 CREATE TABLE carts (
   id SERIAL PRIMARY KEY,
-  user_id integer NOT NULL REFERENCES users(id)
+  user_id integer NOT NULL REFERENCES users(id),
   active boolean NOT NULL DEFAULT TRUE
 );
 
