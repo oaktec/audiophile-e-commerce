@@ -46,7 +46,7 @@ describe("auth", () => {
       const dbRes = await db.query("SELECT * FROM users");
       expect(dbRes.rows.length).toEqual(1);
       expect(dbRes.rows[0]).toEqual({
-        id: expect.any(Number),
+        id: res.body.id,
         email: "new@user.com",
         password: expect.any(String),
         first_name: "Test",
