@@ -14,30 +14,31 @@ import {
 } from "../config";
 
 const validTables = [
-  "users",
-  "products",
-  "orders",
   "carts",
   "cart_items",
   "categories",
+  "orders",
+  "products",
+  "users",
 ];
 const validFields = [
-  "id",
-  "email",
-  "password",
-  "first_name",
-  "last_name",
+  "active",
   "address",
-  "name",
-  "description",
-  "price",
-  "category_id",
-  "status",
   "cart_id",
+  "category_id",
+  "description",
+  "email",
+  "first_name",
+  "id",
+  "last_name",
+  "name",
   "order_date",
-  "user_id",
+  "password",
+  "price",
   "product_id",
   "quantity",
+  "status",
+  "user_id",
 ];
 
 const pool = new Pool({
