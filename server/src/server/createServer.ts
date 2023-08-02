@@ -1,4 +1,5 @@
 import express from "express";
+import "express-async-errors";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import morgan from "morgan";
 import cors from "cors";
