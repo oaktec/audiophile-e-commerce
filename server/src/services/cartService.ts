@@ -67,6 +67,22 @@ export default {
 
     return rows[0];
   },
+  updateCartProductQuantity: async (
+    cartId: number,
+    productId: number,
+    quantity: number
+  ) => {
+    const { rows } = await db.query(
+      "UPDATE cart_items SET quantity = $3 WHERE cart_id = $1 AND product_id = $2 RETURNING *",
+      [cartId, productId, quantity]
+    );
+
+    if (rows.length === 0) {
+      throw createHttpError(StatusCodes.NOT_FOUND, "Product not found in cart");
+    }
+
+    return rows[0];
+  },
   removeProductFromCart: async (cartId: number, productId: number) => {
     const { rows } = await db.query(
       "DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2 RETURNING *",

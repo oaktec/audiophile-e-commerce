@@ -89,6 +89,32 @@ export default {
       res.json(cartProduct);
     },
   ],
+  updateCartProduct: [
+    validationMiddleware,
+    async (req: Request, res: Response, next: NextFunction) => {
+      const cartId = req.cart?.id;
+      const productId = Number(req.params.productId);
+      const quantity = Number(req.body?.quantity);
+
+      if (!cartId) {
+        return next(createHttpError(500, "Failed to update cart product"));
+      }
+
+      if (!productId) {
+        return next(createHttpError(400, "Product ID is required"));
+      }
+
+      const product = await productService.getById(productId);
+
+      if (!product) {
+        return next(createHttpError(400, "Product not found"));
+      }
+
+      await cartService.updateCartProductQuantity(cartId, productId, quantity);
+
+      res.status(StatusCodes.NO_CONTENT).send();
+    },
+  ],
   removeFromCart: async (req: Request, res: Response, next: NextFunction) => {
     const cartId = req.cart?.id;
     const productId = Number(req.params.productId);

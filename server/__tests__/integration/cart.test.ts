@@ -453,4 +453,151 @@ describe("cart", () => {
       );
     });
   });
+
+  describe("PUT /cart/:userId/update/:productId", () => {
+    let productIds: number[];
+
+    beforeEach(async () => {
+      await deleteAllCarts();
+      const cartRes = await giveAgentACartWithProducts(agent, agentId);
+      const cartId = cartRes.body.id;
+
+      const cartItemsRows = await db.query(
+        "SELECT * FROM cart_items WHERE cart_id = $1",
+        [cartId]
+      );
+
+      productIds = cartItemsRows.rows.map((row) => row.product_id);
+    });
+
+    it("should update the quantity of a product in the cart", async () => {
+      const response = await agent
+        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .send({
+          quantity: 5,
+        });
+
+      expect(response.status).toBe(StatusCodes.NO_CONTENT);
+
+      const cartItemsRows = await db.query(
+        "SELECT * FROM cart_items WHERE product_id = $1",
+        [productId]
+      );
+
+      expect(cartItemsRows.rows[0].quantity).toBe(5);
+    });
+
+    it("should return 401 if user is not logged in", async () => {
+      const response = await request(server)
+        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .send({
+          quantity: 5,
+        });
+
+      expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
+    });
+
+    it("should return 403 if user is not the owner of the cart", async () => {
+      await secondAgent.post(`/cart/${secondAgentId}`);
+
+      const response = await secondAgent
+        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .send({
+          quantity: 5,
+        });
+
+      expect(response.status).toBe(StatusCodes.FORBIDDEN);
+
+      await secondAgent.delete(`/cart/${secondAgentId}`);
+    });
+
+    it("should return 404 if cart does not exist", async () => {
+      const response = await secondAgent
+        .put(`/cart/${secondAgentId}/update/${productIds[0]}`)
+        .send({
+          quantity: 5,
+        });
+
+      expect(response.status).toBe(StatusCodes.NOT_FOUND);
+    });
+
+    it("should return 400 if product does not exist", async () => {
+      const response = await agent
+        .put(`/cart/${agentId}/update/42342341`)
+        .send({
+          quantity: 5,
+        });
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Product not found",
+        })
+      );
+    });
+
+    it("should return 404 if product is not in the cart", async () => {
+      const delResponse = await agent.delete(
+        `/cart/${agentId}/remove/${productIds[0]}`
+      );
+
+      expect(delResponse.status).toBe(StatusCodes.NO_CONTENT);
+
+      const response = await agent
+        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .send({
+          quantity: 5,
+        });
+
+      expect(response.status).toBe(StatusCodes.NOT_FOUND);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Product not found in cart",
+        })
+      );
+    });
+
+    it("should return 400 if product id is not a number", async () => {
+      const response = await agent
+        .put(`/cart/${agentId}/update/not-a-number`)
+        .send({
+          quantity: 5,
+        });
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Product ID is required",
+        })
+      );
+    });
+
+    it("should return 400 if quantity is not a number", async () => {
+      const response = await agent
+        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .send({
+          quantity: "not-a-number",
+        });
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Quantity should be greater than 0 and less than 100",
+        })
+      );
+    });
+
+    it("should return 400 if body is empty", async () => {
+      const response = await agent.put(
+        `/cart/${agentId}/update/${productIds[0]}`
+      );
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Quantity is required",
+        })
+      );
+    });
+  });
 });
