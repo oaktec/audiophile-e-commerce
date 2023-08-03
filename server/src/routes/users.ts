@@ -8,21 +8,18 @@ const usersRouter = Router();
 
 usersRouter.get(
   "/:userId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   usersController.getUserById
 );
 usersRouter.put(
   "/:userId",
   userValidationRules.updateUserValidationRules,
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   usersController.updateUserById
 );
 usersRouter.delete(
   "/:userId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   usersController.deleteUserById
 );
 

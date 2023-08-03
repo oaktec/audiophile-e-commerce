@@ -8,43 +8,37 @@ const cartRouter = Router();
 
 cartRouter.post(
   "/:userId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   cartController.createCartForUser
 );
 cartRouter.get(
   "/:userId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   cartMiddleware.hasActiveCart,
   cartController.getActiveCart
 );
 cartRouter.delete(
   "/:userId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   cartMiddleware.hasActiveCart,
   cartController.deleteActiveCart
 );
 cartRouter.post(
   "/:userId/add/:productId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   cartMiddleware.hasActiveCart,
   cartValidationRules.quantityValidationRules,
   cartController.addToCart
 );
 cartRouter.delete(
   "/:userId/remove/:productId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   cartMiddleware.hasActiveCart,
   cartController.removeFromCart
 );
 cartRouter.put(
   "/:userId/update/:productId",
-  authMiddleware.isAuth,
-  authMiddleware.isUserFromParams,
+  authMiddleware.isAuthUserFromParams,
   cartMiddleware.hasActiveCart,
   cartValidationRules.quantityValidationRules,
   cartController.updateCartProduct
