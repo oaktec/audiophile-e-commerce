@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-
 import createHttpError from "http-errors";
-
 import { StatusCodes } from "http-status-codes";
 
 import { cartService, productService } from "../services";

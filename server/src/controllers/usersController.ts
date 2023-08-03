@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
-
 import { StatusCodes } from "http-status-codes";
 
 import { userService } from "../services";

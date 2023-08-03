@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-
 import createHttpError from "http-errors";
 
 import { productService } from "../services";
