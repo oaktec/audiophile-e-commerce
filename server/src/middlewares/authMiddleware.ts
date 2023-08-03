@@ -25,7 +25,7 @@ export default {
     next();
   },
   isUserFromParams: (req: Request, res: Response, next: NextFunction) => {
-    const id = Number(req.params.id);
+    const id = Number(req.params.userId);
 
     if (isNaN(id) || id < 0) {
       return next(createHttpError(400, "Invalid user id"));

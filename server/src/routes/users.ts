@@ -7,20 +7,20 @@ import { userValidationRules } from "../validators";
 const usersRouter = Router();
 
 usersRouter.get(
-  "/:id",
+  "/:userId",
   authMiddleware.isAuth,
   authMiddleware.isUserFromParams,
   usersController.getUserById
 );
 usersRouter.put(
-  "/:id",
+  "/:userId",
   userValidationRules.updateUserValidationRules,
   authMiddleware.isAuth,
   authMiddleware.isUserFromParams,
   usersController.updateUserById
 );
 usersRouter.delete(
-  "/:id",
+  "/:userId",
   authMiddleware.isAuth,
   authMiddleware.isUserFromParams,
   usersController.deleteUserById

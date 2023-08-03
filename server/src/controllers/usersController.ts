@@ -9,7 +9,7 @@ import { validationMiddleware } from "../middlewares";
 
 export default {
   getUserById: async (req: Request, res: Response, next: NextFunction) => {
-    const id = Number(req.params.id);
+    const id = Number(req.params.userId);
 
     const unsafeUser = await userService.getById(id);
 
@@ -28,7 +28,7 @@ export default {
   updateUserById: [
     validationMiddleware,
     async (req: Request, res: Response, next: NextFunction) => {
-      const id = Number(req.params.id);
+      const id = Number(req.params.userId);
 
       const unsafeUser = await userService.getById(id);
 
@@ -80,7 +80,7 @@ export default {
     },
   ],
   deleteUserById: async (req: Request, res: Response, next: NextFunction) => {
-    const id = Number(req.params.id);
+    const id = Number(req.params.userId);
 
     const unsafeUser = await userService.getById(id);
 
