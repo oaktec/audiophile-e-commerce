@@ -89,6 +89,28 @@ export default {
       res.json(cartProduct);
     },
   ],
+  removeFromCart: async (req: Request, res: Response, next: NextFunction) => {
+    const cartId = req.cart?.id;
+    const productId = Number(req.params.productId);
+
+    if (!cartId) {
+      return next(createHttpError(500, "Failed to remove product from cart"));
+    }
+
+    if (!productId) {
+      return next(createHttpError(400, "Product ID is required"));
+    }
+
+    const product = await productService.getById(productId);
+
+    if (!product) {
+      return next(createHttpError(400, "Product not found"));
+    }
+
+    await cartService.removeProductFromCart(cartId, productId);
+
+    res.status(StatusCodes.NO_CONTENT).send();
+  },
   deleteActiveCart: async (req: Request, res: Response, next: NextFunction) => {
     const cartId = req.cart?.id;
 

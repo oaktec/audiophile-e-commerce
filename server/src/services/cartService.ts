@@ -1,3 +1,7 @@
+import createHttpError from "http-errors";
+
+import { StatusCodes } from "http-status-codes";
+
 import db from "../db";
 
 interface DBCart {
@@ -62,6 +66,16 @@ export default {
     }
 
     return rows[0];
+  },
+  removeProductFromCart: async (cartId: number, productId: number) => {
+    const { rows } = await db.query(
+      "DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2 RETURNING *",
+      [cartId, productId]
+    );
+
+    if (rows.length === 0) {
+      throw createHttpError(StatusCodes.NOT_FOUND, "Product not found in cart");
+    }
   },
   delete: async (cartId: number) => {
     await db.query("DELETE FROM cart_items WHERE cart_id = $1", [cartId]);

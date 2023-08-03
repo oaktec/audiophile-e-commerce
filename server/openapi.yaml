@@ -424,6 +424,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /cart/{userId}/remove/{productId}:
+    delete:
+      summary: Remove a product from the active cart of a user
+      operationId: removeProductFromCart
+      parameters:
+        - name: userId
+          in: path
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+        - name: productId
+          in: path
+          description: Unique ID of the product
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Product removed from cart successfully
+        "400":
+          description: Invalid user ID or invalid product ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: User does not have an active cart or product is not in the cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /health:
     get:
       summary: Health check

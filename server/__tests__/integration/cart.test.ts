@@ -8,6 +8,7 @@ import {
   clearAndPopDB,
   createTestServer,
   deleteAllCarts,
+  giveAgentACartWithProducts,
   registerAndLoginAgent,
 } from "../utils/testHelpers";
 import { cartService } from "../../src/services";
@@ -340,6 +341,114 @@ describe("cart", () => {
       expect(response.body).toEqual(
         expect.objectContaining({
           message: "Quantity should be greater than 0 and less than 100",
+        })
+      );
+    });
+  });
+
+  describe("DELETE /cart/:userId/remove/:productId", () => {
+    let productIds: number[];
+
+    beforeEach(async () => {
+      await deleteAllCarts();
+      const cartRes = await giveAgentACartWithProducts(agent, agentId);
+      const cartId = cartRes.body.id;
+
+      const cartItemsRows = await db.query(
+        "SELECT * FROM cart_items WHERE cart_id = $1",
+        [cartId]
+      );
+
+      productIds = cartItemsRows.rows.map((row) => row.product_id);
+    });
+
+    it("should remove a product from the cart", async () => {
+      let cartRows = await db.query("SELECT * FROM carts");
+      expect(cartRows.rows).toHaveLength(1);
+
+      let cartItemsRows = await db.query("SELECT * FROM cart_items");
+      expect(cartItemsRows.rows).toHaveLength(2);
+
+      const response = await agent.delete(
+        `/cart/${agentId}/remove/${productIds[0]}`
+      );
+
+      expect(response.status).toBe(StatusCodes.NO_CONTENT);
+
+      cartRows = await db.query("SELECT * FROM carts");
+      expect(cartRows.rows).toHaveLength(1);
+
+      cartItemsRows = await db.query("SELECT * FROM cart_items");
+      expect(cartItemsRows.rows).toHaveLength(1);
+    });
+
+    it("should return 401 if user is not logged in", async () => {
+      const response = await request(server).delete(
+        `/cart/${agentId}/remove/${productIds[0]}`
+      );
+
+      expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
+    });
+
+    it("should return 403 if user is not the owner of the cart", async () => {
+      await secondAgent.post(`/cart/${secondAgentId}`);
+
+      const response = await secondAgent.delete(
+        `/cart/${agentId}/remove/${productIds[0]}`
+      );
+
+      expect(response.status).toBe(StatusCodes.FORBIDDEN);
+
+      await secondAgent.delete(`/cart/${secondAgentId}`);
+    });
+
+    it("should return 404 if cart does not exist", async () => {
+      const response = await secondAgent.delete(
+        `/cart/${secondAgentId}/remove/${productIds[0]}`
+      );
+
+      expect(response.status).toBe(StatusCodes.NOT_FOUND);
+    });
+
+    it("should return 400 if product does not exist", async () => {
+      const response = await agent.delete(`/cart/${agentId}/remove/42342341`);
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Product not found",
+        })
+      );
+    });
+
+    it("should return 404 if product is not in the cart", async () => {
+      const delResponse = await agent.delete(
+        `/cart/${agentId}/remove/${productIds[0]}`
+      );
+
+      expect(delResponse.status).toBe(StatusCodes.NO_CONTENT);
+
+      const response = await agent.delete(
+        `/cart/${agentId}/remove/${productIds[0]}`
+      );
+
+      expect(response.status).toBe(StatusCodes.NOT_FOUND);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Product not found in cart",
+        })
+      );
+    });
+
+    it("should return 400 if product id is not a number", async () => {
+      const response = await agent.delete(
+        `/cart/${agentId}/remove/not-a-number`
+      );
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Product ID is required",
         })
       );
     });
