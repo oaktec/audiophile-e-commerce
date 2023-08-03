@@ -11,6 +11,32 @@ components:
         message:
           type: string
           description: Error message
+        name:
+          type: string
+          description: Error name
+        status:
+          type: number
+          description: HTTP status code
+    UserAuth:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          type: string
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - address
     Product:
       type: object
       properties:
@@ -24,6 +50,21 @@ components:
           type: number
         categoryID:
           type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          type: string
+
     Cart:
       type: object
       properties:
@@ -44,59 +85,53 @@ paths:
   /auth/register:
     post:
       summary: Register a new user
-      description: This method allows you to create a new user.
       operationId: registerUser
       requestBody:
-        description: User information to register a new account
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                address:
-                  type: string
-              required:
-                - email
-                - password
-                - firstName
-                - lastName
-                - address
+              $ref: "#/components/schemas/UserAuth"
       responses:
-        "200":
-          description: User registered successfully
+        "201":
+          description: User created successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   id:
-                    type: integer
-                    description: User ID of the newly registered user
+                    type: number
+                    description: The ID of the newly created user
+                  email:
+                    type: string
+                    description: User's email address
+                  firstName:
+                    type: string
+                    description: User's first name
+                  lastName:
+                    type: string
+                    description: User's last name
+                  address:
+                    type: string
+                    description: User's address
         "400":
-          description: One or more of the required fields is missing or invalid
+          description: Bad request (invalid input parameters)
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
-          description: An error occurred while processing the request
+        "409":
+          description: Conflict (email already in use)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /auth/login:
     post:
       summary: Login a user
-      description: Log in a user by their email and password.
       operationId: loginUser
       requestBody:
-        description: User email and password for logging in
         required: true
         content:
           application/json:
@@ -121,46 +156,127 @@ paths:
                 properties:
                   id:
                     type: integer
-                    description: User ID of the logged-in user
-                  token:
-                    type: string
-                    description: Token for future authentication
+                    description: The ID of the logged in user
         "400":
-          description: One or more of the required fields is missing or invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "401":
-          description: Unauthorized. Invalid email or password
+          description: Bad request (incorrect email or password, or user already logged in)
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "500":
-          description: An error occurred while processing the request
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /auth/logout:
     post:
       summary: Logout a user
       operationId: logoutUser
       responses:
-        "200":
+        "204":
           description: User logged out successfully
         "401":
-          description: Unauthorized. Invalid token
+          description: Unauthorized (user is not logged in)
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
-          description: An error occurred while processing the request
+  /users/{id}:
+    get:
+      summary: Get user details by ID
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successfully retrieved user information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request (invalid user ID)
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized (user is not logged in)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden (user does not have permission to access the data)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not Found (user does not exist)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update a user
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid user ID or invalid user details provided
+        "401":
+          description: Unauthorized, you must be logged in to do that
+        "403":
+          description: Forbidden, you do not have permission to do that
+        "409":
+          description: Conflict, email already in use
+    delete:
+      summary: Delete a user
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: User deleted successfully
+        "400":
+          description: Invalid user ID
+        "401":
+          description: Unauthorized, you must be logged in to do that
+        "403":
+          description: Forbidden, you do not have permission to do that
   /products:
     get:
-      summary: Retrieve products
+      summary: Get products
       description: Retrieve a list of products. Can be filtered by category.
       operationId: getProducts
       parameters:
@@ -179,27 +295,22 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Product"
-        "500":
-          description: An error occurred while processing the request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /products/{productId}:
+        "400":
+          description: Invalid category ID
+  /products/{id}:
     get:
-      summary: Retrieve a product
-      description: Retrieve a product by its ID.
-      operationId: getProduct
+      summary: Get product details by ID
+      operationId: getProductById
       parameters:
-        - name: productId
+        - name: id
           in: path
-          description: ID of the product to retrieve
+          description: Unique ID of the product
           required: true
           schema:
             type: integer
       responses:
         "200":
-          description: Product retrieved successfully
+          description: A product
           content:
             application/json:
               schema:
@@ -210,235 +321,114 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
-          description: An error occurred while processing the request
+        "400":
+          description: Invalid product ID
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /users/{userId}:
-    get:
-      summary: Retrieve a user
-      description: Retrieve a user by their ID.
-      operationId: getUser
+  /cart/{userId}:
+    post:
+      summary: Create a new cart for a user
+      description: Creates a new cart for a user. Does not create a new cart if there's an existing active cart.
+      operationId: createCart
       parameters:
         - name: userId
           in: path
-          description: ID of the user to retrieve
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Cart created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: User already has an active cart or invalid user ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: Get active cart for a specific user
+      operationId: getActiveCart
+      parameters:
+        - name: userId
+          in: path
+          description: Unique ID of the user
           required: true
           schema:
             type: integer
       responses:
         "200":
-          description: User retrieved successfully
+          description: Active cart
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  email:
-                    type: string
-                  firstName:
-                    type: string
-                  lastName:
-                    type: string
-                  address:
-                    type: string
+                $ref: "#/components/schemas/Cart"
         "404":
-          description: User not found
+          description: User does not have an active cart
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
-          description: An error occurred while processing the request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    put:
-      summary: Update a user
-      description: Update a user by their ID.
-      operationId: updateUser
+  /cart/{userId}/add/{productId}:
+    post:
+      summary: Add a product to a cart
+      description: Adds a product to a cart. The quantity of the product to be added is specified in the request body.
+      operationId: addProductToCart
       parameters:
         - name: userId
           in: path
-          description: ID of the user to update
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+        - name: productId
+          in: path
+          description: Unique ID of the product
           required: true
           schema:
             type: integer
       requestBody:
-        description: User information to update
+        description: Quantity of the product to be added to the cart
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                address:
-                  type: string
-              required:
-                - email
-                - password
-                - firstName
-                - lastName
-                - address
+                quantity:
+                  type: integer
+                  minimum: 1
+                  maximum: 100
       responses:
         "200":
-          description: User updated successfully
+          description: Product added to cart successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: User ID of the updated user
+                $ref: "#/components/schemas/Cart"
         "400":
-          description: One or more of the required fields is missing or invalid
+          description: Invalid user ID, invalid product ID, or invalid quantity
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "404":
-          description: User not found
+          description: User does not have an active cart
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
-          description: An error occurred while processing the request
-    delete:
-      summary: Delete a user
-      description: Delete a user by their ID.
-      operationId: deleteUser
-      parameters:
-        - name: userId
-          in: path
-          description: ID of the user to delete
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: User deleted successfully
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: An error occurred while processing the request
-  /cart:
-    post:
-      summary: Create a new cart
-      responses:
-        "200":
-          description: The created cart
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cart"
-  /cart/{cartId}:
-    post:
-      summary: Add a product to the cart
-      parameters:
-        - name: cartId
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CartItem"
-      responses:
-        "200":
-          description: The updated cart
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cart"
+  /health:
     get:
-      summary: Get a specific cart
-      parameters:
-        - name: cartId
-          in: path
-          required: true
-          schema:
-            type: integer
+      summary: Health check
+      description: Check the health of the API
+      operationId: healthCheck
       responses:
         "200":
-          description: The requested cart
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cart"
-    delete:
-      summary: Delete a specific cart
-      parameters:
-        - name: cartId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: Successful operation
-  /cart/{cartId}/{productId}:
-    delete:
-      summary: Remove a product from a specific cart
-      parameters:
-        - name: cartId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: productId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: Successful operation
-    put:
-      summary: Update the quantity of a product in a specific cart
-      parameters:
-        - name: cartId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: productId
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CartItem"
-      responses:
-        "200":
-          description: The updated cart
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cart"
+          description: API is healthy
