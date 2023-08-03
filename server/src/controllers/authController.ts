@@ -93,9 +93,7 @@ export default {
         if (destroyErr) {
           return next(destroyErr);
         }
-        return res.send({
-          message: "Successfully logged out",
-        });
+        return res.status(StatusCodes.NO_CONTENT).end();
       });
     });
   },

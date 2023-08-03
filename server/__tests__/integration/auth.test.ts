@@ -432,10 +432,7 @@ describe("auth", () => {
 
       const res = await agent.post("/auth/logout");
 
-      expect(res.status).toEqual(StatusCodes.OK);
-      expect(res.body).toEqual({
-        message: "Successfully logged out",
-      });
+      expect(res.status).toEqual(StatusCodes.NO_CONTENT);
 
       expect(res.header["set-cookie"]).toBeUndefined();
     });
