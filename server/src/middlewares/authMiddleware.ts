@@ -28,12 +28,15 @@ export default {
     const id = Number(req.params.userId);
 
     if (isNaN(id) || id < 0) {
-      return next(createHttpError(400, "Invalid user id"));
+      return next(createHttpError(StatusCodes.BAD_REQUEST, "Invalid user id"));
     }
 
     if (req.user?.id !== id) {
       return next(
-        createHttpError(403, "You do not have permission to do that")
+        createHttpError(
+          StatusCodes.FORBIDDEN,
+          "You do not have permission to do that"
+        )
       );
     }
 
