@@ -47,4 +47,25 @@ export default {
 
     return mapCart(cart);
   },
+  addProductToCart: async (
+    cartId: number,
+    productId: number,
+    quantity: number
+  ) => {
+    const { rows } = await db.query(
+      "INSERT INTO cart_items (cart_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *",
+      [cartId, productId, quantity]
+    );
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0];
+  },
+  delete: async (cartId: number) => {
+    await db.query("DELETE FROM cart_items WHERE cart_id = $1", [cartId]);
+
+    await db.query("DELETE FROM carts WHERE id = $1", [cartId]);
+  },
 };

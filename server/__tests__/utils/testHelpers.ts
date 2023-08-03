@@ -26,24 +26,60 @@ export const clearDatabase = async () => {
 };
 
 export const deleteAllCarts = async (): Promise<void> => {
+  await db.query("DELETE FROM cart_items");
   await db.query("DELETE FROM carts");
 };
 
 export const registerAndLoginAgent = async (
   server: Server,
-  agent: request.SuperAgentTest
+  agent: request.SuperAgentTest,
+  secondAgent = false
 ) => {
-  const response = await agent.post("/auth/register").send({
+  let details = {
     email: "lola@granola.com",
     password: "lol4TheB3st1!",
     firstName: "Lola",
     lastName: "Granola",
     address: "123 Lola St",
-  });
+  };
+
+  if (secondAgent) {
+    details = {
+      email: "second@agent.com",
+      password: "secondAg3nt!!",
+      firstName: "Second",
+      lastName: "Agent",
+      address: "123 Second St",
+    };
+  }
+
+  const response = await agent.post("/auth/register").send(details);
 
   expect(response.status).toBe(201);
 
   return response;
+};
+
+export const giveAgentACartWithProducts = async (
+  agent: request.SuperAgentTest
+) => {
+  const cartResponse = await agent.post("/cart");
+
+  expect(cartResponse.status).toBe(201);
+
+  const { rows } = await db.query("SELECT * FROM products LIMIT 2");
+
+  const productIds = rows.map((product) => product.id);
+
+  await Promise.all(
+    productIds.map(async (productId) => {
+      const productResponse = await agent.post("/cart/add").send({ productId });
+
+      expect(productResponse.status).toBe(200);
+    })
+  );
+
+  return agent;
 };
 
 export const clearAndPopDB = async () => {

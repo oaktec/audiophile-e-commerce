@@ -3,5 +3,13 @@ export declare global {
     interface User {
       id: number;
     }
+
+    interface Request {
+      cart?: {
+        id: number;
+        userId: number;
+        active: boolean;
+      };
+    }
   }
 }

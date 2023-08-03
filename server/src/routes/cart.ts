@@ -1,16 +1,37 @@
 import { Router } from "express";
 
 import { cartController } from "../controllers";
-import { authMiddleware } from "../middlewares";
+import { authMiddleware, cartMiddleware } from "../middlewares";
+import { cartValidationRules } from "../validators";
 
 const cartRouter = Router();
 
-cartRouter.post("/", authMiddleware.isAuth, cartController.createCart);
-// TODO :
-// GET /cart/:id
-// POST /cart/:id
-// DELETE /cart/:id
-// DELETE /cart/:id/:productId
-// PUT /cart/:id/:productId
+cartRouter.post(
+  "/:userId",
+  authMiddleware.isAuth,
+  authMiddleware.isUserFromParams,
+  cartController.createCartForUser
+);
+cartRouter.get(
+  "/:userId",
+  authMiddleware.isAuth,
+  authMiddleware.isUserFromParams,
+  cartMiddleware.hasActiveCart,
+  cartController.getActiveCart
+);
+cartRouter.delete(
+  "/:userId",
+  authMiddleware.isAuth,
+  authMiddleware.isUserFromParams,
+  cartMiddleware.hasActiveCart,
+  cartController.deleteActiveCart
+);
+cartRouter.post(
+  "/:userId/add/:productId",
+  authMiddleware.isAuth,
+  cartMiddleware.hasActiveCart,
+  cartValidationRules.quantityValidationRules,
+  cartController.addToCart
+);
 
 export default cartRouter;
