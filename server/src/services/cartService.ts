@@ -53,11 +53,27 @@ export default {
       throw createHttpError(StatusCodes.BAD_REQUEST, "Failed to checkout cart");
     }
 
-    await db.query("INSERT INTO orders (user_id, cart_id) VALUES ($1, $2)", [
-      userId,
-      cartId,
-    ]);
-    await db.query("UPDATE carts SET active = false WHERE id = $1", [cartId]);
+    const client = await db.getClient();
+
+    try {
+      await client.query("BEGIN");
+
+      await client.query(
+        "INSERT INTO orders (user_id, cart_id) VALUES ($1, $2)",
+        [userId, cartId]
+      );
+      await client.query("UPDATE carts SET active = false WHERE id = $1", [
+        cartId,
+      ]);
+
+      await client.query("COMMIT");
+    } catch (err) {
+      await client.query("ROLLBACK");
+      console.error(err);
+      throw createHttpError(StatusCodes.BAD_REQUEST, "Failed to checkout cart");
+    } finally {
+      client.release();
+    }
   },
   getActiveCartByUserId: async (userId: number): Promise<Cart | null> => {
     const { rows } = await db.query(

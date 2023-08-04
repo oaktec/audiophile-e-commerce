@@ -50,6 +50,7 @@ const pool = new Pool({
 });
 
 export default {
+  getClient: async () => await pool.connect(),
   query: (text: string, params?: (string | number)[]) =>
     pool.query(text, params),
   queryCallback: (
