@@ -8,44 +8,44 @@ const cartRouter = Router();
 
 cartRouter.post(
   "/:userId",
-  authMiddleware.isAuthUserFromParams,
+  authMiddleware.isUserFromParams,
   cartController.createCartForUser
 );
 cartRouter.get(
   "/:userId",
-  authMiddleware.isAuthUserFromParams,
+  authMiddleware.isUserFromParams,
   cartMiddleware.hasActiveCart,
   cartController.getActiveCart
 );
 cartRouter.delete(
   "/:userId",
-  authMiddleware.isAuthUserFromParams,
+  authMiddleware.isUserFromParams,
   cartMiddleware.hasActiveCart,
   cartController.deleteActiveCart
 );
 cartRouter.post(
   "/:userId/add/:productId",
-  authMiddleware.isAuthUserFromParams,
+  authMiddleware.isUserFromParams,
   cartMiddleware.hasActiveCart,
   cartValidationRules.quantityValidationRules,
   cartController.addToCart
 );
 cartRouter.delete(
   "/:userId/remove/:productId",
-  authMiddleware.isAuthUserFromParams,
+  authMiddleware.isUserFromParams,
   cartMiddleware.hasActiveCart,
   cartController.removeFromCart
 );
 cartRouter.put(
   "/:userId/update/:productId",
-  authMiddleware.isAuthUserFromParams,
+  authMiddleware.isUserFromParams,
   cartMiddleware.hasActiveCart,
   cartValidationRules.quantityValidationRules,
   cartController.updateCartProduct
 );
 cartRouter.post(
   "/:userId/checkout",
-  authMiddleware.isAuthUserFromParams,
+  authMiddleware.isUserFromParams,
   cartMiddleware.hasActiveCart,
   cartController.checkoutCart
 );
