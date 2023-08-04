@@ -424,6 +424,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /cart/{userId}/update/{productId}:
+    patch:
+      summary: Update the quantity of a product in the active cart of a user
+      operationId: updateProductInCart
+      parameters:
+        - name: userId
+          in: path
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+        - name: productId
+          in: path
+          description: Unique ID of the product
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: New quantity of the product in the cart
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  minimum: 1
+                  maximum: 100
   /cart/{userId}/remove/{productId}:
     delete:
       summary: Remove a product from the active cart of a user

@@ -36,7 +36,7 @@ cartRouter.delete(
   cartMiddleware.hasActiveCart,
   cartController.removeFromCart
 );
-cartRouter.put(
+cartRouter.patch(
   "/:userId/update/:productId",
   authMiddleware.isUserFromParams,
   cartMiddleware.hasActiveCart,

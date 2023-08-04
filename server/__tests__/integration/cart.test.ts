@@ -454,7 +454,7 @@ describe("cart", () => {
     });
   });
 
-  describe("PUT /cart/:userId/update/:productId", () => {
+  describe("PATCH /cart/:userId/update/:productId", () => {
     let productIds: number[];
 
     beforeEach(async () => {
@@ -472,7 +472,7 @@ describe("cart", () => {
 
     it("should update the quantity of a product in the cart", async () => {
       const response = await agent
-        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .patch(`/cart/${agentId}/update/${productIds[0]}`)
         .send({
           quantity: 5,
         });
@@ -489,7 +489,7 @@ describe("cart", () => {
 
     it("should return 401 if user is not logged in", async () => {
       const response = await request(server)
-        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .patch(`/cart/${agentId}/update/${productIds[0]}`)
         .send({
           quantity: 5,
         });
@@ -501,7 +501,7 @@ describe("cart", () => {
       await secondAgent.post(`/cart/${secondAgentId}`);
 
       const response = await secondAgent
-        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .patch(`/cart/${agentId}/update/${productIds[0]}`)
         .send({
           quantity: 5,
         });
@@ -513,7 +513,7 @@ describe("cart", () => {
 
     it("should return 404 if cart does not exist", async () => {
       const response = await secondAgent
-        .put(`/cart/${secondAgentId}/update/${productIds[0]}`)
+        .patch(`/cart/${secondAgentId}/update/${productIds[0]}`)
         .send({
           quantity: 5,
         });
@@ -523,7 +523,7 @@ describe("cart", () => {
 
     it("should return 400 if product does not exist", async () => {
       const response = await agent
-        .put(`/cart/${agentId}/update/42342341`)
+        .patch(`/cart/${agentId}/update/42342341`)
         .send({
           quantity: 5,
         });
@@ -544,7 +544,7 @@ describe("cart", () => {
       expect(delResponse.status).toBe(StatusCodes.NO_CONTENT);
 
       const response = await agent
-        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .patch(`/cart/${agentId}/update/${productIds[0]}`)
         .send({
           quantity: 5,
         });
@@ -559,7 +559,7 @@ describe("cart", () => {
 
     it("should return 400 if product id is not a number", async () => {
       const response = await agent
-        .put(`/cart/${agentId}/update/not-a-number`)
+        .patch(`/cart/${agentId}/update/not-a-number`)
         .send({
           quantity: 5,
         });
@@ -574,7 +574,7 @@ describe("cart", () => {
 
     it("should return 400 if quantity is not a number", async () => {
       const response = await agent
-        .put(`/cart/${agentId}/update/${productIds[0]}`)
+        .patch(`/cart/${agentId}/update/${productIds[0]}`)
         .send({
           quantity: "not-a-number",
         });
@@ -588,7 +588,7 @@ describe("cart", () => {
     });
 
     it("should return 400 if body is empty", async () => {
-      const response = await agent.put(
+      const response = await agent.patch(
         `/cart/${agentId}/update/${productIds[0]}`
       );
 
