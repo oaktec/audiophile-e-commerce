@@ -43,5 +43,11 @@ cartRouter.put(
   cartValidationRules.quantityValidationRules,
   cartController.updateCartProduct
 );
+cartRouter.post(
+  "/:userId/checkout",
+  authMiddleware.isAuthUserFromParams,
+  cartMiddleware.hasActiveCart,
+  cartController.checkoutCart
+);
 
 export default cartRouter;

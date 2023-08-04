@@ -48,6 +48,21 @@ export default {
       id: cart.id,
     });
   },
+  checkoutCart: async (req: Request, res: Response, next: NextFunction) => {
+    const cartId = req.cart?.id;
+
+    if (!cartId) {
+      return next(
+        createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Failed to checkout")
+      );
+    }
+
+    const userId = Number(req.params.userId);
+
+    await cartService.checkout(userId, cartId);
+
+    res.status(StatusCodes.NO_CONTENT).send();
+  },
   getActiveCart: (req: Request, res: Response, next: NextFunction) => {
     const cart = req.cart;
 

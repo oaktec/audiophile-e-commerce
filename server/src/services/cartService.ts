@@ -37,6 +37,28 @@ export default {
 
     return mapCart(cart);
   },
+  checkout: async (userId: number, cartId: number) => {
+    const products = await db.query(
+      "SELECT * FROM cart_items WHERE cart_id = $1",
+      [cartId]
+    );
+
+    if (products.rows.length === 0) {
+      throw createHttpError(StatusCodes.BAD_REQUEST, "Cart is empty");
+    }
+
+    try {
+      // payment logic
+    } catch (err) {
+      throw createHttpError(StatusCodes.BAD_REQUEST, "Failed to checkout cart");
+    }
+
+    await db.query("INSERT INTO orders (user_id, cart_id) VALUES ($1, $2)", [
+      userId,
+      cartId,
+    ]);
+    await db.query("UPDATE carts SET active = false WHERE id = $1", [cartId]);
+  },
   getActiveCartByUserId: async (userId: number): Promise<Cart | null> => {
     const { rows } = await db.query(
       "SELECT * FROM carts WHERE user_id = $1 AND active = true",

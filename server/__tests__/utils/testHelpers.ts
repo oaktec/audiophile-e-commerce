@@ -27,6 +27,7 @@ export const clearDatabase = async () => {
 
 export const deleteAllCarts = async (): Promise<void> => {
   await db.query("DELETE FROM cart_items");
+  await db.query("DELETE FROM orders");
   await db.query("DELETE FROM carts");
 };
 

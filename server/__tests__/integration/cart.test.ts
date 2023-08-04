@@ -600,4 +600,88 @@ describe("cart", () => {
       );
     });
   });
+
+  describe("POST /cart/:userId/checkout", () => {
+    let cartId: number;
+
+    beforeEach(async () => {
+      await deleteAllCarts();
+      const cartRes = await giveAgentACartWithProducts(agent, agentId);
+      cartId = cartRes.body.id;
+    });
+
+    it("should checkout the cart", async () => {
+      const response = await agent.post(`/cart/${agentId}/checkout`);
+
+      expect(response.status).toBe(StatusCodes.NO_CONTENT);
+
+      const cartRows = await db.query("SELECT * FROM carts WHERE id = $1", [
+        cartId,
+      ]);
+
+      expect(cartRows.rows).toHaveLength(1);
+      expect(cartRows.rows[0].active).toBe(false);
+
+      const orderRows = await db.query(
+        "SELECT * FROM orders WHERE cart_id = $1",
+        [cartId]
+      );
+
+      expect(orderRows.rows).toHaveLength(1);
+      expect(orderRows.rows[0].cart_id).toBe(cartId);
+      expect(orderRows.rows[0].user_id).toBe(agentId);
+    });
+
+    it("should return 401 if user is not logged in", async () => {
+      const response = await request(server).post(`/cart/${agentId}/checkout`);
+
+      expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
+    });
+
+    it("should return 403 if user is not the owner of the cart", async () => {
+      await secondAgent.post(`/cart/${secondAgentId}`);
+
+      const response = await secondAgent.post(`/cart/${agentId}/checkout`);
+
+      expect(response.status).toBe(StatusCodes.FORBIDDEN);
+
+      await secondAgent.delete(`/cart/${secondAgentId}`);
+    });
+
+    it("should return 404 if cart does not exist", async () => {
+      const response = await secondAgent.post(
+        `/cart/${secondAgentId}/checkout`
+      );
+
+      expect(response.status).toBe(StatusCodes.NOT_FOUND);
+    });
+
+    it("should return 400 if cart is already checked out", async () => {
+      await agent.post(`/cart/${agentId}/checkout`);
+
+      const response = await agent.post(`/cart/${agentId}/checkout`);
+
+      expect(response.status).toBe(StatusCodes.NOT_FOUND);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "You do not have an active cart",
+        })
+      );
+    });
+
+    it("should return 400 if cart is empty", async () => {
+      await secondAgent.post(`/cart/${secondAgentId}`);
+
+      const response = await secondAgent.post(
+        `/cart/${secondAgentId}/checkout`
+      );
+
+      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          message: "Cart is empty",
+        })
+      );
+    });
+  });
 });

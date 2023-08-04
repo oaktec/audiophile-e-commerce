@@ -456,6 +456,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /cart/{userId}/checkout:
+    post:
+      summary: Checkout the active cart of a user
+      description: Checks out the active cart of a user. The active cart is then marked as inactive.
+      operationId: checkoutCart
+      parameters:
+        - name: userId
+          in: path
+          description: Unique ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Cart checked out successfully
+        "400":
+          description: Invalid user ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: User does not have an active cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /health:
     get:
       summary: Health check
