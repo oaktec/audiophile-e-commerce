@@ -62,10 +62,9 @@ export const registerAndLoginAgent = async (
 };
 
 export const giveAgentACartWithProducts = async (
-  agent: request.SuperAgentTest,
-  agentId: number
+  agent: request.SuperAgentTest
 ) => {
-  const cartResponse = await agent.post(`/cart/${agentId}`);
+  const cartResponse = await agent.post(`/cart`);
 
   expect(cartResponse.status).toBe(201);
 
@@ -76,7 +75,7 @@ export const giveAgentACartWithProducts = async (
   await Promise.all(
     productIds.map(async (productId, index) => {
       const productResponse = await agent
-        .post(`/cart/${agentId}/add/${productId}`)
+        .post(`/cart/add/${productId}`)
         .send({ quantity: index + 1 });
 
       expect(productResponse.status).toBe(200);

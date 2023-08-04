@@ -11,7 +11,7 @@ export default {
     res: Response,
     next: NextFunction
   ) => {
-    const userId = Number(req.params.userId);
+    const userId = req.user?.id;
 
     if (!userId) {
       return next(
@@ -57,7 +57,16 @@ export default {
       );
     }
 
-    const userId = Number(req.params.userId);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(
+        createHttpError(
+          StatusCodes.UNAUTHORIZED,
+          "You must be logged in to do that"
+        )
+      );
+    }
 
     await cartService.checkout(userId, cartId);
 

@@ -6,46 +6,42 @@ import { cartValidationRules } from "../validators";
 
 const cartRouter = Router();
 
-cartRouter.post(
-  "/:userId",
-  authMiddleware.isUserFromParams,
-  cartController.createCartForUser
-);
+cartRouter.post("/", authMiddleware.isAuth, cartController.createCartForUser);
 cartRouter.get(
-  "/:userId",
-  authMiddleware.isUserFromParams,
+  "/",
+  authMiddleware.isAuth,
   cartMiddleware.hasActiveCart,
   cartController.getActiveCart
 );
 cartRouter.delete(
-  "/:userId",
-  authMiddleware.isUserFromParams,
+  "/",
+  authMiddleware.isAuth,
   cartMiddleware.hasActiveCart,
   cartController.deleteActiveCart
 );
 cartRouter.post(
-  "/:userId/add/:productId",
-  authMiddleware.isUserFromParams,
+  "/add/:productId",
+  authMiddleware.isAuth,
   cartMiddleware.hasActiveCart,
   cartValidationRules.quantityValidationRules,
   cartController.addToCart
 );
 cartRouter.delete(
-  "/:userId/remove/:productId",
-  authMiddleware.isUserFromParams,
+  "/remove/:productId",
+  authMiddleware.isAuth,
   cartMiddleware.hasActiveCart,
   cartController.removeFromCart
 );
 cartRouter.patch(
-  "/:userId/update/:productId",
-  authMiddleware.isUserFromParams,
+  "/update/:productId",
+  authMiddleware.isAuth,
   cartMiddleware.hasActiveCart,
   cartValidationRules.quantityValidationRules,
   cartController.updateCartProduct
 );
 cartRouter.post(
-  "/:userId/checkout",
-  authMiddleware.isUserFromParams,
+  "/checkout",
+  authMiddleware.isAuth,
   cartMiddleware.hasActiveCart,
   cartController.checkoutCart
 );
