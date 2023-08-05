@@ -28,9 +28,9 @@ beforeAll(async () => {
 
   agent = request.agent(server);
   secondAgent = request.agent(server);
-  let res = await registerAndLoginAgent(server, agent);
+  let res = await registerAndLoginAgent(agent);
   agentId = res.body.id;
-  res = await registerAndLoginAgent(server, secondAgent, true);
+  res = await registerAndLoginAgent(secondAgent, true);
 
   productId = (await db.query("SELECT id FROM products LIMIT 1")).rows[0].id;
 });

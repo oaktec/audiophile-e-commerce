@@ -1,4 +1,3 @@
-import { Server } from "http";
 import request from "supertest";
 
 import createServer from "../../src/server/createServer";
@@ -32,7 +31,6 @@ export const deleteAllCarts = async (): Promise<void> => {
 };
 
 export const registerAndLoginAgent = async (
-  server: Server,
   agent: request.SuperAgentTest,
   secondAgent = false
 ) => {
@@ -83,6 +81,22 @@ export const giveAgentACartWithProducts = async (
   );
 
   return cartResponse;
+};
+
+export const giveAgentSomeOrders = async (agent: request.SuperAgentTest) => {
+  await giveAgentACartWithProducts(agent);
+
+  const cartResponse = await agent.post(`/cart/checkout`);
+
+  expect(cartResponse.status).toBe(204);
+
+  await giveAgentACartWithProducts(agent);
+
+  const secondCartResponse = await agent.post(`/cart/checkout`);
+
+  expect(secondCartResponse.status).toBe(204);
+
+  return secondCartResponse;
 };
 
 export const clearAndPopDB = async () => {

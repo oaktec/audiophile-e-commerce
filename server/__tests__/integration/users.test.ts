@@ -24,7 +24,7 @@ describe("users", () => {
 
     await clearAndPopDB();
 
-    const res = await registerAndLoginAgent(server, agent);
+    const res = await registerAndLoginAgent(agent);
     userId = res.body.id;
   });
 
@@ -100,7 +100,7 @@ describe("users", () => {
     beforeEach(async () => {
       await clearAndPopDB();
 
-      const res = await registerAndLoginAgent(server, agent);
+      const res = await registerAndLoginAgent(agent);
       userId = res.body.id;
     });
 
@@ -351,7 +351,7 @@ describe("users", () => {
     beforeEach(async () => {
       await clearAndPopDB();
 
-      const res = await registerAndLoginAgent(server, agent);
+      const res = await registerAndLoginAgent(agent);
       userId = res.body.id;
     });
 
