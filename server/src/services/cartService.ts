@@ -1,5 +1,4 @@
 import createHttpError from "http-errors";
-
 import { StatusCodes } from "http-status-codes";
 
 import db from "../db";
