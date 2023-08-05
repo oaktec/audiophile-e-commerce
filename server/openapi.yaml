@@ -64,23 +64,42 @@ components:
           type: string
         address:
           type: string
-
-    Cart:
+    Order:
       type: object
       properties:
         id:
           type: integer
-        userId:
+        userID:
           type: integer
-        active:
-          type: boolean
-    CartItem:
-      type: object
-      properties:
-        productId:
-          type: integer
-        quantity:
-          type: integer
+        date:
+          type: string
+          format: date
+        total:
+          type: number
+        status:
+          type: string
+          enum:
+            - pending
+            - processing
+            - shipped
+            - delivered
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              description:
+                type: string
+              price:
+                type: number
+              categoryID:
+                type: integer
+              quantity:
+                type: integer
 paths:
   /auth/register:
     post:
@@ -327,18 +346,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /cart/{userId}:
+  /cart:
     post:
-      summary: Create a new cart for a user
-      description: Creates a new cart for a user. Does not create a new cart if there's an existing active cart.
+      summary: Create a new cart for the current user
+      description: Creates a new cart for the current user. Does not create a new cart if there's an existing active cart.
       operationId: createCart
-      parameters:
-        - name: userId
-          in: path
-          description: Unique ID of the user
-          required: true
-          schema:
-            type: integer
       responses:
         "201":
           description: Cart created successfully
@@ -353,15 +365,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     get:
-      summary: Get active cart for a specific user
+      summary: Get active cart for the current user
       operationId: getActiveCart
-      parameters:
-        - name: userId
-          in: path
-          description: Unique ID of the user
-          required: true
-          schema:
-            type: integer
       responses:
         "200":
           description: Active cart
@@ -375,18 +380,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /cart/{userId}/add/{productId}:
+  /cart/add/{productId}:
     post:
-      summary: Add a product to a cart
-      description: Adds a product to a cart. The quantity of the product to be added is specified in the request body.
+      summary: Add a product to the cart of the current user
+      description: Adds a product to the cart. The quantity of the product to be added is specified in the request body.
       operationId: addProductToCart
       parameters:
-        - name: userId
-          in: path
-          description: Unique ID of the user
-          required: true
-          schema:
-            type: integer
         - name: productId
           in: path
           description: Unique ID of the product
@@ -424,17 +423,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /cart/{userId}/update/{productId}:
+  /cart/update/{productId}:
     patch:
-      summary: Update the quantity of a product in the active cart of a user
+      summary: Update the quantity of a product in the active cart of the current user
       operationId: updateProductInCart
       parameters:
-        - name: userId
-          in: path
-          description: Unique ID of the user
-          required: true
-          schema:
-            type: integer
         - name: productId
           in: path
           description: Unique ID of the product
@@ -453,17 +446,11 @@ paths:
                   type: integer
                   minimum: 1
                   maximum: 100
-  /cart/{userId}/remove/{productId}:
+  /cart/remove/{productId}:
     delete:
-      summary: Remove a product from the active cart of a user
+      summary: Remove a product from the active cart of the current user
       operationId: removeProductFromCart
       parameters:
-        - name: userId
-          in: path
-          description: Unique ID of the user
-          required: true
-          schema:
-            type: integer
         - name: productId
           in: path
           description: Unique ID of the product
@@ -485,18 +472,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /cart/{userId}/checkout:
+  /cart/checkout:
     post:
-      summary: Checkout the active cart of a user
-      description: Checks out the active cart of a user. The active cart is then marked as inactive.
+      summary: Checkout the active cart of the current user
+      description: Checks out the active cart of the current user. The active cart is then marked as inactive.
       operationId: checkoutCart
-      parameters:
-        - name: userId
-          in: path
-          description: Unique ID of the user
-          required: true
-          schema:
-            type: integer
       responses:
         "204":
           description: Cart checked out successfully
@@ -508,6 +488,55 @@ paths:
                 $ref: "#/components/schemas/Error"
         "404":
           description: User does not have an active cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /orders:
+    get:
+      summary: Get all orders belonging to the current user
+      operationId: getOrders
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+        "400":
+          description: Invalid user ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /orders/{orderId}:
+    get:
+      summary: Get details of an order
+      operationId: getOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: Unique ID of the order
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "400":
+          description: Invalid order ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Order not found
           content:
             application/json:
               schema:
