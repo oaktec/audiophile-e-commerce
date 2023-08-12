@@ -1,0 +1,32 @@
+name: Backend CI with Docker
+
+on:
+  push:
+    paths:
+      - "server/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build development image
+        run: |
+          cd server
+          docker-compose -f docker-compose.dev.yml build server
+
+      - name: Start services
+        run: |
+          cd server
+          docker-compose -f docker-compose.dev.yml up -d
+
+      - name: Run tests
+        run: docker exec server yarn test
+
+      - name: Stop services
+        run: |
+          cd server
+          docker-compose -f docker-compose.dev.yml down
