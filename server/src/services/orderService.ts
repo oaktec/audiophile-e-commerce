@@ -11,7 +11,7 @@ interface DBOrder {
   status: string;
 }
 
-interface OrderItem {
+export interface IOrderItem {
   product: Product;
   quantity: number;
 }
@@ -21,7 +21,7 @@ interface Order {
   userId: number;
   cartId: number;
   status: string;
-  items: OrderItem[];
+  items: IOrderItem[];
   total: number;
 }
 

@@ -9,6 +9,7 @@ import {
   giveAgentSomeOrders,
   registerAndLoginAgent,
 } from "../utils/testHelpers";
+import { IOrderItem } from "../../src/services/orderService";
 
 let server: Server;
 let agent: request.SuperAgentTest;
@@ -55,7 +56,7 @@ describe("orders", () => {
 
       let items = firstOrder.items;
       let expectedTotal = items.reduce(
-        (total: number, item: any) =>
+        (total: number, item: IOrderItem) =>
           total + item.product.price * item.quantity,
         0
       );
@@ -67,7 +68,7 @@ describe("orders", () => {
       const secondOrder = res.body[1];
       items = secondOrder.items;
       expectedTotal = items.reduce(
-        (total: number, item: any) =>
+        (total: number, item: IOrderItem) =>
           total + item.product.price * item.quantity,
         0
       );
