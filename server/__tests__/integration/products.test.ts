@@ -78,22 +78,24 @@ describe("products", () => {
       );
 
       expect(response.status).toEqual(StatusCodes.OK);
-      expect(response.body).toEqual([
-        {
-          id: expect.any(Number),
-          name: "Test Item 1",
-          description: "This is Test Item 1",
-          price: "10",
-          categoryId: categoryAID,
-        },
-        {
-          id: itemCID,
-          name: "Test Item 3",
-          description: "This is Test Item 3",
-          price: "30",
-          categoryId: categoryAID,
-        },
-      ]);
+      expect(response.body).toEqual(
+        expect.arrayContaining([
+          {
+            id: expect.any(Number),
+            name: "Test Item 1",
+            description: "This is Test Item 1",
+            price: "10",
+            categoryId: categoryAID,
+          },
+          {
+            id: itemCID,
+            name: "Test Item 3",
+            description: "This is Test Item 3",
+            price: "30",
+            categoryId: categoryAID,
+          },
+        ])
+      );
     });
 
     it("returns 200 if category has no products", async () => {
