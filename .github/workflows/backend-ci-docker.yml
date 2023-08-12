@@ -9,6 +9,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      HOST=0.0.0.0
+      PORT=3001
+
+      # Database
+      DB_HOST=db
+      DB_PORT=5432
+      DB_HOST_PORT=5433
+      DB_USER=postgres
+      DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+      DB_NAME=server_db
+
+      TEST_DB_HOST=db_test
+      TEST_DB_NAME=test_db
+      TEST_DB_HOST_PORT=5434
+
+      DEV_DB_HOST=db_dev
+      DEV_DB_NAME=dev_db
+      DEV_DB_HOST_PORT=5433
+
+      JWT_SECRET=${{ secrets.JWT_SECRET }}
+      SESSION_SECRET=${{ secrets.SESSION_SECRET }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
