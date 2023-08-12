@@ -52,16 +52,28 @@ describe("orders", () => {
       const firstOrder = res.body[0];
 
       const firstOrderId = firstOrder.id;
+
+      let items = firstOrder.items;
+      let expectedTotal = items.reduce(
+        (total: number, item: any) =>
+          total + item.product.price * item.quantity,
+        0
+      );
       expect(firstOrder.userId).toBe(agentId);
-      expect(firstOrder.total).toBe(50);
+      expect(firstOrder.total).toBe(expectedTotal);
       expect(firstOrder.items).toHaveLength(2);
       expect(firstOrder.items[0].product.name).toBe("Test Item 1");
 
       const secondOrder = res.body[1];
-
+      items = secondOrder.items;
+      expectedTotal = items.reduce(
+        (total: number, item: any) =>
+          total + item.product.price * item.quantity,
+        0
+      );
       expect(secondOrder.id).toBe(firstOrderId + 1);
       expect(secondOrder.userId).toBe(agentId);
-      expect(secondOrder.total).toBe(50);
+      expect(secondOrder.total).toBe(expectedTotal);
       expect(secondOrder.items).toHaveLength(2);
       expect(secondOrder.items[0].product.name).toBe("Test Item 1");
     });
