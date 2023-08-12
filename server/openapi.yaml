@@ -354,10 +354,6 @@ paths:
       responses:
         "201":
           description: Cart created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cart"
         "400":
           description: User already has an active cart or invalid user ID
           content:
@@ -370,10 +366,6 @@ paths:
       responses:
         "200":
           description: Active cart
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cart"
         "404":
           description: User does not have an active cart
           content:
@@ -407,10 +399,6 @@ paths:
       responses:
         "200":
           description: Product added to cart successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cart"
         "400":
           description: Invalid user ID, invalid product ID, or invalid quantity
           content:
@@ -446,6 +434,9 @@ paths:
                   type: integer
                   minimum: 1
                   maximum: 100
+      responses:
+        "204":
+          description: Product updated
   /cart/remove/{productId}:
     delete:
       summary: Remove a product from the active cart of the current user
