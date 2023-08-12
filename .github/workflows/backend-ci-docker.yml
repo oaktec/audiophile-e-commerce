@@ -1,6 +1,7 @@
 name: Backend CI with Docker
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "server/**"
