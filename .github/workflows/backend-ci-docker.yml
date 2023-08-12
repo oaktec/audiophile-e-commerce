@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      CI: true
       HOST: 0.0.0.0
       PORT: 3001
       DB_HOST: db
