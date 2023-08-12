@@ -85,17 +85,26 @@ export default {
       const quantity = Number(req.body?.quantity);
 
       if (!cartId) {
-        return next(createHttpError(500, "Failed to add product to cart"));
+        return next(
+          createHttpError(
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            "Failed to add product to cart"
+          )
+        );
       }
 
       if (!productId) {
-        return next(createHttpError(400, "Product ID is required"));
+        return next(
+          createHttpError(StatusCodes.BAD_REQUEST, "Product ID is required")
+        );
       }
 
       const product = await productService.getById(productId);
 
       if (!product) {
-        return next(createHttpError(400, "Product not found"));
+        return next(
+          createHttpError(StatusCodes.BAD_REQUEST, "Product not found")
+        );
       }
 
       const cartProduct = await cartService.addProductToCart(
@@ -105,7 +114,12 @@ export default {
       );
 
       if (!cartProduct) {
-        return next(createHttpError(500, "Failed to add product to cart"));
+        return next(
+          createHttpError(
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            "Failed to add product to cart"
+          )
+        );
       }
 
       res.json(cartProduct);
@@ -119,17 +133,26 @@ export default {
       const quantity = Number(req.body?.quantity);
 
       if (!cartId) {
-        return next(createHttpError(500, "Failed to update cart product"));
+        return next(
+          createHttpError(
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            "Failed to update cart product"
+          )
+        );
       }
 
       if (!productId) {
-        return next(createHttpError(400, "Product ID is required"));
+        return next(
+          createHttpError(StatusCodes.BAD_REQUEST, "Product ID is required")
+        );
       }
 
       const product = await productService.getById(productId);
 
       if (!product) {
-        return next(createHttpError(400, "Product not found"));
+        return next(
+          createHttpError(StatusCodes.BAD_REQUEST, "Product not found")
+        );
       }
 
       await cartService.updateCartProductQuantity(cartId, productId, quantity);
@@ -142,17 +165,26 @@ export default {
     const productId = Number(req.params.productId);
 
     if (!cartId) {
-      return next(createHttpError(500, "Failed to remove product from cart"));
+      return next(
+        createHttpError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "Failed to remove product from cart"
+        )
+      );
     }
 
     if (!productId) {
-      return next(createHttpError(400, "Product ID is required"));
+      return next(
+        createHttpError(StatusCodes.BAD_REQUEST, "Product ID is required")
+      );
     }
 
     const product = await productService.getById(productId);
 
     if (!product) {
-      return next(createHttpError(400, "Product not found"));
+      return next(
+        createHttpError(StatusCodes.BAD_REQUEST, "Product not found")
+      );
     }
 
     await cartService.removeProductFromCart(cartId, productId);
@@ -163,7 +195,12 @@ export default {
     const cartId = req.cart?.id;
 
     if (!cartId) {
-      return next(createHttpError(500, "Failed to delete cart"));
+      return next(
+        createHttpError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "Failed to delete cart"
+        )
+      );
     }
 
     await cartService.delete(cartId);
