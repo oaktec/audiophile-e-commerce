@@ -10,11 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      HOST=0.0.0.0
+    env: HOST=0.0.0.0
       PORT=3001
 
-      # Database
       DB_HOST=db
       DB_PORT=5432
       DB_HOST_PORT=5433
