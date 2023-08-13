@@ -62,9 +62,6 @@ jobs:
           curl -L https://fly.io/install.sh | sh
           echo "/home/runner/.fly/bin" >> $GITHUB_PATH
 
-      - name: Debug token
-        run: echo ${{ secrets.FLY_AUTH_TOKEN }}
-
       - name: Deploy to Fly
         run: |
           cd server
