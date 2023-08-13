@@ -1,4 +1,4 @@
-name: Backend CI Deploy
+name: Backend CI
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - "server/**"
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
 
     env:
@@ -50,19 +50,3 @@ jobs:
         run: |
           cd server
           docker-compose -f docker-compose.dev.yml down
-
-      - name: Build TypeScript
-        run: |
-          cd server
-          sudo yarn install --frozen-lockfile
-          yarn build
-
-      - name: Install Fly CLI
-        run: |
-          curl -L https://fly.io/install.sh | sh
-          echo "/home/runner/.fly/bin" >> $GITHUB_PATH
-
-      - name: Deploy to Fly
-        run: |
-          cd server
-          fly deploy --access-token ${{ secrets.FLY_AUTH_TOKEN }}
