@@ -2,6 +2,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+ENV NODE_ENV=production
+
 # Copy only the /dist folder and package.json, yarn.lock
 COPY ./dist ./dist
 COPY package*.json ./
