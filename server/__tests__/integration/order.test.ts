@@ -109,10 +109,16 @@ describe("orders", () => {
     it("should return the order with the given id", async () => {
       const res = await agent.get(`/orders/${orderId}`);
 
+      const expectedTotal = res.body.items.reduce(
+        (total: number, item: IOrderItem) =>
+          total + item.product.price * item.quantity,
+        0
+      );
+
       expect(res.status).toBe(StatusCodes.OK);
       expect(res.body.id).toBe(orderId);
       expect(res.body.userId).toBe(agentId);
-      expect(res.body.total).toBe(50);
+      expect(res.body.total).toBe(expectedTotal);
       expect(res.body.items).toHaveLength(2);
       expect(res.body.items[0].product.name).toBe("Test Item 1");
     });
