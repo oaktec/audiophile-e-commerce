@@ -54,7 +54,7 @@ jobs:
       - name: Build TypeScript
         run: |
           cd server
-          yarn install --frozen-lockfile
+          sudo yarn install --frozen-lockfile
           yarn build
 
       - name: Install Fly CLI
