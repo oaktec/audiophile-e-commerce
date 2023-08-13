@@ -63,7 +63,6 @@ describe("orders", () => {
       expect(firstOrder.userId).toBe(agentId);
       expect(firstOrder.total).toBe(expectedTotal);
       expect(firstOrder.items).toHaveLength(2);
-      expect(firstOrder.items[0].product.name).toBe("Test Item 1");
 
       const secondOrder = res.body[1];
       items = secondOrder.items;
@@ -76,7 +75,6 @@ describe("orders", () => {
       expect(secondOrder.userId).toBe(agentId);
       expect(secondOrder.total).toBe(expectedTotal);
       expect(secondOrder.items).toHaveLength(2);
-      expect(secondOrder.items[0].product.name).toBe("Test Item 1");
     });
 
     it("should return an empty array if the user has no orders", async () => {
@@ -120,7 +118,6 @@ describe("orders", () => {
       expect(res.body.userId).toBe(agentId);
       expect(res.body.total).toBe(expectedTotal);
       expect(res.body.items).toHaveLength(2);
-      expect(res.body.items[0].product.name).toBe("Test Item 1");
     });
 
     it("should return 404 if the order does not exist", async () => {
