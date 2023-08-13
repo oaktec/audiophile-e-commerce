@@ -63,10 +63,10 @@ jobs:
           echo "/home/runner/.fly/bin" >> $GITHUB_PATH
 
       - name: Debug token
-        run: echo ${{ secrets.FLY_API_TOKEN }}
+        run: echo ${{ secrets.FLY_AUTH_TOKEN }}
 
       - name: Deploy to Fly
         run: |
           cd server
-          fly auth login --token=${{ secrets.FLY_AUTH_TOKEN }}
+          fly auth login --access-token=${{ secrets.FLY_AUTH_TOKEN }}
           fly deploy
