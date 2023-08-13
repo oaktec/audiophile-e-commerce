@@ -407,7 +407,7 @@ describe("cart", () => {
     });
 
     it("should update the quantity of a product in the cart", async () => {
-      const response = await agent.patch(`/cart/update/${productIds[0]}`).send({
+      const response = await agent.patch(`/cart/update/${productId}`).send({
         quantity: 5,
       });
 

@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
+import fs from "fs";
 
-if (!process.env.CI) {
+if (!process.env.CI && fs.existsSync(".env")) {
   const result = dotenv.config();
   if (result.error) {
     throw result.error;
