@@ -68,5 +68,4 @@ jobs:
       - name: Deploy to Fly
         run: |
           cd server
-          fly auth login --access-token=${{ secrets.FLY_AUTH_TOKEN }}
-          fly deploy
+          fly deploy --access-token ${{ secrets.FLY_AUTH_TOKEN }}
