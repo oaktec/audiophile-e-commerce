@@ -36,6 +36,11 @@ const pool = new Pool({
   connectionString: NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
 });
 
+console.log(
+  "connecting to:",
+  NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL
+);
+
 pool.query(
   "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'",
   function (err, result) {
