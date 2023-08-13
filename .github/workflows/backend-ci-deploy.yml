@@ -54,12 +54,8 @@ jobs:
       - name: Build TypeScript
         run: |
           cd server
+          yarn install --frozen-lockfile
           yarn build
-
-      - name: Archive production artifacts
-        run: |
-          cd server
-          tar -czvf server.tar.gz dist
 
       - name: Install Fly CLI
         run: |
