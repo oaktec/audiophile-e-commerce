@@ -1,4 +1,4 @@
-name: Backend CI with Docker
+name: Backend CI Deploy
 
 on:
   workflow_dispatch:
@@ -50,3 +50,24 @@ jobs:
         run: |
           cd server
           docker-compose -f docker-compose.dev.yml down
+
+      - name: Build TypeScript
+        run: |
+          cd server
+          yarn build
+
+      - name: Archive production artifacts
+        run: |
+          cd server
+          tar -czvf server.tar.gz dist
+
+      - name: Install Fly CLI
+        run: |
+          curl -L https://fly.io/install.sh | sh
+          echo "$PATH:home/runner/.fly/bin" >> $GITHUB_PATH
+
+      - name: Deploy to Fly
+        run: |
+          cd server
+          fly auth login -t ${{ secrets.FLY_AUTH_TOKEN }}
+          fly deploy

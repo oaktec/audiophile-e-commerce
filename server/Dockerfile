@@ -1,16 +1,13 @@
-# syntax=docker/dockerfile:1
+FROM node:18-alpine
 
-FROM node:18-alpine AS builder
 WORKDIR /app
-COPY . .
-RUN yarn install --frozen-lockfile
-RUN yarn build
 
-FROM node:18-alpine AS production
-WORKDIR /app
-COPY --from=builder ./app/dist ./dist
-COPY package* ./
+# Copy only the /dist folder and package.json, yarn.lock
+COPY ./dist ./dist
+COPY package*.json ./
 COPY yarn.lock ./
+
+# Install only production dependencies
 RUN yarn install --production
-EXPOSE 3001
-CMD ["yarn", "start"]
+
+CMD ["node", "dist/index.js"]
