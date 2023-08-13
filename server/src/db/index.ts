@@ -2,16 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { Pool, QueryResult } from "pg";
 
-import {
-  DB_PASSWORD,
-  NODE_ENV,
-  TEST_DB_NAME,
-  DB_NAME,
-  DB_USER,
-  DB_PORT,
-  TEST_DB_HOST,
-  DB_HOST,
-} from "../config";
+import { NODE_ENV, TEST_DATABASE_URL, DATABASE_URL } from "../config";
 
 const validTables = [
   "carts",
@@ -42,11 +33,7 @@ const validFields = [
 ];
 
 const pool = new Pool({
-  host: NODE_ENV === "test" ? TEST_DB_HOST : DB_HOST,
-  database: NODE_ENV === "test" ? TEST_DB_NAME : DB_NAME,
-  user: DB_USER,
-  password: DB_PASSWORD as string | undefined,
-  port: Number(DB_PORT),
+  connectionString: NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
 });
 
 export default {

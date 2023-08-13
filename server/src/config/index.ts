@@ -36,10 +36,22 @@ export const CORS_CLIENT_URL = ensureEnvVar(
   NODE_ENV === "production",
   "http://localhost:3000"
 );
-export const DB_HOST = ensureEnvVar("DB_HOST");
-export const DB_NAME = ensureEnvVar("DB_NAME");
-export const DB_USER = ensureEnvVar("DB_USER");
-export const DB_PASSWORD = ensureEnvVar("DB_PASSWORD");
-export const DB_PORT = ensureEnvVar("DB_PORT");
-export const TEST_DB_HOST = ensureEnvVar("TEST_DB_HOST", NODE_ENV === "test");
-export const TEST_DB_NAME = ensureEnvVar("TEST_DB_NAME", NODE_ENV === "test");
+
+const DB_HOST = ensureEnvVar("DB_HOST", NODE_ENV !== "production");
+const DB_NAME = ensureEnvVar("DB_NAME", NODE_ENV !== "production");
+const DB_USER = ensureEnvVar("DB_USER", NODE_ENV !== "production");
+const DB_PASSWORD = ensureEnvVar("DB_PASSWORD", NODE_ENV !== "production");
+const DB_PORT = ensureEnvVar("DB_PORT", NODE_ENV !== "production");
+export const DATABASE_URL = ensureEnvVar(
+  "DATABASE_URL",
+  false,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
+);
+
+const TEST_DB_HOST = ensureEnvVar("TEST_DB_HOST", NODE_ENV === "test");
+const TEST_DB_NAME = ensureEnvVar("TEST_DB_NAME", NODE_ENV === "test");
+export const TEST_DATABASE_URL = ensureEnvVar(
+  "TEST_DATABASE_URL",
+  false,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${TEST_DB_HOST}:${DB_PORT}/${TEST_DB_NAME}`
+);
