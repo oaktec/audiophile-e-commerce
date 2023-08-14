@@ -40,7 +40,7 @@ export const seedData = async () => {
 
     //  Clear tables if necessary
     for (const table of validTables) {
-      await client.query(`DELETE FROM ${table}`);
+      await client.query(`DELETE FROM ${table} CASCADE`);
     }
 
     const dataFilePath = path.resolve(__dirname, "../data/data.json");
