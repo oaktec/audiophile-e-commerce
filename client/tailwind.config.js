@@ -15,6 +15,9 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      manrope: ["Manrope"],
+    },
     extend: {
       colors: {
         // custom:
