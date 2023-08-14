@@ -95,16 +95,12 @@ const createTables = async (client: PoolClient) => {
   await client.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
-      email text NOT NULL,
+      email text NOT NULL UNIQUE,
       password text NOT NULL,
       first_name text NOT NULL,
       last_name text NOT NULL,
       address text NOT NULL
     )`);
-
-  await client.query(`
-    ALTER TABLE users ADD UNIQUE (email)
-  `);
 
   await client.query(`CREATE TABLE IF NOT EXISTS categories (
    id SERIAL PRIMARY KEY,
@@ -128,12 +124,9 @@ const createTables = async (client: PoolClient) => {
   await client.query(`CREATE TABLE IF NOT EXISTS cart_items (
     cart_id integer NOT NULL REFERENCES carts(id),
     product_id integer NOT NULL REFERENCES products(id),
-    quantity integer NOT NULL
+    quantity integer NOT NULL,
+    PRIMARY KEY (cart_id, product_id)
   )`);
-
-  await client.query(
-    `ALTER TABLE cart_items ADD PRIMARY KEY (cart_id, product_id)`
-  );
 
   await client.query(`CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
