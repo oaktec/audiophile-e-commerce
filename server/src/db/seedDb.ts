@@ -38,10 +38,14 @@ export const seedData = async () => {
 
     await createTables(client);
 
+    console.log("Clearing products");
+    await client.query(`DELETE FROM products`);
     //  Clear tables if necessary
     for (const table of validTables) {
+      console.log(`Deleting ${table}`);
       await client.query(`DELETE FROM ${table} CASCADE`);
     }
+    console.log("Seeding database");
 
     const dataFilePath = path.resolve(__dirname, "../data/data.json");
 
