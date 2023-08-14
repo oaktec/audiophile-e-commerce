@@ -3,8 +3,9 @@ dotenv.config();
 import { Pool, QueryResult } from "pg";
 
 import { NODE_ENV, TEST_DATABASE_URL, DATABASE_URL } from "../config";
+import { seedData } from "./seedDb";
 
-const validTables = [
+export const validTables = [
   "carts",
   "cart_items",
   "categories",
@@ -36,17 +37,9 @@ const pool = new Pool({
   connectionString: NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
 });
 
-console.log(
-  "connecting to:",
-  NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL
-);
-
-pool.query("SELECT * FROM pg_catalog.pg_tables", function (err, result) {
-  if (err) {
-    console.error(err);
-  }
-  console.log(result.rows);
-});
+if (process.env.SEED_DB === "true") {
+  seedData().catch(console.error);
+}
 
 export default {
   getClient: async () => await pool.connect(),
