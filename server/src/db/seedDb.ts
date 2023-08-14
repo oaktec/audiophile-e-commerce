@@ -1,5 +1,6 @@
 import { PoolClient } from "pg";
 import { readFileSync } from "fs";
+import * as path from "path";
 
 import db, { validTables } from ".";
 
@@ -42,10 +43,10 @@ export const seedData = async () => {
       await client.query(`DELETE FROM ${table}`);
     }
 
+    const dataFilePath = path.resolve(__dirname, "../data/data.json");
+
     // Read ../data/data.json
-    const data = JSON.parse(
-      readFileSync("./data/data.json", "utf8")
-    ) as SeedData[];
+    const data = JSON.parse(readFileSync(dataFilePath, "utf8")) as SeedData[];
 
     // Grab categories
     const categories = data.reduce((acc: string[], curr: SeedData) => {

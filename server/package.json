@@ -4,7 +4,7 @@
   "description": "An Express server for an e-commerce website",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p tsconfig-build.json",
+    "build": "tsc -p tsconfig-build.json && cp -r src/data dist/data",
     "dev": "docker-compose -f docker-compose.dev.yml up --build",
     "dev-stop": "docker-compose -f docker-compose.dev.yml down",
     "debug": "nodemon --watch \"src/**/*.{ts,js}\" -e ts,js --exec node --inspect=0.0.0.0:9229 -r ts-node/register src/index.ts",
