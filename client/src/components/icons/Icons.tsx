@@ -1,12 +1,23 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 
 interface CnProps {
   className?: string;
+  interactive?: boolean;
 }
 
-export const HamburgerIcon: React.FC<CnProps> = ({ className }) => (
+const baseIconClasses = "fill-white";
+const interactiveIconClasses = `cursor-pointer hover:fill-accent duration-300 transition-colors`;
+
+const buildCN = (classNameProp: string | undefined, interactive: boolean) =>
+  cn(baseIconClasses, interactive && interactiveIconClasses, classNameProp);
+
+export const HamburgerIcon: React.FC<CnProps> = ({
+  className,
+  interactive = false,
+}) => (
   <svg
-    className={className}
+    className={buildCN(className, interactive)}
     width="16"
     height="15"
     xmlns="http://www.w3.org/2000/svg"
@@ -17,9 +28,12 @@ export const HamburgerIcon: React.FC<CnProps> = ({ className }) => (
   </svg>
 );
 
-export const CartIcon: React.FC<CnProps> = ({ className }) => (
+export const CartIcon: React.FC<CnProps> = ({
+  className,
+  interactive = false,
+}) => (
   <svg
-    className={className}
+    className={buildCN(className, interactive)}
     width="23"
     height="20"
     xmlns="http://www.w3.org/2000/svg"
