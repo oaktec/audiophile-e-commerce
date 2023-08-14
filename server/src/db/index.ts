@@ -37,10 +37,6 @@ const pool = new Pool({
   connectionString: NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
 });
 
-if (process.env.SEED_DB === "true") {
-  seedData().catch(console.error);
-}
-
 export default {
   getClient: async () => await pool.connect(),
   query: (text: string, params?: (string | number)[]) =>
@@ -81,3 +77,7 @@ export default {
     tableName: "session",
   },
 };
+
+if (process.env.SEED_DB === "true") {
+  seedData().catch(console.error);
+}

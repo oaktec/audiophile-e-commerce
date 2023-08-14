@@ -79,8 +79,10 @@ export const seedData = async () => {
       );
     }
 
+    console.info("Seeding complete");
     await client.query("COMMIT");
   } catch (err) {
+    console.error("Error seeding database");
     await client.query("ROLLBACK");
     throw err;
   } finally {
@@ -140,5 +142,3 @@ const createTables = async (client: PoolClient) => {
     status text
   )`);
 };
-
-seedData().catch(console.error);
