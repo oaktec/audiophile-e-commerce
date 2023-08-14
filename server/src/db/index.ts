@@ -75,6 +75,7 @@ export default {
   sessionStorage: {
     pool,
     tableName: "session",
+    createTableIfMissing: true,
   },
 };
 
