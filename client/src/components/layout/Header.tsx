@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import Logo from "@/assets/shared/desktop/logo.svg";
 import { Link } from "../common/Link";
-import { CartIcon, HamburgerIcon } from "../icons/Icons";
+import { CartIcon, HamburgerIcon, UserIcon } from "../icons/Icons";
 
 const Header: FC = () => {
   return (
@@ -24,7 +24,10 @@ const Header: FC = () => {
             Earphones
           </Link>
         </div>
-        <CartIcon interactive />
+        <div className="flex space-x-9">
+          <UserIcon interactive />
+          <CartIcon interactive />
+        </div>
       </div>
     </header>
   );
