@@ -1,15 +1,14 @@
 import { FC } from "react";
 
-import Logo from "@/assets/shared/desktop/logo.svg";
 import { Link } from "../common/Link";
-import { CartIcon, HamburgerIcon, UserIcon } from "../icons/Icons";
+import { CartIcon, HamburgerIcon, MainLogo, UserIcon } from "../icons/Icons";
 
 const Header: FC = () => {
   return (
     <header className="w-full bg-dark-background">
       <div className="container flex items-center justify-between border-b border-white border-opacity-10 px-6 py-8">
         <HamburgerIcon className="lg:hidden" interactive />
-        <img src={Logo} alt="logo" />
+        <MainLogo interactive />
         <div className="hidden items-center space-x-9 lg:flex">
           <Link href="/audiophile-e-commerce/" variant="navbar">
             Home
