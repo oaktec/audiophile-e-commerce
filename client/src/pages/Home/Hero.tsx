@@ -3,6 +3,7 @@ import {
   TypographyHeaderMain,
 } from "@/components/common/Typography";
 import { Button } from "@/components/ui/button";
+import { HIGHLIGHTED_PRODUCT } from "@/config/config";
 
 const Hero = () => (
   <div className="h-[600px] w-full bg-dark-background sm:h-[729px]">
@@ -13,11 +14,10 @@ const Hero = () => (
           New product
         </span>
         <TypographyHeaderMain className="text-center lg:text-left">
-          XX99 Mark II Headphones
+          {HIGHLIGHTED_PRODUCT.name}
         </TypographyHeaderMain>
         <TypographyHeaderDescription className="text-center lg:text-left">
-          Experience natural, lifelike audio and exceptional build quality made
-          for the passionate music enthusiast.
+          {HIGHLIGHTED_PRODUCT.description}
         </TypographyHeaderDescription>
         <Button>See product</Button>
       </div>
