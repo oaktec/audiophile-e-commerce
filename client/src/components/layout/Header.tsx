@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import { CATEGORIES } from "@/config/config";
 import { Link } from "../common/Link";
 import { CartIcon, HamburgerIcon, MainLogo, UserIcon } from "../icons/Icons";
 
@@ -13,15 +14,11 @@ const Header: FC = () => {
           <Link href="/audiophile-e-commerce/" variant="navbar">
             Home
           </Link>
-          <Link href="#" variant="navbar">
-            Headphones
-          </Link>
-          <Link href="#" variant="navbar">
-            Speakers
-          </Link>
-          <Link href="#" variant="navbar">
-            Earphones
-          </Link>
+          {CATEGORIES.map((category) => (
+            <Link href="#" variant="navbar">
+              {category}
+            </Link>
+          ))}
         </div>
         <div className="flex space-x-9">
           <Link href="/audiophile-e-commerce/login">
