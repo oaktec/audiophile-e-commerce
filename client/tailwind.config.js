@@ -19,6 +19,9 @@ module.exports = {
       manrope: ["Manrope"],
     },
     extend: {
+      backgroundImage: {
+        "tablet-header": "url('./assets/home/tablet/image-header.jpg')",
+      },
       colors: {
         // custom:
         "dark-background": "hsl(var(--dark-background))",
