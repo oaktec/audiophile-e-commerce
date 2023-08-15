@@ -1,8 +1,8 @@
+import { Link } from "@/components/common/Link";
 import {
   TypographyHeaderDescription,
   TypographyHeaderMain,
 } from "@/components/common/Typography";
-import { Button } from "@/components/ui/button";
 import { HIGHLIGHTED_PRODUCT } from "@/config/config";
 
 const Hero = () => (
@@ -19,7 +19,7 @@ const Hero = () => (
         <TypographyHeaderDescription className="text-center lg:text-left">
           {HIGHLIGHTED_PRODUCT.description}
         </TypographyHeaderDescription>
-        <Button>See product</Button>
+        <Link variant="button">See product</Link>
       </div>
     </div>
   </div>
