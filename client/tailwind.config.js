@@ -25,7 +25,7 @@ module.exports = {
       colors: {
         // custom:
         "dark-background": "hsl(var(--dark-background))",
-
+        "accent-hover": "hsl(var(--accent-hover))",
         // overwritten shadcn:
         accent: {
           DEFAULT: "hsl(var(--accent))",
