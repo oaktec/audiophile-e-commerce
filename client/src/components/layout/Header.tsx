@@ -11,7 +11,7 @@ const Header: FC = () => {
         <HamburgerIcon className="lg:hidden" interactive />
         <img src={Logo} alt="logo" />
         <div className="hidden items-center space-x-9 lg:flex">
-          <Link href="#" variant="navbar">
+          <Link href="/audiophile-e-commerce/" variant="navbar">
             Home
           </Link>
           <Link href="#" variant="navbar">
@@ -25,7 +25,9 @@ const Header: FC = () => {
           </Link>
         </div>
         <div className="flex space-x-9">
-          <UserIcon interactive />
+          <Link href="/audiophile-e-commerce/login">
+            <UserIcon interactive />
+          </Link>
           <CartIcon interactive />
         </div>
       </div>
