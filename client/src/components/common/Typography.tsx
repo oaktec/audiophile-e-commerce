@@ -20,7 +20,7 @@ export const TypographyHeader: React.FC<TypographyProps> = ({
   </h2>
 );
 
-export const TypographyHeaderDescription: React.FC<TypographyProps> = ({
+export const TypographyDescription: React.FC<TypographyProps> = ({
   children,
   className,
 }) => (

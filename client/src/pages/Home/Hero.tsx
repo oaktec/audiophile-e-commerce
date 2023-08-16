@@ -1,7 +1,7 @@
 import { Link } from "@/components/common/Link";
 import {
+  TypographyDescription,
   TypographyHeader,
-  TypographyHeaderDescription,
 } from "@/components/common/Typography";
 import { HIGHLIGHTED_PRODUCTS } from "@/config/config";
 
@@ -16,9 +16,9 @@ const Hero = () => (
         <TypographyHeader className="text-center lg:text-left">
           {HIGHLIGHTED_PRODUCTS[0]?.name || "Product name"}
         </TypographyHeader>
-        <TypographyHeaderDescription className="text-center lg:text-left">
+        <TypographyDescription className="text-center lg:text-left">
           {HIGHLIGHTED_PRODUCTS[0]?.description || "Product description"}
-        </TypographyHeaderDescription>
+        </TypographyDescription>
         <Link variant="button" href="#">
           See product
         </Link>
