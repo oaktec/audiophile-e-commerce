@@ -3,7 +3,7 @@ import {
   TypographyHeaderDescription,
   TypographyHeaderMain,
 } from "@/components/common/Typography";
-import { HIGHLIGHTED_PRODUCT } from "@/config/config";
+import { HIGHLIGHTED_PRODUCTS } from "@/config/config";
 
 const Hero = () => (
   <div className="h-[600px] w-full bg-dark-background sm:h-[729px]">
@@ -14,10 +14,10 @@ const Hero = () => (
           New product
         </span>
         <TypographyHeaderMain className="text-center lg:text-left">
-          {HIGHLIGHTED_PRODUCT.name}
+          {HIGHLIGHTED_PRODUCTS[0]?.name || "Product name"}
         </TypographyHeaderMain>
         <TypographyHeaderDescription className="text-center lg:text-left">
-          {HIGHLIGHTED_PRODUCT.description}
+          {HIGHLIGHTED_PRODUCTS[0]?.description || "Product description"}
         </TypographyHeaderDescription>
         <Link variant="button" href="#">
           See product
