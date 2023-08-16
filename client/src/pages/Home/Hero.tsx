@@ -1,7 +1,7 @@
 import { Link } from "@/components/common/Link";
 import {
+  TypographyHeader,
   TypographyHeaderDescription,
-  TypographyHeaderMain,
 } from "@/components/common/Typography";
 import { HIGHLIGHTED_PRODUCTS } from "@/config/config";
 
@@ -13,9 +13,9 @@ const Hero = () => (
         <span className="font-manrope text-sm uppercase tracking-[10px] text-white opacity-50">
           New product
         </span>
-        <TypographyHeaderMain className="text-center lg:text-left">
+        <TypographyHeader className="text-center lg:text-left">
           {HIGHLIGHTED_PRODUCTS[0]?.name || "Product name"}
-        </TypographyHeaderMain>
+        </TypographyHeader>
         <TypographyHeaderDescription className="text-center lg:text-left">
           {HIGHLIGHTED_PRODUCTS[0]?.description || "Product description"}
         </TypographyHeaderDescription>

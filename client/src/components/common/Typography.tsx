@@ -6,18 +6,18 @@ interface TypographyProps {
   className?: string;
 }
 
-export const TypographyHeaderMain: React.FC<TypographyProps> = ({
+export const TypographyHeader: React.FC<TypographyProps> = ({
   children,
   className,
 }) => (
-  <span
+  <h2
     className={cn(
-      "text-4xl font-bold uppercase tracking-[1.286px] text-white sm:text-[3.5rem] sm:leading-[3.625rem] sm:tracking-[0.125rem]",
+      "text-4xl font-bold uppercase tracking-[0.08038rem] text-white sm:text-[3.5rem] sm:leading-[3.625rem] sm:tracking-[0.125rem]",
       className,
     )}
   >
     {children}
-  </span>
+  </h2>
 );
 
 export const TypographyHeaderDescription: React.FC<TypographyProps> = ({
