@@ -15,7 +15,7 @@ const Header: FC = () => {
             Home
           </Link>
           {CATEGORIES.map((category) => (
-            <Link href="#" variant="navbar">
+            <Link href="#" variant="navbar" key={category}>
               {category}
             </Link>
           ))}
