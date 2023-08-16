@@ -9,7 +9,9 @@ const Header: FC = () => {
     <header className="fixed z-50 w-full bg-dark-background">
       <div className="container flex items-center justify-between border-b border-white border-opacity-10 px-6 py-8">
         <HamburgerIcon className="lg:hidden" interactive />
-        <MainLogo />
+        <Link href="/audiophile-e-commerce/">
+          <MainLogo />
+        </Link>
         <div className="hidden items-center space-x-9 lg:flex">
           <Link href="/audiophile-e-commerce/" variant="navbar">
             Home
