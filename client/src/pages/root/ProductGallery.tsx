@@ -86,7 +86,7 @@ const ProductGallery: FC = () => {
         {products[2] && (
           <div className="flex flex-col gap-6 sm:flex-row sm:gap-3 lg:gap-6">
             <a
-              className="flex-1"
+              className="sm:w-1/2"
               href={`/audiophile-e-commerce/product/${products[2].slug}`}
             >
               <div
@@ -96,7 +96,7 @@ const ProductGallery: FC = () => {
                 className="min-h-[12.5rem] rounded-lg bg-cover bg-center bg-no-repeat sm:min-h-[20rem]"
               />
             </a>
-            <div className="flex min-h-[12.5rem] flex-1 flex-col justify-center gap-8 rounded-lg bg-gray-100 p-6 sm:min-h-[20rem]">
+            <div className="flex min-h-[12.5rem] flex-col justify-center gap-8 rounded-lg bg-gray-100 p-6 sm:min-h-[20rem] sm:w-1/2">
               <TypographySubHeader className="z-10 pr-8 sm:ml-[10%]">
                 {products[2].name || "Product name"}
               </TypographySubHeader>
