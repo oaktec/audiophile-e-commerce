@@ -12,38 +12,48 @@ import {
 const Footer: FC = () => {
   return (
     <footer className="w-full bg-dark-background">
-      <div className="container flex flex-col items-center justify-between gap-12 px-6 sm:px-10">
-        <div className="h-[5px] w-[100px] bg-accent" />
-        <Link href="/audiophile-e-commerce/">
-          <MainLogo />
-        </Link>
-        <div className="flex flex-col items-center gap-4">
-          <Link href={`/audiophile-e-commerce/`} variant="footer">
-            Home
+      <div className="container flex flex-col items-center justify-between gap-12 px-6 sm:items-start sm:px-10">
+        <div className="h-[5px] w-[100px] bg-accent sm:mb-6" />
+        <div className="flex w-full flex-col items-center gap-12 sm:items-start md:flex-row md:justify-between">
+          <Link href="/audiophile-e-commerce/">
+            <MainLogo />
           </Link>
-          {CATEGORIES.map((category) => (
-            <Link
-              href={`/audiophile-e-commerce/category/${category}`}
-              variant="footer"
-              key={category}
-            >
-              {category}
+          <div className="flex flex-col items-center gap-4 sm:flex-row">
+            <Link href={`/audiophile-e-commerce/`} variant="footer">
+              Home
             </Link>
-          ))}
+            {CATEGORIES.map((category) => (
+              <Link
+                href={`/audiophile-e-commerce/category/${category}`}
+                variant="footer"
+                key={category}
+              >
+                {category}
+              </Link>
+            ))}
+          </div>
         </div>
-        <TypographyParagraph className="max-w-prose text-center text-white">
-          Audiophile is an all in one stop to fulfil your audio needs. We're a
-          small team of music lovers and sound specialists who are devoted to
-          helping you get the most out of personal audio. Come and visit our
-          demo facility - we&apos;re open 7 days a week.
-        </TypographyParagraph>
-        <TypographyParagraph className="max-w-prose text-center text-white">
-          Copyright 2023. All Rights Reserved
-        </TypographyParagraph>
-        <div className="mb-8 flex items-center gap-4">
-          <FacebookIcon />
-          <TwitterIcon />
-          <InstagramIcon />
+        <div className="mb-8 grid w-full grid-cols-1 justify-items-center gap-12 sm:grid-cols-2 sm:justify-items-start md:grid-flow-col md:grid-cols-1">
+          <TypographyParagraph className="max-w-prose text-center text-white sm:col-span-2 sm:text-left md:col-span-1">
+            Audiophile is an all in one stop to fulfil your audio needs. We're a
+            small team of music lovers and sound specialists who are devoted to
+            helping you get the most out of personal audio. Come and visit our
+            demo facility - we&apos;re open 7 days a week.
+          </TypographyParagraph>
+          <TypographyParagraph className="max-w-prose text-center text-white">
+            Copyright 2023. All Rights Reserved
+          </TypographyParagraph>
+          <div className="flex items-center gap-4 sm:ml-auto md:row-span-2">
+            <Link href="#">
+              <FacebookIcon />
+            </Link>
+            <Link href="#">
+              <TwitterIcon />
+            </Link>
+            <Link href="#">
+              <InstagramIcon />
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
