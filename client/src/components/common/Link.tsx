@@ -12,6 +12,8 @@ const linkVariants = cva(
           "bg-accent text-white text-[0.8125rem] hover:bg-accent-hover uppercase font-bold tracking-[0.0625rem] h-12 w-40 px-4 py-2",
         navbar:
           "text-white font-bold uppercase leading-6 tracking-[2px] hover:text-accent font-manrope",
+        footer:
+          "text-[0.8125rem] font-bold uppercase leading-[1.5625rem] tracking-[0.125rem] hover:text-accent text-white",
       },
       size: {
         default: "",
