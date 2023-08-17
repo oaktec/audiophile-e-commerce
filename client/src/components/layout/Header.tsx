@@ -7,7 +7,7 @@ import { CartIcon, HamburgerIcon, MainLogo, UserIcon } from "../icons/Icons";
 const Header: FC = () => {
   return (
     <header className="fixed z-50 w-full bg-dark-background">
-      <div className="container flex items-center justify-between border-b border-white border-opacity-10 px-6 py-8">
+      <div className="container flex items-center justify-between border-b border-white border-opacity-10 px-6 py-8 sm:px-10">
         <HamburgerIcon className="lg:hidden" interactive />
         <Link href="/audiophile-e-commerce/">
           <MainLogo />
