@@ -31,7 +31,7 @@ const ProductGallery: FC = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container overflow-hidden">
       <div className="mx-6 mb-4 mt-28 flex flex-col gap-6 md:mx-10 md:gap-8 lg:gap-12">
         {products[0] && (
           <div className="flex flex-col items-center gap-6 rounded-lg bg-accent px-6 py-14 sm:px-[20%] md:px-[25%] md:py-16 lg:relative lg:h-[35rem] lg:items-start lg:overflow-hidden lg:px-[10%] lg:pl-[62%] lg:pt-32">
@@ -62,9 +62,30 @@ const ProductGallery: FC = () => {
             </Link>
           </div>
         )}
-        {products[1] && (
-          <div className="bg-gray-100">
-            {products[1].name || "Product name"}
+        {products[1] && false && (
+          <div className="flex flex-col items-center gap-4 rounded-lg bg-gray-100 px-6 py-14 sm:px-[20%] md:px-[25%] md:py-16 lg:relative lg:h-[35rem] lg:items-start lg:overflow-hidden lg:px-[10%] lg:pl-[62%] lg:pt-32">
+            <div className="relative mb-2 w-[60%] max-w-[13rem] sm:mb-10 lg:absolute lg:-bottom-4 lg:left-[12.5%] lg:mb-0 lg:max-w-[26rem]">
+              <img
+                className="relative z-10"
+                src={productImages[products[1].slug]}
+                alt={`${products[1].name} image`}
+              />
+              <img
+                src={PatternCircles}
+                alt="Pattern Circles"
+                className="absolute left-0 top-[10%] scale-[3.5] md:scale-[4.5] lg:top-[20%] lg:scale-[2.5]"
+              />
+            </div>
+            <TypographyHeader className="px-4 text-center lg:px-0 lg:text-left">
+              {products[1].name || "Product name"}
+            </TypographyHeader>
+            <Link
+              variant="button"
+              className="relative z-10 bg-black hover:bg-[#4c4c4c] md:mt-4"
+              href={`/audiophile-e-commerce/product/${products[1].slug}`}
+            >
+              See product
+            </Link>
           </div>
         )}
         {products[2] && (
