@@ -20,6 +20,20 @@ export const TypographyHeader: React.FC<TypographyProps> = ({
   </h2>
 );
 
+export const TypographySubHeader: React.FC<TypographyProps> = ({
+  children,
+  className,
+}) => (
+  <h2
+    className={cn(
+      "text-[1.75rem] font-bold uppercase tracking-[0.125rem] text-black",
+      className,
+    )}
+  >
+    {children}
+  </h2>
+);
+
 export const TypographyDescription: React.FC<TypographyProps> = ({
   children,
   className,
