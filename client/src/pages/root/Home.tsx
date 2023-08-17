@@ -1,6 +1,6 @@
 import React from "react";
+import Categories from "../../components/common/Categories";
 import BestGearSection from "./BestGearSection";
-import Categories from "./Categories";
 import Hero from "./Hero";
 import ProductGallery from "./ProductGallery";
 

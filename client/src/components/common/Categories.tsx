@@ -2,7 +2,11 @@ import ArrowRightIcon from "@/assets/shared/desktop/icon-arrow-right.svg";
 import { CATEGORIES } from "@/config/config";
 import React, { useEffect, useState } from "react";
 
-const Categories: React.FC = () => {
+interface Props {
+  type?: "home" | "menu";
+}
+
+const Categories: React.FC<Props> = ({ type = "home" }) => {
   const [categoryImages, setCategoryImages] = useState<{
     [key: string]: string;
   }>({});
@@ -25,11 +29,17 @@ const Categories: React.FC = () => {
 
   return (
     <div className="container px-6 sm:px-10">
-      <div className="mt-[5.75rem] flex flex-col gap-[4.25rem] md:flex-row md:gap-2">
+      <div
+        className={`${
+          type === "home" ? "mt-[5.75rem]" : "mt-10"
+        } flex flex-col gap-[4.25rem] md:flex-row md:gap-2`}
+      >
         {CATEGORIES.map((category) => (
           <a
             href={`/audiophile-e-commerce/category/${category}`}
-            className="relative flex h-40 cursor-pointer flex-col items-center justify-end gap-4 rounded-lg bg-gray-100 pb-4 text-black duration-300 hover:text-accent md:mx-0 md:flex-1"
+            className={`relative flex ${
+              type === "home" ? "h-40" : "h-28"
+            } cursor-pointer flex-col items-center justify-end gap-4 rounded-lg bg-gray-100 pb-4 text-black duration-300 hover:text-accent md:mx-0 md:flex-1`}
             key={category}
           >
             {categoryImages[category] && (
