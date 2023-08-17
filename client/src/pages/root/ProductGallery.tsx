@@ -84,12 +84,29 @@ const ProductGallery: FC = () => {
           </div>
         )}
         {products[2] && (
-          <div className="flex flex-col gap-6 md:flex-row md:gap-3 lg:gap-6">
-            <div className="flex-1 bg-accent">
-              image of {products[2].name || "product"}
-            </div>
-            <div className="flex-1 bg-gray-100">
-              {products[2].name || "Product Name"}
+          <div className="flex flex-col gap-6 sm:flex-row sm:gap-3 lg:gap-6">
+            <a
+              className="flex-1"
+              href={`/audiophile-e-commerce/product/${products[2].slug}`}
+            >
+              <div
+                style={{
+                  backgroundImage: `url(${productImages[products[2].slug]})`,
+                }}
+                className="min-h-[12.5rem] rounded-lg bg-cover bg-center bg-no-repeat sm:min-h-[20rem]"
+              />
+            </a>
+            <div className="flex min-h-[12.5rem] flex-1 flex-col justify-center gap-8 rounded-lg bg-gray-100 p-6 sm:min-h-[20rem]">
+              <TypographySubHeader className="z-10 pr-8 sm:ml-[10%]">
+                {products[2].name || "Product name"}
+              </TypographySubHeader>
+              <Link
+                variant="button"
+                className="relative z-10 border border-black bg-transparent text-black hover:bg-black hover:text-white sm:ml-[10%]"
+                href={`/audiophile-e-commerce/product/${products[2].slug}`}
+              >
+                See product
+              </Link>
             </div>
           </div>
         )}
