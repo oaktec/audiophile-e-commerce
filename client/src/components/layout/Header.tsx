@@ -1,15 +1,26 @@
 import { FC } from "react";
 
+import Categories from "@/components/common/Categories";
 import { CATEGORIES } from "@/config/config";
 import { Link } from "../common/Link";
 import { CartIcon, HamburgerIcon, MainLogo, UserIcon } from "../icons/Icons";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const Header: FC = () => {
   return (
-    <header className="fixed z-50 w-full bg-dark-background">
+    <header className="fixed z-[60] w-full bg-dark-background">
       <div className="container">
         <div className="mx-6 flex items-center justify-between border-b border-white border-opacity-10 py-8 sm:mx-10">
-          <HamburgerIcon className="lg:hidden" interactive />
+          <Sheet>
+            <SheetTrigger asChild>
+              <button>
+                <HamburgerIcon className="lg:hidden" interactive />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="top" className="top-[89px]">
+              <Categories type="menu" />
+            </SheetContent>
+          </Sheet>
           <Link href="/audiophile-e-commerce/">
             <MainLogo />
           </Link>
