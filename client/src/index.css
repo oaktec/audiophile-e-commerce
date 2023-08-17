@@ -41,6 +41,12 @@
   }
 }
 
+.soften-edges-to-dark-background {
+  box-shadow:
+    25px 25px 50px 15px hsl(var(--dark-background)) inset,
+    -25px -25px 50px 15px hsl(var(--dark-background)) inset;
+}
+
 @layer base {
   * {
     @apply border-border;
