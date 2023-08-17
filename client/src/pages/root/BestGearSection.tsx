@@ -4,7 +4,7 @@ import DesktopBestGearImage from "@/assets/shared/desktop/image-best-gear.jpg";
 import MobileBestGearImage from "@/assets/shared/mobile/image-best-gear.jpg";
 import TabletBestGearImage from "@/assets/shared/tablet/image-best-gear.jpg";
 import {
-  TypographyDescription,
+  TypographyParagraph,
   TypographySubHeader,
 } from "@/components/common/Typography";
 
@@ -31,14 +31,14 @@ const BestGearSection: FC = () => {
             Bringing you the <span className="text-accent">best</span> audio
             gear
           </TypographySubHeader>
-          <TypographyDescription className="text-center leading-[1.5625rem] text-black opacity-50 lg:max-w-prose lg:text-left">
+          <TypographyParagraph className="text-center lg:max-w-prose lg:text-left">
             Located at the heart of New York City, Audiophile is the premier
             store for high end headphones, earphones, speakers, and audio
             accessories. We have a large showroom and luxury demonstration rooms
             available for you to browse and experience a wide range of our
             products. Stop by our store to meet some of the fantastic people who
             make Audiophile the best place to buy your portable audio equipment.
-          </TypographyDescription>
+          </TypographyParagraph>
         </div>
       </div>
     </div>

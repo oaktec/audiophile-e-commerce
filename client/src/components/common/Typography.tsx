@@ -47,3 +47,17 @@ export const TypographyDescription: React.FC<TypographyProps> = ({
     {children}
   </span>
 );
+
+export const TypographyParagraph: React.FC<TypographyProps> = ({
+  children,
+  className,
+}) => (
+  <span
+    className={cn(
+      "text-[0.9375rem] font-medium leading-[1.5625rem] text-black opacity-50",
+      className,
+    )}
+  >
+    {children}
+  </span>
+);
