@@ -1,7 +1,11 @@
 import React from "react";
 
 const SignUp: React.FC = () => {
-  return <h1>Welcome SignUp!</h1>;
+  return (
+    <>
+      <div className="container mt-40">Welcome to signup page</div>
+    </>
+  );
 };
 
 export default SignUp;

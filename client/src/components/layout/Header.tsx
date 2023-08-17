@@ -17,7 +17,11 @@ const Header: FC = () => {
             Home
           </Link>
           {CATEGORIES.map((category) => (
-            <Link href="#" variant="navbar" key={category}>
+            <Link
+              href={`/audiophile-e-commerce/category/${category}`}
+              variant="navbar"
+              key={category}
+            >
               {category}
             </Link>
           ))}
@@ -26,7 +30,9 @@ const Header: FC = () => {
           <Link href="/audiophile-e-commerce/login">
             <UserIcon interactive />
           </Link>
-          <CartIcon interactive />
+          <Link href="/audiophile-e-commerce/cart">
+            <CartIcon interactive />
+          </Link>
         </div>
       </div>
     </header>

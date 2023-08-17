@@ -28,7 +28,7 @@ const Categories: React.FC = () => {
       <div className="mt-[5.75rem] flex flex-col gap-[4.25rem] md:mx-10 md:flex-row md:gap-2">
         {CATEGORIES.map((category) => (
           <a
-            href={`/shop/${category}`}
+            href={`/audiophile-e-commerce/category/${category}`}
             className="relative mx-6 flex h-40 cursor-pointer flex-col items-center justify-end gap-4 rounded-lg bg-gray-100 pb-4 text-black duration-300 hover:text-accent md:mx-0 md:flex-1"
             key={category}
           >

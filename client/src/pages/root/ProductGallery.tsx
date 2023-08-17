@@ -56,7 +56,7 @@ const ProductGallery: FC = () => {
             <Link
               variant="button"
               className="relative z-10 bg-black hover:bg-[#4c4c4c] md:mt-4"
-              href="#"
+              href={`/audiophile-e-commerce/product/${products[0].slug}`}
             >
               See product
             </Link>
