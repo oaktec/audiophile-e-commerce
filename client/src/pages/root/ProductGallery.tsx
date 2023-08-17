@@ -32,8 +32,8 @@ const ProductGallery: FC = () => {
   }, []);
 
   return (
-    <div className="container overflow-hidden">
-      <div className="mx-6 mb-4 mt-28 flex flex-col gap-6 md:mx-10 md:gap-8 lg:gap-12">
+    <div className="container overflow-hidden px-6 sm:px-10">
+      <div className="mb-4 mt-28 flex flex-col gap-6 md:gap-8 lg:gap-12">
         {products[0] && (
           <div className="flex flex-col items-center gap-6 rounded-lg bg-accent px-6 py-14 sm:px-[20%] md:px-[25%] md:py-16 lg:relative lg:h-[35rem] lg:items-start lg:overflow-hidden lg:px-[10%] lg:pl-[62%] lg:pt-32">
             <div className="relative mb-2 w-[60%] max-w-[13rem] sm:mb-10 lg:absolute lg:-bottom-4 lg:left-[12.5%] lg:mb-0 lg:max-w-[26rem]">
