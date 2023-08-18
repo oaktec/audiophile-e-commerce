@@ -3,7 +3,13 @@ import { FC } from "react";
 import Categories from "@/components/common/Categories";
 import { CATEGORIES } from "@/config/config";
 import { Link } from "../common/Link";
+import { TypographyDescription } from "../common/Typography";
 import { CartIcon, HamburgerIcon, MainLogo, UserIcon } from "../icons/Icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const Header: FC = () => {
@@ -39,9 +45,24 @@ const Header: FC = () => {
             ))}
           </div>
           <div className="flex space-x-9">
-            <Link href="/audiophile-e-commerce/login">
-              <UserIcon interactive />
-            </Link>
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger>
+                <UserIcon interactive />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent sideOffset={32} className="z-[70] px-8 py-4">
+                <div className="right-0 flex w-full flex-col items-center gap-4">
+                  <Link variant="button" href="/audiophile-e-commerce/login">
+                    Login
+                  </Link>
+                  <div className="flex flex-col">
+                    <TypographyDescription className="text-black opacity-100">
+                      New Customer?
+                    </TypographyDescription>
+                    <Link href="/audiophile-e-commerce/signup">Register</Link>
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Link href="/audiophile-e-commerce/cart">
               <CartIcon interactive />
             </Link>
