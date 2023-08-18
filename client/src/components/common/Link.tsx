@@ -7,7 +7,8 @@ const linkVariants = cva(
   {
     variants: {
       variant: {
-        default: "text-white hover:text-accent text-sm",
+        default: "text-sm text-accent duration-300 hover:text-accent-hover",
+        plain: "text-white hover:text-accent",
         button:
           "bg-accent text-white text-[0.8125rem] hover:bg-accent-hover uppercase font-bold tracking-[0.0625rem] h-12 w-40 px-4 py-2",
         navbar:
