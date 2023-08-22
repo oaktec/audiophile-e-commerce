@@ -40,7 +40,7 @@ export const TypographyFormHeader: React.FC<TypographyProps> = ({
 }) => (
   <h1
     className={cn(
-      "text-[1.75rem] font-bold uppercase tracking-[0.0625rem] text-black",
+      "pb-2 text-[1.75rem] font-bold uppercase tracking-[0.0625rem] text-black sm:pb-4 sm:text-[2rem] sm:leading-9 sm:tracking-[0.07144rem]",
       className,
     )}
   >
