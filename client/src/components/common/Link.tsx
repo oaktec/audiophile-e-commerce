@@ -13,6 +13,8 @@ const linkVariants = cva(
           "text-[0.9375rem] font-medium leading-[1.5625rem] text-black opacity-50 hover:text-accent",
         button:
           "bg-accent text-white text-[0.8125rem] hover:bg-accent-hover uppercase font-bold tracking-[0.0625rem] h-12 w-40 px-4 py-2",
+        "dark-button":
+          "bg-black hover:bg-[#4c4c4c] text-white text-[0.8125rem] uppercase font-bold tracking-[0.0625rem] h-12 w-40 px-4 py-2",
         navbar:
           "text-white font-bold uppercase leading-6 tracking-[2px] hover:text-accent font-manrope",
         footer:

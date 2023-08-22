@@ -55,8 +55,8 @@ const ProductGallery: FC = () => {
               {products[0].description || "Product description"}
             </TypographyDescription>
             <Link
-              variant="button"
-              className="relative z-10 bg-black hover:bg-[#4c4c4c] md:mt-4"
+              variant="dark-button"
+              className="relative z-10 md:mt-4"
               href={`/audiophile-e-commerce/product/${products[0].slug}`}
             >
               See product
