@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 rounded-lg bg-white p-6 sm:p-7 lg:p-12"
+          className="max-w-xl space-y-6 rounded-lg bg-white p-6 sm:p-7 lg:p-12"
         >
           <TypographyFormHeader>Welcome back!</TypographyFormHeader>
           <FormField
