@@ -1,4 +1,5 @@
 import { Link } from "@/components/common/Link";
+import { TypographyFormHeader } from "@/components/common/Typography";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -40,6 +41,9 @@ const Login: React.FC = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 rounded-lg bg-white p-6"
         >
+          <TypographyFormHeader className="text-center">
+            Welcome back!
+          </TypographyFormHeader>
           <FormField
             control={form.control}
             name="email"
