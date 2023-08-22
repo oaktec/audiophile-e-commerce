@@ -19,8 +19,8 @@ const Header: FC = () => {
         <div className="mx-6 flex items-center justify-between border-b border-white border-opacity-10 py-8 sm:mx-10">
           <Sheet>
             <SheetTrigger asChild>
-              <button>
-                <HamburgerIcon className="lg:hidden" interactive />
+              <button className="lg:hidden">
+                <HamburgerIcon interactive />
               </button>
             </SheetTrigger>
             <SheetContent side="top" className="top-[89px]">
