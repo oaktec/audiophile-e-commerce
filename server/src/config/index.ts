@@ -34,7 +34,7 @@ export const SESSION_SECRET = ensureEnvVar(
 export const CORS_CLIENT_URL = ensureEnvVar(
   "CORS_CLIENT_URL",
   NODE_ENV === "production",
-  "http://localhost:3000"
+  "http://localhost:5173"
 );
 
 const DB_HOST = ensureEnvVar("DB_HOST", NODE_ENV !== "production");
