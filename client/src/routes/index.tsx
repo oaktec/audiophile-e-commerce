@@ -17,10 +17,7 @@ const Router: React.FC = () => {
         <Route path="product/:productSlug" element={<ProductPage />} />
       </Route>
 
-      <Route
-        path="/audiophile-e-commerce/"
-        element={<Layout bgColor="bg-gray-100" />}
-      >
+      <Route path="/audiophile-e-commerce/" element={<Layout isForm />}>
         <Route path="cart" element={<CartPage />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
