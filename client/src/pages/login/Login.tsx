@@ -62,7 +62,11 @@ const Login: React.FC = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter a password" {...field} />
+                  <Input
+                    placeholder="Enter a password"
+                    {...field}
+                    type="password"
+                  />
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
