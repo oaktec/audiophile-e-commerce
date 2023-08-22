@@ -34,7 +34,18 @@ const Login: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    fetch("https://audiophile-e-commerce-server.fly.dev/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch(console.error);
   }
 
   return (
@@ -85,7 +96,7 @@ const Login: React.FC = () => {
           </Button>
         </form>
       </Form>
-      <div className="mt-4">
+      <div className="my-6">
         <TypographyParagraph>Don't have an account?</TypographyParagraph>
         <Link
           variant="dark-button"
