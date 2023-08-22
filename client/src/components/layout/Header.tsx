@@ -50,7 +50,7 @@ const Header: FC = () => {
                 <UserIcon interactive />
               </DropdownMenuTrigger>
               <DropdownMenuContent sideOffset={32} className="z-[70] px-8 py-4">
-                <div className="right-0 flex w-full flex-col items-center gap-4">
+                <div className="flex w-full flex-col items-center gap-4">
                   <Link variant="button" href="/audiophile-e-commerce/login">
                     Login
                   </Link>
