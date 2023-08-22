@@ -35,9 +35,12 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <div className="container mt-[89px]">
+      <div className="container mt-[89px] p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 rounded-lg bg-white p-6"
+          >
             <FormField
               control={form.control}
               name="email"
