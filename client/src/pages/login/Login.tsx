@@ -1,27 +1,22 @@
+import api from "@/api/api";
+import FormInput from "@/components/common/FormInput";
 import { Link } from "@/components/common/Link";
 import {
   TypographyFormHeader,
   TypographyParagraph,
 } from "@/components/common/Typography";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
 });
 
 const Login: React.FC = () => {
@@ -34,14 +29,11 @@ const Login: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    fetch("https://audiophile-e-commerce-server.fly.dev/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
-      .then((res) => res.json())
+    api
+      .fetch("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(values),
+      })
       .then((data) => {
         console.log(data);
       })
@@ -56,40 +48,16 @@ const Login: React.FC = () => {
           className="max-w-xl space-y-6 rounded-lg bg-white p-6 sm:p-7 lg:p-12"
         >
           <TypographyFormHeader>Welcome back!</TypographyFormHeader>
-          <FormField
-            control={form.control}
+          <FormInput
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your email address" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            placeholder="Your email address"
+            formControl={form.control}
           />
-          <FormField
-            control={form.control}
+          <FormInput
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter a password"
-                    {...field}
-                    type="password"
-                  />
-                </FormControl>
-                <FormMessage />
-                <FormDescription>
-                  <Link href="/audiophile-e-commerce/forgot-password">
-                    Forgot Password?
-                  </Link>
-                </FormDescription>
-              </FormItem>
-            )}
+            placeholder="Enter a password"
+            formControl={form.control}
+            type="password"
           />
           <Button type="submit" className="w-full">
             Submit
