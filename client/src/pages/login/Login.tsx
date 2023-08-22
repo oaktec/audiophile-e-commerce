@@ -1,5 +1,8 @@
 import { Link } from "@/components/common/Link";
-import { TypographyFormHeader } from "@/components/common/Typography";
+import {
+  TypographyFormHeader,
+  TypographyParagraph,
+} from "@/components/common/Typography";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -82,6 +85,16 @@ const Login: React.FC = () => {
           </Button>
         </form>
       </Form>
+      <div className="mt-4">
+        <TypographyParagraph>Don't have an account?</TypographyParagraph>
+        <Link
+          variant="dark-button"
+          className="mt-2 flex"
+          href="/audiophile-e-commerce/signup"
+        >
+          Register
+        </Link>
+      </div>
     </>
   );
 };
