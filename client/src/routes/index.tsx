@@ -1,10 +1,10 @@
 import Layout from "@/components/layout/Layout";
-import Login from "@/pages/Login";
-import SignUp from "@/pages/SignUp";
 import CartPage from "@/pages/cart/CartPage";
 import CategoryPage from "@/pages/category/CategoryPage";
+import Login from "@/pages/login/Login";
 import ProductPage from "@/pages/product/ProductPage";
 import Home from "@/pages/root/Home";
+import SignUp from "@/pages/signup/SignUp";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
