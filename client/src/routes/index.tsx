@@ -15,6 +15,12 @@ const Router: React.FC = () => {
         <Route index element={<Home />} />
         <Route path="category/:categorySlug" element={<CategoryPage />} />
         <Route path="product/:productSlug" element={<ProductPage />} />
+      </Route>
+
+      <Route
+        path="/audiophile-e-commerce/"
+        element={<Layout bgColor="bg-gray-100" />}
+      >
         <Route path="cart" element={<CartPage />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
