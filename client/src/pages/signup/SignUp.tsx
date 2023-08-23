@@ -17,6 +17,7 @@ const formSchema = z
     firstName: z.string().min(2),
     lastName: z.string().min(2),
     email: z.string().email(),
+    address: z.string().min(2),
     password: z
       .string()
       .min(8)
@@ -60,6 +61,9 @@ const SignUp: React.FC = () => {
       .fetch("/auth/register", {
         method: "POST",
         body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
       .then((data) => {
         console.log(data);
@@ -75,11 +79,7 @@ const SignUp: React.FC = () => {
           className="max-w-xl space-y-6 rounded-lg bg-white p-6 sm:p-7 lg:p-12"
         >
           <TypographyFormHeader>Register</TypographyFormHeader>
-          <FormInput
-            name="email"
-            placeholder="Your email address"
-            formControl={form.control}
-          />
+
           <FormInput
             name="firstName"
             label="First Name"
@@ -90,6 +90,16 @@ const SignUp: React.FC = () => {
             name="lastName"
             label="Last Name"
             placeholder="Your last name"
+            formControl={form.control}
+          />
+          <FormInput
+            name="address"
+            placeholder="Your address"
+            formControl={form.control}
+          />
+          <FormInput
+            name="email"
+            placeholder="Your email address"
             formControl={form.control}
           />
           <FormInput
