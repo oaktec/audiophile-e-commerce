@@ -97,4 +97,22 @@ export default {
       });
     });
   },
+  checkSession: async (req: Request, res: Response, next: NextFunction) => {
+    if (req.user) {
+      const user = await userService.getById(req.user.id);
+
+      if (!user) {
+        return next(createHttpError(StatusCodes.NOT_FOUND, "User not found"));
+      }
+
+      return res.json({
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        address: user.address,
+      });
+    }
+    return res.status(StatusCodes.UNAUTHORIZED).end();
+  },
 };

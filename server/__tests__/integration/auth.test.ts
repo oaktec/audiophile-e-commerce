@@ -448,4 +448,41 @@ describe("auth", () => {
       });
     });
   });
+
+  describe("POST /auth/check-session", () => {
+    it("should return the logged in user", async () => {
+      const agent = request.agent(server);
+
+      await agent.post("/auth/register").send({
+        email: "demo@user.com",
+        password: "Password123!",
+        firstName: "Demo",
+        lastName: "User",
+        address: "123 Test St",
+      });
+
+      await agent.post("/auth/login").send({
+        email: "demo@user.com",
+        password: "Password123!",
+      });
+
+      const res = await agent.post("/auth/check-session");
+
+      expect(res.status).toEqual(StatusCodes.OK);
+      expect(res.body).toEqual({
+        id: expect.any(Number),
+        email: "demo@user.com",
+        firstName: "Demo",
+        lastName: "User",
+        address: "123 Test St",
+      });
+    });
+
+    it("should return an error if user is not logged in", async () => {
+      const res = await request(server).post("/auth/check-session");
+
+      expect(res.status).toEqual(StatusCodes.UNAUTHORIZED);
+      expect(res.body).toEqual({});
+    });
+  });
 });

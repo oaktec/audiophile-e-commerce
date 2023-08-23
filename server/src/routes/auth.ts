@@ -14,5 +14,6 @@ authRouter.post(
   authController.registerUser
 );
 authRouter.post("/logout", authMiddleware.isAuth, authController.logoutUser);
+authRouter.post("/check-session", authController.checkSession);
 
 export default authRouter;
