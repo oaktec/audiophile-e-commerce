@@ -27,7 +27,7 @@ const Header: FC = () => {
       })
       .then(() => {
         checkSession().then(() => {
-          navigate("/audiophile-e-commerce");
+          navigate("/");
         });
       })
       .catch(console.error);
@@ -47,16 +47,16 @@ const Header: FC = () => {
               <Categories type="menu" />
             </SheetContent>
           </Sheet>
-          <Link href="/audiophile-e-commerce/">
+          <Link href="/">
             <MainLogo />
           </Link>
           <div className="hidden items-center space-x-9 lg:flex">
-            <Link href="/audiophile-e-commerce/" variant="navbar">
+            <Link href="/" variant="navbar">
               Home
             </Link>
             {CATEGORIES.map((category) => (
               <Link
-                href={`/audiophile-e-commerce/category/${category}`}
+                href={`/category/${category}`}
                 variant="navbar"
                 key={category}
               >
@@ -75,26 +75,21 @@ const Header: FC = () => {
                     <Button onClick={handleLogout}>Log out</Button>
                   ) : (
                     <>
-                      <Link
-                        variant="button"
-                        href="/audiophile-e-commerce/login"
-                      >
+                      <Link variant="button" href="/login">
                         Login
                       </Link>
                       <div className="flex flex-col">
                         <TypographyDescription className="text-black opacity-100">
                           New Customer?
                         </TypographyDescription>
-                        <Link href="/audiophile-e-commerce/signup">
-                          Register
-                        </Link>
+                        <Link href="/signup">Register</Link>
                       </div>
                     </>
                   )}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Link href="/audiophile-e-commerce/cart">
+            <Link href="/cart">
               <CartIcon interactive />
             </Link>
           </div>

@@ -36,7 +36,7 @@ const Categories: React.FC<Props> = ({ type = "home" }) => {
       >
         {CATEGORIES.map((category) => (
           <a
-            href={`/audiophile-e-commerce/category/${category}`}
+            href={`/category/${category}`}
             className={`relative flex ${
               type === "home" ? "h-40" : "h-28"
             } cursor-pointer flex-col items-center justify-end gap-4 rounded-lg bg-gray-100 pb-4 text-black duration-300 hover:text-accent md:mx-0 md:flex-1`}

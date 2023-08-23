@@ -15,16 +15,16 @@ const Footer: FC = () => {
       <div className="container flex flex-col items-center justify-between gap-12 px-6 sm:items-start sm:px-10">
         <div className="h-[5px] w-[100px] bg-accent sm:mb-6" />
         <div className="flex w-full flex-col items-center gap-12 sm:items-start md:flex-row md:justify-between">
-          <Link href="/audiophile-e-commerce/">
+          <Link href="/">
             <MainLogo />
           </Link>
           <div className="flex flex-col items-center gap-4 sm:flex-row">
-            <Link href={`/audiophile-e-commerce/`} variant="footer">
+            <Link href={`/`} variant="footer">
               Home
             </Link>
             {CATEGORIES.map((category) => (
               <Link
-                href={`/audiophile-e-commerce/category/${category}`}
+                href={`/category/${category}`}
                 variant="footer"
                 key={category}
               >

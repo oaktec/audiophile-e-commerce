@@ -57,7 +57,7 @@ const ProductGallery: FC = () => {
             <Link
               variant="dark-button"
               className="relative z-10 md:mt-4"
-              href={`/audiophile-e-commerce/product/${products[0].slug}`}
+              href={`/product/${products[0].slug}`}
             >
               See product
             </Link>
@@ -77,7 +77,7 @@ const ProductGallery: FC = () => {
             <Link
               variant="button"
               className="relative z-10 border border-black bg-transparent text-black hover:bg-black hover:text-white md:mt-4"
-              href={`/audiophile-e-commerce/product/${products[1].slug}`}
+              href={`/product/${products[1].slug}`}
             >
               See product
             </Link>
@@ -85,10 +85,7 @@ const ProductGallery: FC = () => {
         )}
         {products[2] && (
           <div className="flex flex-col gap-6 sm:flex-row sm:gap-3 lg:gap-6">
-            <a
-              className="sm:w-1/2"
-              href={`/audiophile-e-commerce/product/${products[2].slug}`}
-            >
+            <a className="sm:w-1/2" href={`/product/${products[2].slug}`}>
               <div
                 style={{
                   backgroundImage: `url(${productImages[products[2].slug]})`,
@@ -103,7 +100,7 @@ const ProductGallery: FC = () => {
               <Link
                 variant="button"
                 className="relative z-10 border border-black bg-transparent text-black hover:bg-black hover:text-white sm:ml-[10%]"
-                href={`/audiophile-e-commerce/product/${products[2].slug}`}
+                href={`/product/${products[2].slug}`}
               >
                 See product
               </Link>

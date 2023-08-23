@@ -21,9 +21,7 @@ const Hero = () => (
         </TypographyDescription>
         <Link
           variant="button"
-          href={`/audiophile-e-commerce/product/${
-            HIGHLIGHTED_PRODUCTS[0]?.slug || ""
-          }`}
+          href={`/product/${HIGHLIGHTED_PRODUCTS[0]?.slug || ""}`}
         >
           See product
         </Link>

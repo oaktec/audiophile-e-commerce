@@ -11,13 +11,13 @@ import { Route, Routes } from "react-router-dom";
 const Router: React.FC = () => {
   return (
     <Routes>
-      <Route path="/audiophile-e-commerce/" element={<Layout />}>
+      <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="category/:categorySlug" element={<CategoryPage />} />
         <Route path="product/:productSlug" element={<ProductPage />} />
       </Route>
 
-      <Route path="/audiophile-e-commerce/" element={<Layout isForm />}>
+      <Route path="/" element={<Layout isForm />}>
         <Route path="cart" element={<CartPage />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />

@@ -9,11 +9,7 @@ interface FormLayoutProps {
 const FormLayout: FC<FormLayoutProps> = () => {
   return (
     <div className="container mt-[89px] px-6 py-4 sm:px-10 sm:py-12 lg:py-20">
-      <Link
-        variant="go-back"
-        href="/audiophile-e-commerce/"
-        className="mb-6 lg:mb-9"
-      >
+      <Link variant="go-back" href="/" className="mb-6 lg:mb-9">
         Go Back
       </Link>
       <Outlet />

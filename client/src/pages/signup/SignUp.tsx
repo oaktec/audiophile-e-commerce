@@ -123,11 +123,7 @@ const SignUp: React.FC = () => {
       </Form>
       <div className="my-6">
         <TypographyParagraph>Already have an account?</TypographyParagraph>
-        <Link
-          variant="dark-button"
-          className="mt-2 flex"
-          href="/audiophile-e-commerce/login"
-        >
+        <Link variant="dark-button" className="mt-2 flex" href="/login">
           Log In
         </Link>
       </div>

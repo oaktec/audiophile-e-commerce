@@ -44,7 +44,7 @@ const Login: React.FC = () => {
       })
       .then(() => {
         checkSession().then(() => {
-          navigate("/audiophile-e-commerce");
+          navigate("/");
         });
       })
       .catch(console.error);
@@ -76,11 +76,7 @@ const Login: React.FC = () => {
       </Form>
       <div className="my-6">
         <TypographyParagraph>Don't have an account?</TypographyParagraph>
-        <Link
-          variant="dark-button"
-          className="mt-2 flex"
-          href="/audiophile-e-commerce/signup"
-        >
+        <Link variant="dark-button" className="mt-2 flex" href="/signup">
           Register
         </Link>
       </div>
