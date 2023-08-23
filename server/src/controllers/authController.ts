@@ -113,6 +113,6 @@ export default {
         address: user.address,
       });
     }
-    return res.status(StatusCodes.UNAUTHORIZED).end();
+    return res.json({});
   },
 };

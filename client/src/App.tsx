@@ -10,15 +10,11 @@ function App() {
 
   // Check if user is logged in
   useEffect(() => {
-    api
-      .fetch("/auth/check-session")
-      .then((data) => {
-        const user = data as User;
-        setUser(user);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    api.fetch("/auth/check-session").then((data) => {
+      const user = data as User;
+      if (!user.id) setUser(null);
+      else setUser(user);
+    });
   }, [setUser]);
 
   return (

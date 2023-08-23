@@ -478,10 +478,10 @@ describe("auth", () => {
       });
     });
 
-    it("should return an error if user is not logged in", async () => {
+    it("should return an empty object if the user is not logged in", async () => {
       const res = await request(server).get("/auth/check-session");
 
-      expect(res.status).toEqual(StatusCodes.UNAUTHORIZED);
+      expect(res.status).toEqual(StatusCodes.OK);
       expect(res.body).toEqual({});
     });
   });
