@@ -6,10 +6,11 @@ import {
   TypographyParagraph,
 } from "@/components/common/Typography";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@/hooks/useUser";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as z from "zod";
@@ -24,6 +25,9 @@ const formSchema = z.object({
 const Login: React.FC = () => {
   const { checkSession, isLoggedIn } = useUser();
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const [error, setError] = useState<string | null>(null);
 
   if (isLoggedIn) {
     navigate("/");
@@ -48,7 +52,11 @@ const Login: React.FC = () => {
       })
       .then(() => {
         checkSession().then(() => {
-          navigate("/");
+          if (isLoggedIn) navigate("/");
+          else
+            setError(
+              "Invalid email or password. Please try again or register.",
+            );
         });
       })
       .catch(console.error);
@@ -59,6 +67,7 @@ const Login: React.FC = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
+          onChange={() => setError("")}
           className="max-w-xl space-y-6 rounded-lg bg-white p-6 sm:p-7 lg:p-12"
         >
           <TypographyFormHeader>Welcome back!</TypographyFormHeader>
@@ -73,6 +82,7 @@ const Login: React.FC = () => {
             formControl={form.control}
             type="password"
           />
+          <FormMessage>{error}</FormMessage>
           <Button type="submit" className="w-full">
             Log In
           </Button>
