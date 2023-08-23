@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import api from "./api/api";
+import { Toaster } from "./components/ui/toaster";
 import { User } from "./contexts/UserContext";
 import { useUser } from "./hooks/useUser";
 import Router from "./routes";
@@ -20,6 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       <Router />
+      <Toaster />
     </BrowserRouter>
   );
 }
