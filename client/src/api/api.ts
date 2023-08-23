@@ -9,7 +9,13 @@ export default {
       ...options,
       credentials: "include",
     });
-    const data = await res.json();
-    return data;
+
+    const contentType = res.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      return await res.json();
+    } else {
+      return null;
+    }
   },
 };
