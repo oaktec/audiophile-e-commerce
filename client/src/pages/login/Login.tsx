@@ -28,6 +28,7 @@ const Login: React.FC = () => {
   const { toast } = useToast();
 
   const [error, setError] = useState<string | null>(null);
+  const [loggingIn, setLoggingIn] = useState(false);
 
   if (isLoggedIn) {
     navigate("/");
@@ -42,6 +43,7 @@ const Login: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoggingIn(true);
     api
       .fetch("/auth/login", {
         method: "POST",
@@ -51,12 +53,21 @@ const Login: React.FC = () => {
         },
       })
       .then(() => {
-        checkSession().then(() => {
-          if (isLoggedIn) navigate("/");
-          else
+        checkSession().then((user) => {
+          setLoggingIn(false);
+          if (user && user.id) {
+            navigate("/");
+            toast({
+              variant: "success",
+              description: "Logged in as " + user.email,
+            });
+          } else {
+            console.log("not logged in");
+
             setError(
               "Invalid email or password. Please try again or register.",
             );
+          }
         });
       })
       .catch(console.error);
@@ -83,8 +94,31 @@ const Login: React.FC = () => {
             type="password"
           />
           <FormMessage>{error}</FormMessage>
-          <Button type="submit" className="w-full">
-            Log In
+          <Button type="submit" className="w-full" disabled={loggingIn}>
+            {loggingIn ? (
+              <svg
+                className="-mr-1 ml-3 h-5 w-5 animate-spin text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
+              </svg>
+            ) : (
+              "Log In"
+            )}
           </Button>
         </form>
       </Form>

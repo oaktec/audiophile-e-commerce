@@ -15,6 +15,8 @@ export const useUser = () => {
       const user = res as User;
       if (!user.id) setUser(null);
       else setUser(user);
+
+      return user;
     });
   };
 
