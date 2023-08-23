@@ -1,10 +1,14 @@
 import { FC } from "react";
 
+import api from "@/api/api";
 import Categories from "@/components/common/Categories";
 import { CATEGORIES } from "@/config/config";
+import { useUser } from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
 import { Link } from "../common/Link";
 import { TypographyDescription } from "../common/Typography";
 import { CartIcon, HamburgerIcon, MainLogo, UserIcon } from "../icons/Icons";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +17,22 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const Header: FC = () => {
+  const { isLoggedIn, checkSession } = useUser();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    api
+      .fetch("/auth/logout", {
+        method: "POST",
+      })
+      .then(() => {
+        checkSession().then(() => {
+          navigate("/audiophile-e-commerce");
+        });
+      })
+      .catch(console.error);
+  };
+
   return (
     <header className="fixed z-[60] w-full bg-dark-background">
       <div className="container">
@@ -51,15 +71,26 @@ const Header: FC = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent sideOffset={32} className="z-[70] px-8 py-4">
                 <div className="flex w-full flex-col items-center gap-4">
-                  <Link variant="button" href="/audiophile-e-commerce/login">
-                    Login
-                  </Link>
-                  <div className="flex flex-col">
-                    <TypographyDescription className="text-black opacity-100">
-                      New Customer?
-                    </TypographyDescription>
-                    <Link href="/audiophile-e-commerce/signup">Register</Link>
-                  </div>
+                  {isLoggedIn ? (
+                    <Button onClick={handleLogout}>Log out</Button>
+                  ) : (
+                    <>
+                      <Link
+                        variant="button"
+                        href="/audiophile-e-commerce/login"
+                      >
+                        Login
+                      </Link>
+                      <div className="flex flex-col">
+                        <TypographyDescription className="text-black opacity-100">
+                          New Customer?
+                        </TypographyDescription>
+                        <Link href="/audiophile-e-commerce/signup">
+                          Register
+                        </Link>
+                      </div>
+                    </>
+                  )}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>

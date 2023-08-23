@@ -7,9 +7,11 @@ import {
 } from "@/components/common/Typography";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { useUser } from "@/hooks/useUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -20,6 +22,9 @@ const formSchema = z.object({
 });
 
 const Login: React.FC = () => {
+  const { checkSession } = useUser();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,8 +42,10 @@ const Login: React.FC = () => {
           "Content-Type": "application/json",
         },
       })
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        checkSession().then(() => {
+          navigate("/audiophile-e-commerce");
+        });
       })
       .catch(console.error);
   }
