@@ -5,7 +5,10 @@ const BASE_URL =
 
 export default {
   fetch: async (path: string, options?: RequestInit) => {
-    const res = await fetch(`${BASE_URL}${path}`, options);
+    const res = await fetch(`${BASE_URL}${path}`, {
+      ...options,
+      credentials: "include",
+    });
     const data = await res.json();
     return data;
   },
