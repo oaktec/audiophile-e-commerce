@@ -22,8 +22,12 @@ const formSchema = z.object({
 });
 
 const Login: React.FC = () => {
-  const { checkSession } = useUser();
+  const { checkSession, isLoggedIn } = useUser();
   const navigate = useNavigate();
+
+  if (isLoggedIn) {
+    navigate("/");
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

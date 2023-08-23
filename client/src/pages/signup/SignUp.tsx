@@ -50,8 +50,12 @@ const formSchema = z
 type formValues = z.infer<typeof formSchema>;
 
 const SignUp: React.FC = () => {
-  const { checkSession } = useUser();
+  const { checkSession, isLoggedIn } = useUser();
   const navigate = useNavigate();
+
+  if (isLoggedIn) {
+    navigate("/");
+  }
 
   const form = useForm<formValues>({
     resolver: zodResolver(formSchema),
