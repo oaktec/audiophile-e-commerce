@@ -17,7 +17,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const Header: FC = () => {
-  const { isLoggedIn, checkSession } = useUser();
+  const { isLoggedIn, checkSession, user } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -72,7 +72,12 @@ const Header: FC = () => {
               <DropdownMenuContent sideOffset={32} className="z-[70] px-8 py-4">
                 <div className="flex w-full flex-col items-center gap-4">
                   {isLoggedIn ? (
-                    <Button onClick={handleLogout}>Log out</Button>
+                    <>
+                      <TypographyDescription className="text-black opacity-100">
+                        Logged in as {user?.email}
+                      </TypographyDescription>
+                      <Button onClick={handleLogout}>Log out</Button>
+                    </>
                   ) : (
                     <>
                       <Link variant="button" href="/login">
