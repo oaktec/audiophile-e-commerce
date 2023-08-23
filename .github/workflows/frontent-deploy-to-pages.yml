@@ -1,9 +1,6 @@
 name: Deploy static content to Pages
 
 on:
-  push:
-    paths:
-      - "client/**"
   workflow_dispatch:
 
 # Set permissions to allow deployment to GH Pages
