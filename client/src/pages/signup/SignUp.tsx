@@ -23,22 +23,20 @@ const formSchema = z
     password: z
       .string()
       .min(8)
+      .refine((password) => /\d/.test(password), {
+        message: "Password must contain at least one number",
+      })
       .refine(
-        (password) => {
-          const hasNumber = /\d/.test(password);
-          const hasUpper = /[A-Z]/.test(password);
-          const hasLower = /[a-z]/.test(password);
-          const hasSymbol = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(
-            password,
-          );
-          const hasSpace = /\s/.test(password);
-          return hasNumber && hasUpper && hasLower && hasSymbol && !hasSpace;
-        },
-        {
-          message:
-            "Password must contain at least one number, one uppercase letter, one lowercase letter, one symbol, and no spaces",
-          path: ["password"],
-        },
+        (password) => /[A-Z]/.test(password),
+        "Password must contain at least one uppercase letter",
+      )
+      .refine(
+        (password) => /[a-z]/.test(password),
+        "Password must contain at least one lowercase letter",
+      )
+      .refine(
+        (password) => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
+        "Password must contain at least one symbol",
       ),
     confirmPassword: z.string().min(8),
   })
@@ -87,9 +85,11 @@ const SignUp: React.FC = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="max-w-xl space-y-6 rounded-lg bg-white p-6 sm:p-7 lg:p-12"
+          className="max-w-xl gap-y-6 space-y-6 rounded-lg bg-white p-6 sm:p-7 md:grid md:max-w-5xl md:grid-flow-row md:grid-cols-2 md:gap-4 md:gap-y-6 md:space-y-0 lg:p-12"
         >
-          <TypographyFormHeader>Register</TypographyFormHeader>
+          <TypographyFormHeader className="col-span-2">
+            Register
+          </TypographyFormHeader>
 
           <FormInput
             name="firstName"
@@ -103,16 +103,13 @@ const SignUp: React.FC = () => {
             placeholder="Your last name"
             formControl={form.control}
           />
-          <FormInput
-            name="address"
-            placeholder="Your address"
-            formControl={form.control}
-          />
-          <FormInput
-            name="email"
-            placeholder="Your email address"
-            formControl={form.control}
-          />
+          <div className="col-span-2">
+            <FormInput
+              name="email"
+              placeholder="Your email address"
+              formControl={form.control}
+            />
+          </div>
           <FormInput
             name="password"
             placeholder="Enter a password"
@@ -126,8 +123,17 @@ const SignUp: React.FC = () => {
             formControl={form.control}
             type="password"
           />
-          <div />
-          <Button type="submit" className="w-full">
+
+          <div className="col-span-2">
+            <FormInput
+              name="address"
+              placeholder="Your address"
+              formControl={form.control}
+            />
+          </div>
+
+          <div className="col-span-2 hidden md:block"></div>
+          <Button type="submit" className="col-span-2 w-full">
             Submit
           </Button>
         </form>

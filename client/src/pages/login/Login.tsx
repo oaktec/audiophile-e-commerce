@@ -74,7 +74,7 @@ const Login: React.FC = () => {
             type="password"
           />
           <Button type="submit" className="w-full">
-            Submit
+            Log In
           </Button>
         </form>
       </Form>
