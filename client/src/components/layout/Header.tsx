@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import api from "@/api/api";
 import Categories from "@/components/common/Categories";
@@ -7,7 +7,13 @@ import { useUser } from "@/hooks/useUser";
 import { useNavigate } from "react-router-dom";
 import { Link } from "../common/Link";
 import { TypographyDescription } from "../common/Typography";
-import { CartIcon, HamburgerIcon, MainLogo, UserIcon } from "../icons/Icons";
+import {
+  AnimatedProgressIcon,
+  CartIcon,
+  HamburgerIcon,
+  MainLogo,
+  UserIcon,
+} from "../icons/Icons";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -15,22 +21,37 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { useToast } from "../ui/use-toast";
 
 const Header: FC = () => {
   const { isLoggedIn, checkSession, user } = useUser();
   const navigate = useNavigate();
 
+  const { toast } = useToast();
+
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
   const handleLogout = () => {
+    setLoggingOut(true);
     api
       .fetch("/auth/logout", {
         method: "POST",
       })
       .then(() => {
+        setDropDownOpen(false);
         checkSession().then(() => {
+          setLoggingOut(false);
           navigate("/");
+          toast({ description: "Logged out successfully" });
         });
       })
-      .catch(console.error);
+      .catch((err) =>
+        toast({
+          variant: "destructive",
+          description: err.message,
+        }),
+      );
   };
 
   return (
@@ -65,7 +86,13 @@ const Header: FC = () => {
             ))}
           </div>
           <div className="flex space-x-9">
-            <DropdownMenu modal={false}>
+            <DropdownMenu
+              modal={false}
+              open={dropDownOpen}
+              onOpenChange={() => {
+                setDropDownOpen(!dropDownOpen);
+              }}
+            >
               <DropdownMenuTrigger>
                 <UserIcon interactive />
               </DropdownMenuTrigger>
@@ -76,7 +103,9 @@ const Header: FC = () => {
                       <TypographyDescription className="text-black opacity-100">
                         Logged in as {user?.email}
                       </TypographyDescription>
-                      <Button onClick={handleLogout}>Log out</Button>
+                      <Button onClick={handleLogout}>
+                        {loggingOut ? <AnimatedProgressIcon /> : "Log out"}
+                      </Button>
                     </>
                   ) : (
                     <>
