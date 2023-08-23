@@ -5,10 +5,6 @@ import { User } from "./contexts/UserContext";
 import { useUser } from "./hooks/useUser";
 import Router from "./routes";
 
-type UserData = {
-  user: User;
-};
-
 function App() {
   const { setUser } = useUser();
 
@@ -17,7 +13,7 @@ function App() {
     api
       .fetch("/auth/check-session")
       .then((data) => {
-        const { user } = data as UserData;
+        const user = data as User;
         setUser(user);
       })
       .catch((err) => {
