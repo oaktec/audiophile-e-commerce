@@ -5,11 +5,13 @@ import {
   TypographyFormHeader,
   TypographyParagraph,
 } from "@/components/common/Typography";
+import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@/hooks/useUser";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as z from "zod";
@@ -50,6 +52,10 @@ type formValues = z.infer<typeof formSchema>;
 const SignUp: React.FC = () => {
   const { checkSession, isLoggedIn } = useUser();
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const [error, setError] = useState<string | null>(null);
+  const [signingUp, setSigningUp] = useState(false);
 
   if (isLoggedIn) {
     navigate("/");
@@ -64,6 +70,7 @@ const SignUp: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setSigningUp(true);
     api
       .fetch("/auth/register", {
         method: "POST",
@@ -72,12 +79,32 @@ const SignUp: React.FC = () => {
           "Content-Type": "application/json",
         },
       })
-      .then(() => {
-        checkSession().then(() => {
-          navigate("/");
+      .then((response) => {
+        const res = response as { message?: string };
+        if (res.message) {
+          setError(res.message);
+        } else {
+          checkSession().then((user) => {
+            if (user && user.id) {
+              navigate("/");
+              toast({
+                variant: "success",
+                description: "Logged in as " + user.email,
+              });
+            }
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("here");
+        toast({
+          variant: "destructive",
+          description: err,
         });
       })
-      .catch(console.error);
+      .finally(() => {
+        setSigningUp(false);
+      });
   }
 
   return (
@@ -85,6 +112,7 @@ const SignUp: React.FC = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
+          onChange={() => setError("")}
           className="max-w-xl gap-y-6 space-y-6 rounded-lg bg-white p-6 sm:p-7 md:grid md:max-w-5xl md:grid-flow-row md:grid-cols-2 md:gap-4 md:gap-y-6 md:space-y-0 lg:p-12"
         >
           <TypographyFormHeader className="col-span-2">
@@ -132,9 +160,17 @@ const SignUp: React.FC = () => {
             />
           </div>
 
+          <div className="col-span-2">
+            <FormMessage>{error}</FormMessage>
+          </div>
+
           <div className="col-span-2 hidden md:block"></div>
-          <Button type="submit" className="col-span-2 w-full">
-            Submit
+          <Button
+            type="submit"
+            className="col-span-2 w-full"
+            disabled={signingUp}
+          >
+            {signingUp ? <AnimatedProgressIcon /> : "Submit"}
           </Button>
         </form>
       </Form>
