@@ -36,6 +36,7 @@ const Login: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       })
       .then((data) => {
         console.log(data);
