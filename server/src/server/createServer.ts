@@ -43,6 +43,7 @@ const createServer = () => {
     express.urlencoded({ extended: true })
   );
 
+  app.set("trust proxy", 1);
   app.use(session);
 
   app.use(passport.initialize());
