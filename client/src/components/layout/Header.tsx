@@ -41,9 +41,11 @@ const Header: FC = () => {
       .then(() => {
         setDropDownOpen(false);
         checkSession().then(() => {
-          setLoggingOut(false);
           navigate("/");
-          toast({ description: "Logged out successfully" });
+          toast({
+            variant: "success",
+            description: "User logged out",
+          });
         });
       })
       .catch((err) =>
@@ -51,7 +53,10 @@ const Header: FC = () => {
           variant: "destructive",
           description: err.message,
         }),
-      );
+      )
+      .finally(() => {
+        setLoggingOut(false);
+      });
   };
 
   return (
@@ -103,7 +108,7 @@ const Header: FC = () => {
                       <TypographyDescription className="text-black opacity-100">
                         Logged in as {user?.email}
                       </TypographyDescription>
-                      <Button onClick={handleLogout}>
+                      <Button onClick={handleLogout} disabled={loggingOut}>
                         {loggingOut ? <AnimatedProgressIcon /> : "Log out"}
                       </Button>
                     </>

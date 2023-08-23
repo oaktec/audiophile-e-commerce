@@ -55,7 +55,6 @@ const Login: React.FC = () => {
       })
       .then(() => {
         checkSession().then((user) => {
-          setLoggingIn(false);
           if (user && user.id) {
             navigate("/");
             toast({
@@ -63,15 +62,21 @@ const Login: React.FC = () => {
               description: "Logged in as " + user.email,
             });
           } else {
-            console.log("not logged in");
-
             setError(
               "Invalid email or password. Please try again or register.",
             );
           }
         });
       })
-      .catch(console.error);
+      .catch((err) =>
+        toast({
+          variant: "destructive",
+          description: err.message,
+        }),
+      )
+      .finally(() => {
+        setLoggingIn(false);
+      });
   }
 
   return (
