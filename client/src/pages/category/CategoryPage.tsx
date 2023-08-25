@@ -15,7 +15,7 @@ import BestGearSection from "../root/BestGearSection";
 const CategoryPage: React.FC = () => {
   const { categorySlug } = useParams();
   const { isLoading, data } = useQuery<Product[]>(
-    `products/${categorySlug}`,
+    `products/category/${categorySlug}`,
     () => api.get(`/products?category=${categorySlug}`) as Promise<Product[]>,
   );
 
