@@ -12,15 +12,6 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import BestGearSection from "../root/BestGearSection";
 
-type Product = {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  price: number;
-  categoryId: number;
-};
-
 const CategoryPage: React.FC = () => {
   const { categorySlug } = useParams();
   const { isLoading, data } = useQuery<Product[]>(
@@ -39,7 +30,6 @@ const CategoryPage: React.FC = () => {
         {isLoading || !data ? (
           <div className="flex w-full items-center justify-center p-8 sm:p-10">
             <TypographySubHeader>
-              Loading products...{" "}
               <AnimatedProgressIcon className="inline stroke-black" />
             </TypographySubHeader>
           </div>
