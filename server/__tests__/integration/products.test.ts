@@ -122,9 +122,9 @@ describe("products", () => {
     });
   });
 
-  describe("GET /products/:id", () => {
-    it("returns a product by id", async () => {
-      const response = await request(server).get(`/products/${itemCID}`);
+  describe("GET /products/:slug", () => {
+    it("returns a product by slug", async () => {
+      const response = await request(server).get(`/products/test-item-3`);
 
       expect(response.status).toEqual(StatusCodes.OK);
       expect(response.body).toEqual({
@@ -139,24 +139,13 @@ describe("products", () => {
     });
 
     it("returns 404 if product is not found", async () => {
-      const response = await request(server).get("/products/9992321");
+      const response = await request(server).get("/products/non-existent");
 
       expect(response.status).toEqual(StatusCodes.NOT_FOUND);
       expect(response.body).toEqual({
         message: "Product not found",
         name: "NotFoundError",
         status: 404,
-      });
-    });
-
-    it("returns 400 if id is not a number", async () => {
-      const response = await request(server).get("/products/abc");
-
-      expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual({
-        message: "Invalid id",
-        name: "BadRequestError",
-        status: 400,
       });
     });
   });

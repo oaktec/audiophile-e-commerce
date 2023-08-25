@@ -15,14 +15,14 @@ export default {
     const products = await productService.getAll();
     res.json(products);
   },
-  getProductById: async (req: Request, res: Response, next: NextFunction) => {
-    const id = Number(req.params.id);
+  getProductBySlug: async (req: Request, res: Response, next: NextFunction) => {
+    const slug = req.params.slug;
 
-    if (isNaN(id) || id < 0) {
-      return next(createHttpError(400, "Invalid id"));
+    if (!slug) {
+      return next(createHttpError(400, "Missing slug"));
     }
 
-    const product = await productService.getById(id);
+    const product = await productService.getBySlug(slug);
 
     if (!product) {
       return next(createHttpError(404, "Product not found"));

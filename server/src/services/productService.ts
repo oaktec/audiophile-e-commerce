@@ -55,4 +55,15 @@ export default {
 
     return mapProduct(product);
   },
+  getBySlug: async (slug: string): Promise<Product | null> => {
+    const { rows } = await db.getByField("products", "slug", slug);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const product = rows[0];
+
+    return mapProduct(product);
+  },
 };
