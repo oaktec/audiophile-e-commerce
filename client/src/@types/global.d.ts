@@ -5,4 +5,5 @@ type Product = {
   description: string;
   price: number;
   categoryId: number;
+  new: boolean;
 };

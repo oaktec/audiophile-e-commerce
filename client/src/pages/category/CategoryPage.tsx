@@ -64,7 +64,7 @@ const CategoryPage: React.FC = () => {
                     </picture>
                     <div className="hidden min-w-[2rem] max-w-[8rem] flex-1 lg:block" />
                     <div className="flex flex-col items-center gap-y-6 sm:gap-y-4 lg:items-start">
-                      {index === 0 && (
+                      {product.new && (
                         <p className="text-sm uppercase tracking-[0.625rem] text-accent">
                           New product
                         </p>
