@@ -118,23 +118,27 @@ export const clearAndPopDB = async () => {
       description: "This is Test Item 1",
       price: 10,
       categoryId: categoryIds[0],
+      slug: "test-item-1",
     },
     {
       name: "Test Item 2",
       description: "This is Test Item 2",
       price: 20,
       categoryId: categoryIds[1],
+      slug: "test-item-2",
     },
     {
       name: "Test Item 3",
       description: "This is Test Item 3",
       price: 30,
       categoryId: categoryIds[0],
+      slug: "test-item-3",
     },
     {
       name: "Test Item 4",
       price: 40,
       categoryId: categoryIds[1],
+      slug: "test-item-4",
     },
   ];
 
@@ -158,8 +162,14 @@ export const clearAndPopDB = async () => {
   await Promise.all(
     testProducts.map(async (product) => {
       await db.query(
-        "INSERT INTO products (name, description, price, category_id) VALUES ($1, $2, $3, $4)",
-        [product.name, product.description, product.price, product.categoryId]
+        "INSERT INTO products (name, description, price, category_id, slug) VALUES ($1, $2, $3, $4, $5)",
+        [
+          product.name,
+          product.description,
+          product.price,
+          product.categoryId,
+          product.slug,
+        ]
       );
     })
   );

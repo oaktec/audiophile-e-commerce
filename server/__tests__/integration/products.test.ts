@@ -9,6 +9,7 @@ let server: Server;
 
 describe("products", () => {
   let categoryAID: number;
+  let categoryAName: string;
   let categoryBID: number;
 
   let itemCID: number;
@@ -21,6 +22,7 @@ describe("products", () => {
 
     const categories = await db.query("SELECT * FROM categories");
     categoryAID = categories.rows[0].id;
+    categoryAName = categories.rows[0].name;
     categoryBID = categories.rows[1].id;
 
     itemCID = (
@@ -46,6 +48,7 @@ describe("products", () => {
             description: "This is Test Item 1",
             price: "10",
             categoryId: categoryAID,
+            slug: "test-item-1",
           },
           {
             id: expect.any(Number),
@@ -53,6 +56,7 @@ describe("products", () => {
             description: "This is Test Item 2",
             price: "20",
             categoryId: categoryBID,
+            slug: "test-item-2",
           },
           {
             id: itemCID,
@@ -60,6 +64,7 @@ describe("products", () => {
             description: "This is Test Item 3",
             price: "30",
             categoryId: categoryAID,
+            slug: "test-item-3",
           },
           {
             id: expect.any(Number),
@@ -67,6 +72,7 @@ describe("products", () => {
             description: null,
             price: "40",
             categoryId: categoryBID,
+            slug: "test-item-4",
           },
         ])
       );
@@ -74,7 +80,7 @@ describe("products", () => {
 
     it("returns products filtered by category", async () => {
       const response = await request(server).get(
-        `/products?category=${categoryAID}`
+        `/products?category=${categoryAName}`
       );
 
       expect(response.status).toEqual(StatusCodes.OK);
@@ -86,6 +92,7 @@ describe("products", () => {
             description: "This is Test Item 1",
             price: "10",
             categoryId: categoryAID,
+            slug: "test-item-1",
           },
           {
             id: itemCID,
@@ -93,27 +100,19 @@ describe("products", () => {
             description: "This is Test Item 3",
             price: "30",
             categoryId: categoryAID,
+            slug: "test-item-3",
           },
         ])
       );
     });
 
     it("returns 200 if category has no products", async () => {
-      const response = await request(server).get("/products?category=999");
+      const response = await request(server).get(
+        "/products?category=nonexistent"
+      );
 
       expect(response.status).toEqual(StatusCodes.OK);
       expect(response.body).toEqual([]);
-    });
-
-    it("returns 400 if category is not a number", async () => {
-      const response = await request(server).get("/products?category=abc");
-
-      expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual({
-        message: "Invalid category",
-        name: "BadRequestError",
-        status: 400,
-      });
     });
   });
 
@@ -128,6 +127,7 @@ describe("products", () => {
         description: "This is Test Item 3",
         price: "30",
         categoryId: categoryAID,
+        slug: "test-item-3",
       });
     });
 
