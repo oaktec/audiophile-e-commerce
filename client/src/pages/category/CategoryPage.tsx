@@ -1,4 +1,5 @@
 import api from "@/api/api";
+import Categories from "@/components/common/Categories";
 import { Link } from "@/components/common/Link";
 import {
   TypographyParagraph,
@@ -9,6 +10,7 @@ import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import BestGearSection from "../root/BestGearSection";
 
 type Product = {
   id: number;
@@ -42,7 +44,7 @@ const CategoryPage: React.FC = () => {
             </TypographySubHeader>
           </div>
         ) : (
-          <div className="mb-[7.5rem] mt-16 space-y-28 sm:mt-[7.5rem]">
+          <div className="mb-[7.5rem] mt-16 space-y-28 sm:mt-[7.5rem] lg:mb-40">
             {data
               .slice(0)
               .reverse()
@@ -93,6 +95,8 @@ const CategoryPage: React.FC = () => {
           </div>
         )}
       </div>
+      <Categories className="mb-[7.5rem] lg:mb-40" />
+      <BestGearSection />
     </>
   );
 };
