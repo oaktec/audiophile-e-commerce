@@ -1,12 +1,14 @@
 import ArrowRightIcon from "@/assets/shared/desktop/icon-arrow-right.svg";
 import { CATEGORIES } from "@/config/config";
+import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 
 interface Props {
   type?: "home" | "menu";
+  className?: string;
 }
 
-const Categories: React.FC<Props> = ({ type = "home" }) => {
+const Categories: React.FC<Props> = ({ type = "home", className }) => {
   const [categoryImages, setCategoryImages] = useState<{
     [key: string]: string;
   }>({});
@@ -28,7 +30,7 @@ const Categories: React.FC<Props> = ({ type = "home" }) => {
   }, []);
 
   return (
-    <div className="container px-6 sm:px-10">
+    <div className={cn("container px-6 sm:px-10", className)}>
       <div
         className={`${
           type === "home" ? "mt-[5.75rem]" : "mt-10"
