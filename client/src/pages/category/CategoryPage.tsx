@@ -6,9 +6,12 @@ const CategoryPage: React.FC = () => {
 
   return (
     <>
-      <div className="container mt-40">
-        Welcome to category page for {categorySlug}
+      <div className="mt-[89px] flex w-full items-center justify-center bg-dark-background p-8 sm:min-h-[12rem]">
+        <h2 className="text-[1.75rem] font-bold uppercase tracking-[0.125rem] text-white sm:text-[2.5rem] sm:leading-[2.75rem] sm:tracking-[0.08931rem]">
+          {categorySlug}
+        </h2>
       </div>
+      <div className="container"></div>
     </>
   );
 };
