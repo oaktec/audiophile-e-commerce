@@ -64,8 +64,12 @@ const SignUp: React.FC = () => {
   const form = useForm<formValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
+      address: "",
     },
   });
 
