@@ -6,6 +6,7 @@ interface DBProduct {
   description: string;
   price: number;
   category_id: number;
+  slug: string;
 }
 
 export interface Product {
@@ -14,6 +15,7 @@ export interface Product {
   description: string;
   price: number;
   categoryId: number;
+  slug: string;
 }
 
 const mapProduct = (product: DBProduct): Product => ({
@@ -22,6 +24,7 @@ const mapProduct = (product: DBProduct): Product => ({
   description: product.description,
   price: product.price,
   categoryId: product.category_id,
+  slug: product.slug,
 });
 
 export default {
