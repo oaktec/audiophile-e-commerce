@@ -1,21 +1,30 @@
+import axios, { AxiosRequestConfig } from "axios";
+
 const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://audiophile-e-commerce-server.fly.dev"
     : "http://localhost:3001";
 
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = BASE_URL;
+
 export default {
-  fetch: async (path: string, options?: RequestInit) => {
-    const res = await fetch(`${BASE_URL}${path}`, {
+  get: async (path: string, options: AxiosRequestConfig = {}) => {
+    const res = await axios.get(path, {
       ...options,
-      credentials: "include",
     });
 
-    const contentType = res.headers.get("content-type");
+    return res.data as unknown;
+  },
+  post: async (
+    path: string,
+    body?: unknown,
+    options: AxiosRequestConfig = {},
+  ) => {
+    const res = await axios.post(path, body, {
+      ...options,
+    });
 
-    if (contentType && contentType.includes("application/json")) {
-      return await res.json();
-    } else {
-      return null;
-    }
+    return res.data as unknown;
   },
 };

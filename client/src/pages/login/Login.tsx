@@ -46,9 +46,7 @@ const Login: React.FC = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setLoggingIn(true);
     api
-      .fetch("/auth/login", {
-        method: "POST",
-        body: JSON.stringify(values),
+      .post("/auth/login", JSON.stringify(values), {
         headers: {
           "Content-Type": "application/json",
         },

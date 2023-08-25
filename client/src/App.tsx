@@ -11,7 +11,7 @@ function App() {
 
   // Check if user is logged in
   useEffect(() => {
-    api.fetch("/auth/check-session").then((data) => {
+    api.get("/auth/check-session").then((data) => {
       const user = data as User;
       if (!user.id) setUser(null);
       else setUser(user);

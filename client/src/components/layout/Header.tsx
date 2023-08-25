@@ -35,9 +35,7 @@ const Header: FC = () => {
   const handleLogout = () => {
     setLoggingOut(true);
     api
-      .fetch("/auth/logout", {
-        method: "POST",
-      })
+      .post("/auth/logout")
       .then(() => {
         setDropDownOpen(false);
         checkSession().then(() => {

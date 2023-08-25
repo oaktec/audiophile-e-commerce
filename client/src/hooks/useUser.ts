@@ -11,7 +11,7 @@ export const useUser = () => {
   const { setUser } = context;
 
   const checkSession = () => {
-    return api.fetch("/auth/check-session").then((res) => {
+    return api.get("/auth/check-session").then((res) => {
       const user = res as User;
       if (!user.id) setUser(null);
       else setUser(user);

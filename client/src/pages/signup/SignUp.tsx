@@ -72,9 +72,7 @@ const SignUp: React.FC = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setSigningUp(true);
     api
-      .fetch("/auth/register", {
-        method: "POST",
-        body: JSON.stringify(values),
+      .post("/auth/register", JSON.stringify(values), {
         headers: {
           "Content-Type": "application/json",
         },
