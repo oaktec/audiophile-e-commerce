@@ -59,19 +59,18 @@ const Login: React.FC = () => {
               variant: "success",
               description: "Logged in as " + user.email,
             });
-          } else {
-            setError(
-              "Invalid email or password. Please try again or register.",
-            );
           }
         });
       })
-      .catch((err) =>
-        toast({
-          variant: "destructive",
-          description: err.message,
-        }),
-      )
+      .catch((err) => {
+        if (err?.response?.data?.message) {
+          setError(err.response.data.message);
+        } else
+          toast({
+            variant: "destructive",
+            description: `Something went wrong. Please try again later. Error: ${err.message}`,
+          });
+      })
       .finally(() => {
         setLoggingIn(false);
       });

@@ -91,18 +91,20 @@ const SignUp: React.FC = () => {
               navigate("/");
               toast({
                 variant: "success",
-                description: "Logged in as " + user.email,
+                description: "Account registered!",
               });
             }
           });
         }
       })
       .catch((err) => {
-        console.log("here");
-        toast({
-          variant: "destructive",
-          description: err,
-        });
+        if (err?.response?.data?.message) {
+          setError(err.response.data.message);
+        } else
+          toast({
+            variant: "destructive",
+            description: `Something went wrong. Please try again later. Error: ${err.message}`,
+          });
       })
       .finally(() => {
         setSigningUp(false);
