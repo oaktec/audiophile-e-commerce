@@ -20,7 +20,8 @@ CREATE TABLE products (
   description text,
   price decimal NOT NULL,
   slug text NOT NULL,
-  category_id integer NOT NULL REFERENCES categories(id)
+  category_id integer NOT NULL REFERENCES categories(id),
+  new boolean NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE carts (

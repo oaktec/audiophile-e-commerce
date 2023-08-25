@@ -12,6 +12,7 @@ services:
     environment:
       - SERVER_PORT=${PORT}
       - NODE_ENV=development
+      - SEED_DB=true
       - CI
       - HOST
       - PORT

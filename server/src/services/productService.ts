@@ -7,6 +7,7 @@ interface DBProduct {
   price: number;
   category_id: number;
   slug: string;
+  new: boolean;
 }
 
 export interface Product {
@@ -16,6 +17,7 @@ export interface Product {
   price: number;
   categoryId: number;
   slug: string;
+  new: boolean;
 }
 
 const mapProduct = (product: DBProduct): Product => ({
@@ -25,6 +27,7 @@ const mapProduct = (product: DBProduct): Product => ({
   price: product.price,
   categoryId: product.category_id,
   slug: product.slug,
+  new: product.new,
 });
 
 export default {

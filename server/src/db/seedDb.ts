@@ -74,13 +74,14 @@ export const seedData = async () => {
         [product.category]
       );
       await client.query(
-        `INSERT INTO products (name, description, price, slug, category_id) VALUES ($1, $2, $3, $4, $5)`,
+        `INSERT INTO products (name, description, price, slug, category_id, new) VALUES ($1, $2, $3, $4, $5, $6)`,
         [
           product.name,
           product.description,
           product.price,
           product.slug,
           categoryId.rows[0].id,
+          product.new,
         ]
       );
     }
@@ -117,7 +118,9 @@ const createTables = async (client: PoolClient) => {
     name text NOT NULL,
     description text,
     price decimal NOT NULL,
-    category_id integer NOT NULL REFERENCES categories(id)
+    category_id integer NOT NULL REFERENCES categories(id),
+    slug text NOT NULL,
+    new boolean NOT NULL DEFAULT TRUE
   )`);
 
   await client.query(`CREATE TABLE IF NOT EXISTS carts (

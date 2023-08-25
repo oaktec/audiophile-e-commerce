@@ -49,6 +49,7 @@ describe("products", () => {
             price: "10",
             categoryId: categoryAID,
             slug: "test-item-1",
+            new: true,
           },
           {
             id: expect.any(Number),
@@ -57,6 +58,7 @@ describe("products", () => {
             price: "20",
             categoryId: categoryBID,
             slug: "test-item-2",
+            new: true,
           },
           {
             id: itemCID,
@@ -65,6 +67,7 @@ describe("products", () => {
             price: "30",
             categoryId: categoryAID,
             slug: "test-item-3",
+            new: true,
           },
           {
             id: expect.any(Number),
@@ -73,6 +76,7 @@ describe("products", () => {
             price: "40",
             categoryId: categoryBID,
             slug: "test-item-4",
+            new: true,
           },
         ])
       );
@@ -93,6 +97,7 @@ describe("products", () => {
             price: "10",
             categoryId: categoryAID,
             slug: "test-item-1",
+            new: true,
           },
           {
             id: itemCID,
@@ -101,6 +106,7 @@ describe("products", () => {
             price: "30",
             categoryId: categoryAID,
             slug: "test-item-3",
+            new: true,
           },
         ])
       );
@@ -128,6 +134,7 @@ describe("products", () => {
         price: "30",
         categoryId: categoryAID,
         slug: "test-item-3",
+        new: true,
       });
     });
 

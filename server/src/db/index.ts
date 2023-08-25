@@ -24,6 +24,7 @@ const validFields = [
   "id",
   "last_name",
   "name",
+  "new",
   "order_date",
   "password",
   "price",
@@ -80,6 +81,6 @@ export default {
   },
 };
 
-if (process.env.SEED_DB === "true") {
+if (process.env.SEED_DB === "true" && NODE_ENV !== "test") {
   seedData().catch(console.error);
 }
