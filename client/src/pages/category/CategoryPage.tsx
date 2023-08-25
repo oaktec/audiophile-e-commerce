@@ -2,6 +2,7 @@ import api from "@/api/api";
 import Categories from "@/components/common/Categories";
 import { Link } from "@/components/common/Link";
 import {
+  TypographyNewProduct,
   TypographyParagraph,
   TypographyProductTitle,
   TypographySubHeader,
@@ -65,9 +66,7 @@ const CategoryPage: React.FC = () => {
                     <div className="hidden min-w-[2rem] max-w-[8rem] flex-1 lg:block" />
                     <div className="flex flex-col items-center gap-y-6 sm:gap-y-4 lg:items-start">
                       {product.new && (
-                        <p className="text-sm uppercase tracking-[0.625rem] text-accent">
-                          New product
-                        </p>
+                        <TypographyNewProduct>New product</TypographyNewProduct>
                       )}
                       <TypographyProductTitle className="max-w-[15ch]">
                         {product.name}

@@ -62,6 +62,20 @@ export const TypographyProductTitle: React.FC<TypographyProps> = ({
   </h3>
 );
 
+export const TypographyNewProduct: React.FC<TypographyProps> = ({
+  children,
+  className,
+}) => (
+  <p
+    className={cn(
+      "text-sm uppercase tracking-[0.625rem] text-accent",
+      className,
+    )}
+  >
+    {children}
+  </p>
+);
+
 export const TypographyDescription: React.FC<TypographyProps> = ({
   children,
   className,
