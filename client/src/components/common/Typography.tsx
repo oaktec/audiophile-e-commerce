@@ -48,6 +48,20 @@ export const TypographyFormHeader: React.FC<TypographyProps> = ({
   </h1>
 );
 
+export const TypographyProductTitle: React.FC<TypographyProps> = ({
+  children,
+  className,
+}) => (
+  <h3
+    className={cn(
+      "text-[1.75rem] font-bold uppercase tracking-[0.0625rem] text-black sm:pb-4 sm:text-[2.5rem] sm:leading-[2.75rem] sm:tracking-[0.08931rem]",
+      className,
+    )}
+  >
+    {children}
+  </h3>
+);
+
 export const TypographyDescription: React.FC<TypographyProps> = ({
   children,
   className,
@@ -66,12 +80,12 @@ export const TypographyParagraph: React.FC<TypographyProps> = ({
   children,
   className,
 }) => (
-  <span
+  <p
     className={cn(
       "text-[0.9375rem] font-medium leading-[1.5625rem] text-black opacity-50",
       className,
     )}
   >
     {children}
-  </span>
+  </p>
 );
