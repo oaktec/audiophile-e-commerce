@@ -1,6 +1,10 @@
 import api from "@/api/api";
 import { Link } from "@/components/common/Link";
-import { TypographySubHeader } from "@/components/common/Typography";
+import {
+  TypographyParagraph,
+  TypographyProductTitle,
+  TypographySubHeader,
+} from "@/components/common/Typography";
 import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import React from "react";
 import { useQuery } from "react-query";
@@ -29,29 +33,64 @@ const CategoryPage: React.FC = () => {
           {categorySlug}
         </h2>
       </div>
-      <div className="container">
+      <div className="container px-6 sm:px-10">
         {isLoading || !data ? (
-          <div className="flex w-full items-center justify-center p-8">
+          <div className="flex w-full items-center justify-center p-8 sm:p-10">
             <TypographySubHeader>
               Loading products...{" "}
               <AnimatedProgressIcon className="inline stroke-black" />
             </TypographySubHeader>
           </div>
         ) : (
-          data.map((product, index) => {
-            return (
-              <div key={product.id}>
-                <img
-                  src={`/product-${product.slug}/mobile/image-category-page-preview.jpg`}
-                  alt={product.name}
-                />
-                {index === 0 && <h4>New product</h4>}
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <Link variant="button">See product</Link>
-              </div>
-            );
-          })
+          <div className="mb-[7.5rem] mt-16 space-y-28 sm:mt-[7.5rem]">
+            {data
+              .slice(0)
+              .reverse()
+              .map((product, index) => {
+                return (
+                  <div
+                    key={product.id}
+                    className={`flex flex-col text-center lg:items-center lg:justify-center lg:text-left ${
+                      index % 2 ? "lg:flex-row-reverse" : "lg:flex-row"
+                    }`}
+                  >
+                    <picture>
+                      <source
+                        media="(min-width: 1024px)"
+                        srcSet={`/product-${product.slug}/desktop/image-category-page-preview.jpg`}
+                      />
+                      <source
+                        media="(min-width: 640px)"
+                        srcSet={`/product-${product.slug}/tablet/image-category-page-preview.jpg`}
+                      />
+                      <img
+                        src={`/product-${product.slug}/mobile/image-category-page-preview.jpg`}
+                        alt={product.name}
+                        loading="lazy"
+                        className="mb-8 rounded-lg object-cover sm:mb-[3.25rem] lg:mb-0 lg:max-w-[min(35rem,40vw,50vh)]"
+                      />
+                    </picture>
+                    <div className="hidden min-w-[2rem] max-w-[8rem] flex-1 lg:block" />
+                    <div className="flex flex-col items-center gap-y-6 sm:gap-y-4 lg:items-start">
+                      {index === 0 && (
+                        <p className="text-sm uppercase tracking-[0.625rem] text-accent">
+                          New product
+                        </p>
+                      )}
+                      <TypographyProductTitle className="max-w-[15ch]">
+                        {product.name}
+                      </TypographyProductTitle>
+                      <TypographyParagraph className="max-w-prose sm:mb-2 lg:max-w-[45ch]">
+                        {product.description}
+                      </TypographyParagraph>
+                      <Link variant="button" href={`/product/${product.slug}`}>
+                        See product
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         )}
       </div>
     </>
