@@ -30,10 +30,10 @@ export default {
 
     return rows.map(mapProduct);
   },
-  getByCategory: async (categoryId: number): Promise<Product[]> => {
+  getByCategory: async (categoryName: string): Promise<Product[]> => {
     const { rows } = await db.query(
-      "SELECT * FROM products WHERE category_id = $1",
-      [categoryId]
+      "SELECT * FROM products WHERE category_id = (SELECT id FROM categories WHERE name = $1)",
+      [categoryName]
     );
 
     return rows.map(mapProduct);

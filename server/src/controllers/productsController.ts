@@ -6,12 +6,8 @@ import { productService } from "../services";
 export default {
   getProducts: async (req: Request, res: Response, next: NextFunction) => {
     if (req.query.category) {
-      if (isNaN(Number(req.query.category))) {
-        return next(createHttpError(400, "Invalid category"));
-      }
-
       const products = await productService.getByCategory(
-        Number(req.query.category)
+        req.query.category as string
       );
       return res.json(products);
     }
