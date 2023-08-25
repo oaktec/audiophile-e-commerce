@@ -19,6 +19,7 @@ CREATE TABLE products (
   name text NOT NULL,
   description text,
   price decimal NOT NULL,
+  slug text NOT NULL,
   category_id integer NOT NULL REFERENCES categories(id)
 );
 

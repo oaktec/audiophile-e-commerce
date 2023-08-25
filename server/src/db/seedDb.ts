@@ -74,11 +74,12 @@ export const seedData = async () => {
         [product.category]
       );
       await client.query(
-        `INSERT INTO products (name, description, price, category_id) VALUES ($1, $2, $3, $4)`,
+        `INSERT INTO products (name, description, price, slug, category_id) VALUES ($1, $2, $3, $4, $5)`,
         [
           product.name,
           product.description,
           product.price,
+          product.slug,
           categoryId.rows[0].id,
         ]
       );

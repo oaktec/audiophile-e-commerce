@@ -29,6 +29,7 @@ const validFields = [
   "price",
   "product_id",
   "quantity",
+  "slug",
   "status",
   "user_id",
 ];
