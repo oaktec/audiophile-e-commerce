@@ -1,4 +1,5 @@
 import api from "@/api/api";
+import Categories from "@/components/common/Categories";
 import { Link } from "@/components/common/Link";
 import {
   TypographyNewProduct,
@@ -10,16 +11,25 @@ import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useQueries, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import BestGearSection from "../root/BestGearSection";
 
 const ProductPage: React.FC = () => {
   const { productSlug } = useParams();
   const navigate = useNavigate();
-  const { isLoading, data } = useQuery<FullProduct>(
+  const { isLoading, data: mainProduct } = useQuery<FullProduct>(
     `products/${productSlug}`,
     () => api.get(`/products/${productSlug}`) as Promise<FullProduct>,
   );
+  const similarProductQueries = useQueries(
+    mainProduct?.similarProducts.map((productSlug) => ({
+      queryKey: `products/${productSlug}`,
+      queryFn: () =>
+        api.get(`/products/${productSlug}`) as Promise<FullProduct>,
+    })) || [],
+  );
+
   const { toast } = useToast();
 
   const [quantity, setQuantity] = useState(1);
@@ -34,7 +44,7 @@ const ProductPage: React.FC = () => {
         >
           Go Back
         </Link>
-        {isLoading || !data ? (
+        {isLoading || !mainProduct ? (
           <div className="flex w-full items-center justify-center p-8 sm:p-10">
             <TypographySubHeader>
               <AnimatedProgressIcon className="inline stroke-black" />
@@ -54,25 +64,25 @@ const ProductPage: React.FC = () => {
                 />
                 <img
                   src={`/product-${productSlug}/mobile/image-product.jpg`}
-                  alt={data?.name}
+                  alt={mainProduct?.name}
                   className="w-full rounded-lg sm:max-h-[30rem] lg:max-h-[35rem]"
                 />
               </picture>
               <div className="min-w-4 hidden max-w-[5rem] flex-1 sm:block lg:max-w-[8rem]" />
               <div className="space-y-6 sm:flex-[4]">
-                {data?.new && (
+                {mainProduct?.new && (
                   <TypographyNewProduct className="">
                     New Product
                   </TypographyNewProduct>
                 )}
                 <p className="max-w-[15ch] text-[1.75rem] font-bold uppercase tracking-[0.0625rem] lg:text-[2.5rem] lg:leading-[2.75rem] lg:tracking-[0.08931rem]">
-                  {data?.name}
+                  {mainProduct?.name}
                 </p>
                 <TypographyParagraph className="max-w-prose">
-                  {data?.description}
+                  {mainProduct?.description}
                 </TypographyParagraph>
                 <p className="text-lg font-bold uppercase tracking-[0.08038rem]">
-                  £{Number(data?.price).toLocaleString()}
+                  £{Number(mainProduct?.price).toLocaleString()}
                 </p>
                 <div className="flex items-center gap-4">
                   <div className="relative  flex h-12 w-[7.5rem] items-center bg-gray-100 align-middle">
@@ -132,7 +142,7 @@ const ProductPage: React.FC = () => {
                   Features
                 </TypographyProductSubHeader>
                 <TypographyParagraph className="max-w-prose whitespace-pre-wrap">
-                  {data?.features}
+                  {mainProduct?.features}
                 </TypographyParagraph>
               </div>
               <div className="hidden lg:block" />
@@ -141,7 +151,7 @@ const ProductPage: React.FC = () => {
                   In the box
                 </TypographyProductSubHeader>
                 <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-6 gap-y-2">
-                  {data?.boxContents.map((item) => (
+                  {mainProduct?.boxContents.map((item) => (
                     <>
                       <span className="text-[0.9375rem] font-bold leading-[1.5625rem] text-accent">
                         {item.quantity}x
@@ -153,8 +163,8 @@ const ProductPage: React.FC = () => {
               </div>
               <div className="hidden lg:block" />
             </div>
-            <div className="flex flex-col gap-5 self-center sm:flex-row">
-              <div className="flex flex-col gap-5">
+            <div className="justify flex w-full flex-col justify-center gap-5 self-center sm:flex-row">
+              <div className="flex flex-col gap-5 lg:justify-between">
                 <picture>
                   <source
                     media="(min-width: 1024px)"
@@ -166,7 +176,7 @@ const ProductPage: React.FC = () => {
                   />
                   <img
                     src={`/product-${productSlug}/mobile/image-gallery-1.jpg`}
-                    alt={data?.name}
+                    alt={mainProduct?.name}
                     className="rounded-lg"
                   />
                 </picture>
@@ -181,7 +191,7 @@ const ProductPage: React.FC = () => {
                   />
                   <img
                     src={`/product-${productSlug}/mobile/image-gallery-2.jpg`}
-                    alt={data?.name}
+                    alt={mainProduct?.name}
                     className="rounded-lg"
                   />
                 </picture>
@@ -197,11 +207,41 @@ const ProductPage: React.FC = () => {
                 />
                 <img
                   src={`/product-${productSlug}/mobile/image-gallery-3.jpg`}
-                  alt={data?.name}
+                  alt={mainProduct?.name}
                   className="rounded-lg"
                 />
               </picture>
             </div>
+            <div>
+              <TypographyProductSubHeader className="mb-10 text-center sm:mb-[3.5rem] lg:mb-16">
+                You may also like
+              </TypographyProductSubHeader>
+              <div className="flex flex-col gap-[3.5rem] sm:flex-row sm:gap-2 lg:justify-center">
+                {!similarProductQueries ? (
+                  <div className="flex w-full items-center justify-center p-8 sm:p-10">
+                    <TypographySubHeader>
+                      <AnimatedProgressIcon className="inline stroke-black" />
+                    </TypographySubHeader>
+                  </div>
+                ) : (
+                  similarProductQueries.map((similarProduct) => (
+                    <div className="flex flex-col items-center gap-8 sm:max-w-[22rem] sm:flex-1 sm:justify-between">
+                      <img
+                        src={`/product-${similarProduct.data?.slug}/desktop/image-product.jpg`}
+                        alt={mainProduct?.name}
+                        className="max-h-[7.5rem] w-full rounded-lg bg-[#f1f1f1] object-contain sm:mb-2 sm:min-h-[20rem] sm:max-w-[20rem]"
+                      />
+                      <p className="max-w-[15ch] text-center text-2xl font-bold uppercase">
+                        {similarProduct.data?.name}
+                      </p>
+                      <Link variant="button">See product</Link>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+            <Categories />
+            <BestGearSection />
             <div />
           </div>
         )}
