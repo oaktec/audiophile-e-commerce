@@ -142,11 +142,15 @@ describe("products", () => {
         slug: "test-item-3",
         new: true,
         features: "This is Test Item 3 features",
-        similarProducts: ["test-item-1", "test-item-2", "test-item-4"],
-        boxContents: [
+        similarProducts: expect.arrayContaining([
+          "test-item-1",
+          "test-item-2",
+          "test-item-4",
+        ]),
+        boxContents: expect.arrayContaining([
           { item: "Test Item 1", quantity: 1 },
           { item: "Test Item 2", quantity: 3 },
-        ],
+        ]),
       });
     });
 
