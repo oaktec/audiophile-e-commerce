@@ -50,6 +50,7 @@ describe("products", () => {
             categoryId: categoryAID,
             slug: "test-item-1",
             new: true,
+            features: "This is Test Item 1 features",
           },
           {
             id: expect.any(Number),
@@ -59,6 +60,7 @@ describe("products", () => {
             categoryId: categoryBID,
             slug: "test-item-2",
             new: true,
+            features: "This is Test Item 2 features",
           },
           {
             id: itemCID,
@@ -68,6 +70,7 @@ describe("products", () => {
             categoryId: categoryAID,
             slug: "test-item-3",
             new: true,
+            features: "This is Test Item 3 features",
           },
           {
             id: expect.any(Number),
@@ -77,6 +80,7 @@ describe("products", () => {
             categoryId: categoryBID,
             slug: "test-item-4",
             new: true,
+            features: "This is Test Item 4 features",
           },
         ])
       );
@@ -98,6 +102,7 @@ describe("products", () => {
             categoryId: categoryAID,
             slug: "test-item-1",
             new: true,
+            features: "This is Test Item 1 features",
           },
           {
             id: itemCID,
@@ -107,6 +112,7 @@ describe("products", () => {
             categoryId: categoryAID,
             slug: "test-item-3",
             new: true,
+            features: "This is Test Item 3 features",
           },
         ])
       );
@@ -123,7 +129,7 @@ describe("products", () => {
   });
 
   describe("GET /products/:slug", () => {
-    it("returns a product by slug", async () => {
+    it("returns a full product by slug", async () => {
       const response = await request(server).get(`/products/test-item-3`);
 
       expect(response.status).toEqual(StatusCodes.OK);
@@ -135,6 +141,12 @@ describe("products", () => {
         categoryId: categoryAID,
         slug: "test-item-3",
         new: true,
+        features: "This is Test Item 3 features",
+        similarProducts: ["test-item-1", "test-item-2", "test-item-4"],
+        boxContents: [
+          { item: "Test Item 1", quantity: 1 },
+          { item: "Test Item 2", quantity: 3 },
+        ],
       });
     });
 

@@ -10,7 +10,9 @@ export const validTables = [
   "cart_items",
   "categories",
   "orders",
+  "product_box_contents",
   "products",
+  "similar_products",
   "users",
 ];
 const validFields = [
@@ -20,8 +22,10 @@ const validFields = [
   "category_id",
   "description",
   "email",
+  "features",
   "first_name",
   "id",
+  "item_id",
   "last_name",
   "name",
   "new",
@@ -30,6 +34,7 @@ const validFields = [
   "price",
   "product_id",
   "quantity",
+  "similar_product_id",
   "slug",
   "status",
   "user_id",

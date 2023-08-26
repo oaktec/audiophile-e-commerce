@@ -119,6 +119,7 @@ export const clearAndPopDB = async () => {
       price: 10,
       categoryId: categoryIds[0],
       slug: "test-item-1",
+      features: "This is Test Item 1 features",
     },
     {
       name: "Test Item 2",
@@ -126,6 +127,7 @@ export const clearAndPopDB = async () => {
       price: 20,
       categoryId: categoryIds[1],
       slug: "test-item-2",
+      features: "This is Test Item 2 features",
     },
     {
       name: "Test Item 3",
@@ -133,14 +135,29 @@ export const clearAndPopDB = async () => {
       price: 30,
       categoryId: categoryIds[0],
       slug: "test-item-3",
+      features: "This is Test Item 3 features",
     },
     {
       name: "Test Item 4",
       price: 40,
       categoryId: categoryIds[1],
       slug: "test-item-4",
+      features: "This is Test Item 4 features",
     },
   ];
+
+  const testBoxContents = [
+    {
+      name: "Test Item 1",
+      quantity: 1,
+    },
+    {
+      name: "Test Item 2",
+      quantity: 3,
+    },
+  ];
+
+  const similarProducts = ["test-item-1", "test-item-2", "test-item-4"];
 
   const testUsers = [
     {
@@ -162,14 +179,43 @@ export const clearAndPopDB = async () => {
   await Promise.all(
     testProducts.map(async (product) => {
       await db.query(
-        "INSERT INTO products (name, description, price, category_id, slug) VALUES ($1, $2, $3, $4, $5)",
+        "INSERT INTO products (name, description, price, category_id, slug, features) VALUES ($1, $2, $3, $4, $5, $6)",
         [
           product.name,
           product.description,
           product.price,
           product.categoryId,
           product.slug,
+          product.features,
         ]
+      );
+    })
+  );
+
+  const { rows } = await db.query(
+    "SELECT id FROM products WHERE name = 'Test Item 3'"
+  );
+  const testItem3Id = rows[0].id;
+
+  await Promise.all(
+    testBoxContents.map(async (boxContent) => {
+      await db.query(
+        "INSERT INTO product_box_contents (product_id, item, quantity) VALUES ($1, $2, $3)",
+        [testItem3Id, boxContent.name, boxContent.quantity]
+      );
+    })
+  );
+
+  await Promise.all(
+    similarProducts.map(async (slug) => {
+      const { rows } = await db.query(
+        "SELECT id FROM products WHERE slug = $1",
+        [slug]
+      );
+
+      await db.query(
+        "INSERT INTO similar_products (product_id, similar_product_id) VALUES ($1, $2)",
+        [testItem3Id, rows[0].id]
       );
     })
   );

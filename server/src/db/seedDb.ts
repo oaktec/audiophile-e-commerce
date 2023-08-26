@@ -16,7 +16,7 @@ interface SeedData {
   features: string;
   includes: Part[];
   gallery: ResponsiveImage[];
-  relatedProducts: string[];
+  others: string[];
 }
 
 interface ResponsiveImage {
@@ -37,6 +37,9 @@ export const seedData = async () => {
     await client.query("BEGIN");
 
     await createTables(client);
+
+    await client.query(`DELETE FROM similar_products`);
+    await client.query(`DELETE FROM product_box_contents`);
 
     console.log("Clearing products");
     await client.query(`DELETE FROM products`);
@@ -74,7 +77,7 @@ export const seedData = async () => {
         [product.category]
       );
       await client.query(
-        `INSERT INTO products (name, description, price, slug, category_id, new) VALUES ($1, $2, $3, $4, $5, $6)`,
+        `INSERT INTO products (name, description, price, slug, category_id, new, features) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [
           product.name,
           product.description,
@@ -82,8 +85,45 @@ export const seedData = async () => {
           product.slug,
           categoryId.rows[0].id,
           product.new,
+          product.features,
         ]
       );
+    }
+
+    for (const product of data) {
+      // Insert similar products
+      let productId = await client.query(
+        `SELECT id FROM products WHERE slug = $1`,
+        [product.slug]
+      );
+      productId = productId.rows[0].id;
+
+      for (const similarProduct of product.others) {
+        let similarProductId = await client.query(
+          `SELECT id FROM products WHERE slug = $1`,
+          [similarProduct]
+        );
+        similarProductId = similarProductId.rows[0]?.id;
+        if (!similarProductId) {
+          console.log(
+            `Could not find product with slug ${similarProduct} for similar products`
+          );
+          continue;
+        }
+
+        await client.query(
+          `INSERT INTO similar_products (product_id, similar_product_id) VALUES ($1, $2)`,
+          [productId, similarProductId]
+        );
+      }
+
+      // Insert product box contents
+      for (const item of product.includes) {
+        await client.query(
+          `INSERT INTO product_box_contents (product_id, quantity, item) VALUES ($1, $2, $3)`,
+          [productId, item.quantity, item.item]
+        );
+      }
     }
 
     console.info("Seeding complete");
@@ -120,7 +160,21 @@ const createTables = async (client: PoolClient) => {
     price decimal NOT NULL,
     category_id integer NOT NULL REFERENCES categories(id),
     slug text NOT NULL,
-    new boolean NOT NULL DEFAULT TRUE
+    new boolean NOT NULL DEFAULT TRUE,
+    features text NOT NULL
+  )`);
+
+  await client.query(`CREATE TABLE IF NOT EXISTS similar_products (
+    product_id integer NOT NULL REFERENCES products(id),
+    similar_product_id integer NOT NULL REFERENCES products(id),
+    PRIMARY KEY (product_id, similar_product_id)
+  )`);
+
+  await client.query(`CREATE TABLE IF NOT EXISTS product_box_contents (
+    product_id integer NOT NULL REFERENCES products(id),
+    quantity integer NOT NULL,
+    item text NOT NULL,
+    PRIMARY KEY (product_id, item)
   )`);
 
   await client.query(`CREATE TABLE IF NOT EXISTS carts (

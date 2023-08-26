@@ -21,7 +21,19 @@ CREATE TABLE products (
   price decimal NOT NULL,
   slug text NOT NULL,
   category_id integer NOT NULL REFERENCES categories(id),
-  new boolean NOT NULL DEFAULT TRUE
+  new boolean NOT NULL DEFAULT TRUE,
+  features text NOT NULL
+);
+
+CREATE TABLE similar_products (
+  product_id integer NOT NULL REFERENCES products(id),
+  similar_product_id integer NOT NULL REFERENCES products(id)
+);
+
+CREATE TABLE product_box_contents (
+  product_id integer NOT NULL REFERENCES products(id),
+  item text NOT NULL,
+  quantity integer NOT NULL
 );
 
 CREATE TABLE carts (
