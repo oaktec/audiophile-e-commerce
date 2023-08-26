@@ -36,18 +36,13 @@ export const seedData = async () => {
   try {
     await client.query("BEGIN");
 
+    // Drop all tables
+    console.log("Dropping tables");
+    await client.query(`DROP SCHEMA public CASCADE`);
+    await client.query(`CREATE SCHEMA public`);
+
     await createTables(client);
 
-    await client.query(`DELETE FROM similar_products`);
-    await client.query(`DELETE FROM product_box_contents`);
-
-    console.log("Clearing products");
-    await client.query(`DELETE FROM products`);
-    //  Clear tables if necessary
-    for (const table of validTables) {
-      console.log(`Deleting ${table}`);
-      await client.query(`DELETE FROM ${table} CASCADE`);
-    }
     console.log("Seeding database");
 
     const dataFilePath = path.resolve(__dirname, "../data/data.json");
