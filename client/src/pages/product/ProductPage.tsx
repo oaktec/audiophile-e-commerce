@@ -163,40 +163,40 @@ const ProductPage: React.FC = () => {
               </div>
               <div className="hidden lg:block" />
             </div>
-            <div className="justify flex w-full flex-col justify-center gap-5 self-center sm:flex-row">
-              <div className="flex flex-col gap-5 lg:justify-between">
-                <picture>
-                  <source
-                    media="(min-width: 1024px)"
-                    srcSet={`/product-${productSlug}/desktop/image-gallery-1.jpg`}
-                  />
-                  <source
-                    media="(min-width: 640px)"
-                    srcSet={`/product-${productSlug}/tablet/image-gallery-1.jpg`}
-                  />
-                  <img
-                    src={`/product-${productSlug}/mobile/image-gallery-1.jpg`}
-                    alt={mainProduct?.name}
-                    className="rounded-lg"
-                  />
-                </picture>
-                <picture>
-                  <source
-                    media="(min-width: 1024px)"
-                    srcSet={`/product-${productSlug}/desktop/image-gallery-2.jpg`}
-                  />
-                  <source
-                    media="(min-width: 640px)"
-                    srcSet={`/product-${productSlug}/tablet/image-gallery-2.jpg`}
-                  />
-                  <img
-                    src={`/product-${productSlug}/mobile/image-gallery-2.jpg`}
-                    alt={mainProduct?.name}
-                    className="rounded-lg"
-                  />
-                </picture>
-              </div>
-              <picture>
+            <div
+              className={`justify flex w-full flex-col justify-stretch gap-5 self-center sm:grid sm:[grid-template:"a_c"_auto_"b_c"_auto]`}
+            >
+              <picture className="sm:[grid-area:a]">
+                <source
+                  media="(min-width: 1024px)"
+                  srcSet={`/product-${productSlug}/desktop/image-gallery-1.jpg`}
+                />
+                <source
+                  media="(min-width: 640px)"
+                  srcSet={`/product-${productSlug}/tablet/image-gallery-1.jpg`}
+                />
+                <img
+                  src={`/product-${productSlug}/mobile/image-gallery-1.jpg`}
+                  alt={mainProduct?.name}
+                  className="h-full rounded-lg object-cover"
+                />
+              </picture>
+              <picture className="sm:[grid-area:b]">
+                <source
+                  media="(min-width: 1024px)"
+                  srcSet={`/product-${productSlug}/desktop/image-gallery-2.jpg`}
+                />
+                <source
+                  media="(min-width: 640px)"
+                  srcSet={`/product-${productSlug}/tablet/image-gallery-2.jpg`}
+                />
+                <img
+                  src={`/product-${productSlug}/mobile/image-gallery-2.jpg`}
+                  alt={mainProduct?.name}
+                  className="h-full rounded-lg object-cover"
+                />
+              </picture>
+              <picture className="sm:[grid-area:c]">
                 <source
                   media="(min-width: 1024px)"
                   srcSet={`/product-${productSlug}/desktop/image-gallery-3.jpg`}
@@ -208,7 +208,7 @@ const ProductPage: React.FC = () => {
                 <img
                   src={`/product-${productSlug}/mobile/image-gallery-3.jpg`}
                   alt={mainProduct?.name}
-                  className="rounded-lg"
+                  className="h-full w-full rounded-lg object-cover"
                 />
               </picture>
             </div>
