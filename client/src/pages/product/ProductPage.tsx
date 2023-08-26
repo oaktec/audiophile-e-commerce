@@ -145,9 +145,9 @@ const ProductPage: React.FC = () => {
                   {mainProduct?.features}
                 </TypographyParagraph>
               </div>
-              <div className="hidden lg:block" />
+              <div className="hidden flex-1  lg:block" />
               <div className="flex flex-col gap-y-6 sm:flex-row lg:flex-col">
-                <TypographyProductSubHeader className="sm:min-w-[50%] lg:min-w-min">
+                <TypographyProductSubHeader className="sm:min-w-[40%] lg:min-w-min">
                   In the box
                 </TypographyProductSubHeader>
                 <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-6 gap-y-2">
@@ -161,7 +161,7 @@ const ProductPage: React.FC = () => {
                   ))}
                 </div>
               </div>
-              <div className="hidden lg:block" />
+              <div className="hidden flex-1 lg:block" />
             </div>
             <div
               className={`justify flex w-full flex-col justify-stretch gap-5 self-center sm:grid sm:[grid-template:"a_c"_auto_"b_c"_auto]`}
