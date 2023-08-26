@@ -225,11 +225,11 @@ const ProductPage: React.FC = () => {
                   </div>
                 ) : (
                   similarProductQueries.map((similarProduct) => (
-                    <div className="flex flex-col items-center gap-8 sm:max-w-[22rem] sm:flex-1 sm:justify-between">
+                    <div className="flex flex-col items-center gap-8 sm:flex-1 sm:justify-between">
                       <img
                         src={`/product-${similarProduct.data?.slug}/desktop/image-product.jpg`}
                         alt={mainProduct?.name}
-                        className="max-h-[7.5rem] w-full rounded-lg bg-[#f1f1f1] object-contain sm:mb-2 sm:min-h-[20rem] sm:max-w-[20rem]"
+                        className="max-h-[7.5rem] w-full rounded-lg bg-[#f1f1f1] object-contain sm:mb-2 sm:min-h-[20rem]"
                       />
                       <p className="max-w-[15ch] text-center text-2xl font-bold uppercase">
                         {similarProduct.data?.name}
@@ -240,12 +240,12 @@ const ProductPage: React.FC = () => {
                 )}
               </div>
             </div>
-            <Categories />
-            <BestGearSection />
             <div />
           </div>
         )}
       </div>
+      <Categories />
+      <BestGearSection />
     </>
   );
 };
