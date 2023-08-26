@@ -35,7 +35,7 @@ const CategoryPage: React.FC = () => {
             </TypographySubHeader>
           </div>
         ) : (
-          <div className="mb-[7.5rem] mt-16 space-y-28 sm:mt-[7.5rem] lg:mb-40 lg:flex lg:flex-col lg:items-center">
+          <div className="mb-[7.5rem] mt-16 space-y-28 sm:mt-[7.5rem] lg:mb-40">
             {data
               .slice(0)
               .reverse()
@@ -43,7 +43,7 @@ const CategoryPage: React.FC = () => {
                 return (
                   <div
                     key={product.id}
-                    className={`flex flex-col text-center lg:w-[60rem] lg:items-center lg:justify-around lg:text-left ${
+                    className={`flex flex-col text-center lg:items-center lg:justify-between lg:text-left ${
                       index % 2 ? "lg:flex-row-reverse" : "lg:flex-row"
                     }`}
                   >
@@ -60,7 +60,7 @@ const CategoryPage: React.FC = () => {
                         src={`/product-${product.slug}/mobile/image-category-page-preview.jpg`}
                         alt={product.name}
                         loading="lazy"
-                        className="mb-8 rounded-lg object-cover sm:mb-[3.25rem] lg:mb-0 lg:max-w-[min(35rem,40vw,50vh)]"
+                        className="lg:mb-0] mb-8 rounded-lg object-cover sm:mb-[3.25rem] lg:max-w-[min(50vw,35rem)]"
                       />
                     </picture>
                     <div className="hidden min-w-[2rem] max-w-[8rem] flex-1 lg:block" />
@@ -71,7 +71,7 @@ const CategoryPage: React.FC = () => {
                       <TypographyProductTitle className="max-w-[15ch]">
                         {product.name}
                       </TypographyProductTitle>
-                      <TypographyParagraph className="max-w-prose sm:mb-2 lg:max-w-[45ch]">
+                      <TypographyParagraph className="max-w-prose sm:mb-2 lg:max-w-prose">
                         {product.description}
                       </TypographyParagraph>
                       <Link variant="button" href={`/product/${product.slug}`}>
