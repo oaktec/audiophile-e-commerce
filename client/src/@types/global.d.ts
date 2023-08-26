@@ -6,4 +6,10 @@ type Product = {
   price: number;
   categoryId: number;
   new: boolean;
+  features: string;
 };
+
+interface FullProduct extends Product {
+  similarProducts: string[];
+  boxContents: { item: string; quantity: number }[];
+}
