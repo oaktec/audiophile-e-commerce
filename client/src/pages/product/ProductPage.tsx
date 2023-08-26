@@ -216,7 +216,7 @@ const ProductPage: React.FC = () => {
               <TypographyProductSubHeader className="mb-10 text-center sm:mb-[3.5rem] lg:mb-16">
                 You may also like
               </TypographyProductSubHeader>
-              <div className="flex flex-col gap-[3.5rem] sm:flex-row sm:gap-2 lg:justify-center">
+              <div className="flex flex-col gap-[3.5rem] sm:flex-row sm:gap-8 lg:justify-center">
                 {!similarProductQueries ? (
                   <div className="flex w-full items-center justify-center p-8 sm:p-10">
                     <TypographySubHeader>
