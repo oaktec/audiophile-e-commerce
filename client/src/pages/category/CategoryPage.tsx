@@ -35,7 +35,7 @@ const CategoryPage: React.FC = () => {
             </TypographySubHeader>
           </div>
         ) : (
-          <div className="mb-[7.5rem] mt-16 space-y-28 sm:mt-[7.5rem] lg:mb-40">
+          <div className="mb-[7.5rem] mt-16 space-y-28 sm:mt-[7.5rem] lg:mb-40 lg:flex lg:flex-col lg:items-center">
             {data
               .slice(0)
               .reverse()
@@ -43,7 +43,7 @@ const CategoryPage: React.FC = () => {
                 return (
                   <div
                     key={product.id}
-                    className={`flex flex-col text-center lg:items-center lg:justify-center lg:text-left ${
+                    className={`flex flex-col text-center lg:w-[60rem] lg:items-center lg:justify-around lg:text-left ${
                       index % 2 ? "lg:flex-row-reverse" : "lg:flex-row"
                     }`}
                   >
