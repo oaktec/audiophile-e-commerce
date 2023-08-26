@@ -3,6 +3,7 @@ import { Link } from "@/components/common/Link";
 import {
   TypographyNewProduct,
   TypographyParagraph,
+  TypographyProductSubHeader,
   TypographySubHeader,
 } from "@/components/common/Typography";
 import { AnimatedProgressIcon } from "@/components/icons/Icons";
@@ -15,9 +16,9 @@ import { useNavigate, useParams } from "react-router-dom";
 const ProductPage: React.FC = () => {
   const { productSlug } = useParams();
   const navigate = useNavigate();
-  const { isLoading, data } = useQuery<Product>(
+  const { isLoading, data } = useQuery<FullProduct>(
     `products/${productSlug}`,
-    () => api.get(`/products/${productSlug}`) as Promise<Product>,
+    () => api.get(`/products/${productSlug}`) as Promise<FullProduct>,
   );
   const { toast } = useToast();
 
@@ -41,7 +42,7 @@ const ProductPage: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-[5.5rem]">
-            <div className="flex flex-col gap-y-8">
+            <div className="flex flex-col gap-y-8 sm:flex-row sm:items-center sm:justify-between sm:gap-1">
               <picture>
                 <source
                   media="(min-width: 1024px)"
@@ -54,10 +55,11 @@ const ProductPage: React.FC = () => {
                 <img
                   src={`/product-${productSlug}/mobile/image-product.jpg`}
                   alt={data?.name}
-                  className="w-full rounded-lg"
+                  className="w-full rounded-lg sm:max-h-[30rem] lg:max-h-[35rem]"
                 />
               </picture>
-              <div className="space-y-6">
+              <div className="min-w-4 hidden max-w-[5rem] flex-1 sm:block lg:max-w-[8rem]" />
+              <div className="space-y-6 sm:flex-[4]">
                 {data?.new && (
                   <TypographyNewProduct className="">
                     New Product
@@ -123,6 +125,33 @@ const ProductPage: React.FC = () => {
                   </Button>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-col gap-y-[5.5rem] lg:flex-row lg:justify-between lg:gap-x-8">
+              <div>
+                <TypographyProductSubHeader className="mb-6 sm:mb-8">
+                  Features
+                </TypographyProductSubHeader>
+                <TypographyParagraph className="max-w-prose whitespace-pre-wrap">
+                  {data?.features}
+                </TypographyParagraph>
+              </div>
+              <div className="hidden lg:block" />
+              <div className="flex flex-col gap-y-6 sm:flex-row lg:flex-col">
+                <TypographyProductSubHeader className="sm:min-w-[50%] lg:min-w-min">
+                  In the box
+                </TypographyProductSubHeader>
+                <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-6 gap-y-2">
+                  {data?.boxContents.map((item) => (
+                    <>
+                      <span className="text-[0.9375rem] font-bold leading-[1.5625rem] text-accent">
+                        {item.quantity}x
+                      </span>
+                      <TypographyParagraph>{item.item}</TypographyParagraph>
+                    </>
+                  ))}
+                </div>
+              </div>
+              <div className="hidden lg:block" />
             </div>
             <div />
           </div>
