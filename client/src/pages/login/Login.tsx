@@ -13,7 +13,7 @@ import { useUser } from "@/hooks/useUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -27,6 +27,10 @@ const Login: React.FC = () => {
   const { checkSession, isLoggedIn } = useUser();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const redirectURL = params.get("redirect");
 
   const [error, setError] = useState<string | null>(null);
   const [loggingIn, setLoggingIn] = useState(false);
@@ -54,7 +58,7 @@ const Login: React.FC = () => {
       .then(() => {
         checkSession().then((user) => {
           if (user && user.id) {
-            navigate("/");
+            navigate(redirectURL || "/");
             toast({
               variant: "success",
               description: "Logged in as " + user.email,

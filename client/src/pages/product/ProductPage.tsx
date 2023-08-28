@@ -11,10 +11,11 @@ import {
 import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { useUser } from "@/hooks/useUser";
 import { shortenName } from "@/lib/utils";
 import React, { useState } from "react";
 import { useQueries, useQuery } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BestGearSection from "../root/BestGearSection";
 
 const ProductPage: React.FC = () => {
@@ -32,9 +33,14 @@ const ProductPage: React.FC = () => {
     })) || [],
   );
 
-  const { toast } = useToast();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const quantityParams = params.get("quantity");
 
-  const [quantity, setQuantity] = useState(1);
+  const { toast } = useToast();
+  const { isLoggedIn } = useUser();
+
+  const [quantity, setQuantity] = useState(Number(quantityParams) || 1);
 
   return (
     <>
@@ -96,6 +102,12 @@ const ProductPage: React.FC = () => {
                   <Button
                     variant="default"
                     onClick={() => {
+                      if (!isLoggedIn) {
+                        navigate(
+                          `/login?redirect=/product/zx9-speaker?quantity=${quantity}`,
+                        );
+                      }
+
                       if (quantity < 1 || quantity > 10) {
                         setQuantity(Math.min(Math.max(1, quantity), 10));
                         toast({
@@ -215,11 +227,13 @@ const ProductPage: React.FC = () => {
                       key={similarProduct.data?.slug || index}
                       className="flex flex-col items-center gap-8 sm:flex-1 sm:justify-between"
                     >
-                      <img
-                        src={`/product-${similarProduct.data?.slug}/desktop/image-product.jpg`}
-                        alt={mainProduct?.name}
-                        className="max-h-[7.5rem] w-full rounded-lg bg-[#f1f1f1] object-contain sm:mb-2 sm:min-h-[20rem]"
-                      />
+                      {similarProduct.data && (
+                        <img
+                          src={`/product-${similarProduct.data.slug}/desktop/image-product.jpg`}
+                          alt={mainProduct?.name}
+                          className="max-h-[7.5rem] w-full rounded-lg bg-[#f1f1f1] object-contain sm:mb-2 sm:min-h-[20rem]"
+                        />
+                      )}
                       <p className="max-w-[15ch] text-center text-2xl font-bold uppercase">
                         {shortenName(similarProduct.data?.name || "")}
                       </p>
