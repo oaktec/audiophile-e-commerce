@@ -10,6 +10,7 @@ import {
 import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { shortenName } from "@/lib/utils";
 import React, { useState } from "react";
 import { useQueries, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -128,6 +129,17 @@ const ProductPage: React.FC = () => {
                           description: "Quantity must be between 1 and 10.",
                         });
                         return;
+                      } else {
+                        api
+                          .post(`/cart/add/${mainProduct.id}`, {
+                            quantity,
+                          })
+                          .then(() => {
+                            toast({
+                              variant: "success",
+                              description: `${quantity} ${mainProduct.name} added to cart!`,
+                            });
+                          });
                       }
                     }}
                   >
@@ -152,12 +164,12 @@ const ProductPage: React.FC = () => {
                 </TypographyProductSubHeader>
                 <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-6 gap-y-2">
                   {mainProduct?.boxContents.map((item) => (
-                    <>
+                    <React.Fragment key={item.item}>
                       <span className="text-[0.9375rem] font-bold leading-[1.5625rem] text-accent">
                         {item.quantity}x
                       </span>
                       <TypographyParagraph>{item.item}</TypographyParagraph>
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>
@@ -224,15 +236,18 @@ const ProductPage: React.FC = () => {
                     </TypographySubHeader>
                   </div>
                 ) : (
-                  similarProductQueries.map((similarProduct) => (
-                    <div className="flex flex-col items-center gap-8 sm:flex-1 sm:justify-between">
+                  similarProductQueries.map((similarProduct, index) => (
+                    <div
+                      key={similarProduct.data?.slug || index}
+                      className="flex flex-col items-center gap-8 sm:flex-1 sm:justify-between"
+                    >
                       <img
                         src={`/product-${similarProduct.data?.slug}/desktop/image-product.jpg`}
                         alt={mainProduct?.name}
                         className="max-h-[7.5rem] w-full rounded-lg bg-[#f1f1f1] object-contain sm:mb-2 sm:min-h-[20rem]"
                       />
                       <p className="max-w-[15ch] text-center text-2xl font-bold uppercase">
-                        {similarProduct.data?.name}
+                        {shortenName(similarProduct.data?.name || "")}
                       </p>
                       <Link variant="button">See product</Link>
                     </div>
