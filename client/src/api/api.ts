@@ -27,4 +27,15 @@ export default {
 
     return res.data as unknown;
   },
+  patch: async (
+    path: string,
+    body?: unknown,
+    options: AxiosRequestConfig = {},
+  ) => {
+    const res = await axios.patch(path, body, {
+      ...options,
+    });
+
+    return res.data as unknown;
+  },
 };
