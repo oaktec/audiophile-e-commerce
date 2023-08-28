@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import FormLayout from "./FormLayout";
-import Header from "./Header";
+import Header from "./header/Header";
 
 interface LayoutProps {
   isForm?: boolean;
