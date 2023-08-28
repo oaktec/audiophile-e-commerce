@@ -17,11 +17,18 @@ export default {
       );
     }
 
-    const cart = await cartService.getActiveCartByUserId(userId);
+    let cart = await cartService.getActiveCartByUserId(userId);
+
+    if (!cart) {
+      cart = await cartService.create(userId);
+    }
 
     if (!cart) {
       return next(
-        createHttpError(StatusCodes.NOT_FOUND, "You do not have an active cart")
+        createHttpError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "Failed to create cart"
+        )
       );
     }
 

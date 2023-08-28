@@ -6,7 +6,6 @@ import { cartValidationRules } from "../validators";
 
 const cartRouter = Router();
 
-cartRouter.post("/", authMiddleware.isAuth, cartController.createCartForUser);
 cartRouter.get(
   "/",
   authMiddleware.isAuth,
