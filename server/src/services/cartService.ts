@@ -110,7 +110,13 @@ export default {
       existingProductRows.length > 0
         ? "UPDATE cart_items SET quantity = $3 WHERE cart_id = $1 AND product_id = $2 RETURNING *"
         : "INSERT INTO cart_items (cart_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *",
-      [cartId, productId, quantity]
+      [
+        cartId,
+        productId,
+        existingProductRows.length > 0
+          ? quantity + existingProductRows[0].quantity
+          : quantity,
+      ]
     );
 
     if (rows.length === 0) {
