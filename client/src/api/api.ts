@@ -38,4 +38,11 @@ export default {
 
     return res.data as unknown;
   },
+  delete: async (path: string, options: AxiosRequestConfig = {}) => {
+    const res = await axios.delete(path, {
+      ...options,
+    });
+
+    return res.data as unknown;
+  },
 };
