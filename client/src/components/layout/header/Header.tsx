@@ -1,20 +1,13 @@
 import Categories from "@/components/common/Categories";
 import { CATEGORIES } from "@/config/config";
-import { useUser } from "@/hooks/useUser";
 import { FC } from "react";
 import { Link } from "../../common/Link";
-import { CartIcon, HamburgerIcon, MainLogo } from "../../icons/Icons";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+import { HamburgerIcon, MainLogo } from "../../icons/Icons";
 import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
+import CartDropDown from "./CartDropDown";
 import UserDropDown from "./UserDropDown";
 
 const Header: FC = () => {
-  const { hasCart } = useUser();
-
   return (
     <header className="fixed z-[60] w-full bg-dark-background">
       <div className="container">
@@ -48,22 +41,7 @@ const Header: FC = () => {
           </div>
           <div className="flex space-x-9">
             <UserDropDown />
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger disabled={!hasCart}>
-                <CartIcon
-                  interactive
-                  className={
-                    !hasCart
-                      ? "cursor-not-allowed opacity-20 hover:text-white"
-                      : ""
-                  }
-                />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                sideOffset={32}
-                className="z-[70] px-8 py-4"
-              ></DropdownMenuContent>
-            </DropdownMenu>
+            <CartDropDown />
           </div>
         </div>
       </div>
