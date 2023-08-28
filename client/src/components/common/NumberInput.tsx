@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { FC, useState } from "react";
 import { AnimatedProgressIcon } from "../icons/Icons";
 
@@ -6,15 +7,27 @@ interface NumberInputProps {
   max: number;
   value: number;
   setValue: (val: number) => Promise<void>;
+  className?: string;
 }
 
-const NumberInput: FC<NumberInputProps> = ({ min, max, value, setValue }) => {
+const NumberInput: FC<NumberInputProps> = ({
+  min,
+  max,
+  value,
+  setValue,
+  className,
+}) => {
   const [buffering, setBuffering] = useState(false);
 
   return (
-    <div className="relative  flex h-12 w-[7.5rem] items-center bg-gray-100 align-middle">
+    <div
+      className={cn(
+        "relative  flex h-12 w-[7.5rem] items-center bg-gray-100",
+        className,
+      )}
+    >
       <button
-        className="absolute px-4 py-3 font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
+        className="absolute px-4 font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
         onClick={() => {
           if (value > min) {
             setBuffering(true);
@@ -27,7 +40,7 @@ const NumberInput: FC<NumberInputProps> = ({ min, max, value, setValue }) => {
       >
         -
       </button>
-      <span className="w-full bg-inherit text-center">
+      <span className="w-full bg-inherit text-center align-middle">
         {buffering ? (
           <AnimatedProgressIcon className="mx-auto text-accent" />
         ) : (
@@ -35,7 +48,7 @@ const NumberInput: FC<NumberInputProps> = ({ min, max, value, setValue }) => {
         )}
       </span>
       <button
-        className="absolute right-0 px-4 py-3 font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
+        className=" absolute right-0 px-4  font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
         onClick={() => {
           if (value < max) {
             setBuffering(true);

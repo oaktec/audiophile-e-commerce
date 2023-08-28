@@ -13,6 +13,8 @@ const CartDropDown: FC = () => {
   const [loadingCart, setLoadingCart] = useState(false);
   const [cart, setCart] = useState<CartItem[] | null>(null);
 
+  const totalItems = cart?.reduce((acc, item) => acc + item.quantity, 0);
+
   useEffect(() => {
     if (cartDropDownOpen) {
       setLoadingCart(true);
@@ -48,25 +50,46 @@ const CartDropDown: FC = () => {
         ) : (
           <div className="space-y-6">
             <div className="mb-8 flex items-center justify-between">
-              <span className="">Cart</span>
-              <Button variant="link" size="min">
+              <span className="text-lg font-bold uppercase tracking-[0.08038rem]">
+                Cart ({totalItems || 0})
+              </span>
+              <Button
+                variant="link"
+                size="min"
+                disabled={!cart || cart.length === 0}
+                className="text-[0.9375rem] font-medium leading-6 underline underline-offset-1 opacity-50 transition-all hover:text-accent hover:opacity-100 disabled:opacity-10"
+                onClick={() => {
+                  if (cart) {
+                    setLoadingCart(true);
+                    api.delete(`/cart`).then(() => {
+                      setCart(null);
+                      setLoadingCart(false);
+                    });
+                  }
+                }}
+              >
                 Remove all
               </Button>
             </div>
             <div className="mb-8">
               {cart &&
                 cart.map((item) => (
-                  <div key={item.slug} className="flex items-center">
+                  <div key={item.slug} className="flex items-center gap-4">
                     <img
                       src={`/product-${item.slug}/desktop/image-product.jpg`}
                       alt={item.name}
-                      className="mr-4 h-16 w-16"
+                      className="mr-4 h-16 w-16 rounded-lg"
                     />
-                    <div>
-                      <div>{shortenName(item.name)}</div>
-                      <div>£{Number(item.price).toLocaleString()}</div>
+                    <div className="font-bold leading-[1.5625rem]">
+                      <p className="text-[0.9375rem] ">
+                        {shortenName(item.name)}
+                      </p>
+                      <p className="text-sm opacity-50">
+                        £{Number(item.price).toLocaleString()}
+                      </p>
                     </div>
                     <NumberInput
+                      className="ml-auto h-8 w-24"
                       min={1}
                       max={10}
                       value={item.quantity}
@@ -85,8 +108,10 @@ const CartDropDown: FC = () => {
                 ))}
             </div>
             <div className="flex items-center justify-between">
-              <span className="">Total</span>
-              <span>£0.00</span>
+              <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                Total
+              </span>
+              <span className="text-lg font-bold">£0.00</span>
             </div>
             <Button className="w-full">Checkout</Button>
           </div>
