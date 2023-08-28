@@ -62,23 +62,14 @@ export const registerAndLoginAgent = async (
 export const giveAgentACartWithProducts = async (
   agent: request.SuperAgentTest
 ) => {
-  const cartResponse = await agent.post(`/cart`);
-
-  expect(cartResponse.status).toBe(201);
-
   const { rows } = await db.query("SELECT * FROM products LIMIT 2");
 
   const productIds = rows.map((product) => product.id);
 
-  await Promise.all(
-    productIds.map(async (productId, index) => {
-      const productResponse = await agent
-        .post(`/cart/add/${productId}`)
-        .send({ quantity: index + 1 });
+  await agent.post(`/cart/add/${productIds[0]}`).send({ quantity: 1 });
+  await agent.post(`/cart/add/${productIds[1]}`).send({ quantity: 2 });
 
-      expect(productResponse.status).toBe(200);
-    })
-  );
+  const cartResponse = await agent.get("/cart");
 
   return cartResponse;
 };

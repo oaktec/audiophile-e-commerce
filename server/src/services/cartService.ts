@@ -101,8 +101,15 @@ export default {
     productId: number,
     quantity: number
   ) => {
+    const { rows: existingProductRows } = await db.query(
+      "SELECT * FROM cart_items WHERE cart_id = $1 AND product_id = $2",
+      [cartId, productId]
+    );
+
     const { rows } = await db.query(
-      "INSERT INTO cart_items (cart_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *",
+      existingProductRows.length > 0
+        ? "UPDATE cart_items SET quantity = $3 WHERE cart_id = $1 AND product_id = $2 RETURNING *"
+        : "INSERT INTO cart_items (cart_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *",
       [cartId, productId, quantity]
     );
 
