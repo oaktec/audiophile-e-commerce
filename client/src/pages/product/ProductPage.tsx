@@ -91,7 +91,7 @@ const ProductPage: React.FC = () => {
                     min={1}
                     max={10}
                     value={quantity}
-                    setValue={setQuantity}
+                    setValue={async (val) => setQuantity(val)}
                   />
                   <Button
                     variant="default"
