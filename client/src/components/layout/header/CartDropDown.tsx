@@ -14,6 +14,10 @@ const CartDropDown: FC = () => {
   const [cart, setCart] = useState<CartItem[] | null>(null);
 
   const totalItems = cart?.reduce((acc, item) => acc + item.quantity, 0);
+  const totalCost = cart?.reduce(
+    (acc, item) => acc + Number(item.price) * item.quantity,
+    0,
+  );
 
   useEffect(() => {
     if (cartDropDownOpen) {
@@ -111,7 +115,9 @@ const CartDropDown: FC = () => {
               <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
                 Total
               </span>
-              <span className="text-lg font-bold">£0.00</span>
+              <span className="text-lg font-bold">
+                £{Number(totalCost || 0).toLocaleString()}
+              </span>
             </div>
             <Button className="w-full">Checkout</Button>
           </div>
