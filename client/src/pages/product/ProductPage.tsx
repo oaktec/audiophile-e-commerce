@@ -223,7 +223,12 @@ const ProductPage: React.FC = () => {
                       <p className="max-w-[15ch] text-center text-2xl font-bold uppercase">
                         {shortenName(similarProduct.data?.name || "")}
                       </p>
-                      <Link variant="button">See product</Link>
+                      <Link
+                        variant="button"
+                        href={`/product/${similarProduct.data?.slug}`}
+                      >
+                        See product
+                      </Link>
                     </div>
                   ))
                 )}
