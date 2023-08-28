@@ -1,6 +1,7 @@
 import api from "@/api/api";
 import Categories from "@/components/common/Categories";
 import { Link } from "@/components/common/Link";
+import NumberInput from "@/components/common/NumberInput";
 import {
   TypographyNewProduct,
   TypographyParagraph,
@@ -86,39 +87,12 @@ const ProductPage: React.FC = () => {
                   £{Number(mainProduct?.price).toLocaleString()}
                 </p>
                 <div className="flex items-center gap-4">
-                  <div className="relative  flex h-12 w-[7.5rem] items-center bg-gray-100 align-middle">
-                    <button
-                      className="absolute px-4 py-3 font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
-                      onClick={() => {
-                        if (quantity > 1) {
-                          setQuantity(Math.min(quantity - 1, 10));
-                        }
-                      }}
-                      disabled={quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      className="w-full bg-inherit text-center"
-                      value={quantity}
-                      max={10}
-                      min={1}
-                      onChange={(e) => {
-                        setQuantity(Number(e.target.value));
-                      }}
-                    />
-                    <button
-                      className="absolute right-0 px-4 py-3 font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
-                      onClick={() => {
-                        if (quantity < 10)
-                          setQuantity(Math.max(1, quantity + 1));
-                      }}
-                      disabled={quantity >= 10}
-                    >
-                      +
-                    </button>
-                  </div>
+                  <NumberInput
+                    min={1}
+                    max={10}
+                    value={quantity}
+                    setValue={setQuantity}
+                  />
                   <Button
                     variant="default"
                     onClick={() => {
