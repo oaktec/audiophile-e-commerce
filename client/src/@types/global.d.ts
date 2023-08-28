@@ -16,6 +16,7 @@ interface FullProduct extends Product {
 
 type CartItem = {
   slug: string;
+  id: number;
   quantity: number;
   name: string;
   price: number;
