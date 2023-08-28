@@ -36,6 +36,14 @@ export default {
 
     return mapCart(cart);
   },
+  getProducts: async (cartId: number) => {
+    const { rows } = await db.query(
+      "SELECT * FROM cart_items WHERE cart_id = $1",
+      [cartId]
+    );
+
+    return rows;
+  },
   checkout: async (userId: number, cartId: number) => {
     const products = await db.query(
       "SELECT * FROM cart_items WHERE cart_id = $1",

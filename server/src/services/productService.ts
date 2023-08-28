@@ -103,6 +103,13 @@ export default {
 
     return rows.map(mapProduct);
   },
+  getByIds: async (ids: number[]): Promise<Product[]> => {
+    const { rows } = await db.query(
+      `SELECT * FROM products WHERE id = ANY ($1)`,
+      [ids]
+    );
+    return rows.map(mapProduct);
+  },
   getByCategory: async (categoryName: string): Promise<Product[]> => {
     const { rows } = await db.query(
       "SELECT * FROM products WHERE category_id = (SELECT id FROM categories WHERE name = $1)",

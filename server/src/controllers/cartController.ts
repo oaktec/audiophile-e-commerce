@@ -72,10 +72,36 @@ export default {
 
     res.status(StatusCodes.NO_CONTENT).send();
   },
-  getActiveCart: (req: Request, res: Response, next: NextFunction) => {
+  getActiveCart: async (req: Request, res: Response, next: NextFunction) => {
     const cart = req.cart;
 
-    res.json(cart);
+    if (!cart) {
+      return next(
+        createHttpError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "Failed to get active cart"
+        )
+      );
+    }
+
+    const cartItemIds = await cartService.getProducts(cart.id);
+    const cartProducts = await productService.getByIds(
+      cartItemIds.map((item) => item.product_id)
+    );
+    const cartProductRet = cartProducts.map((product) => ({
+      name: product.name,
+      price: Number(product.price),
+      slug: product.slug,
+      quantity: cartItemIds.find((item) => item.product_id === product.id)
+        ?.quantity,
+    }));
+
+    return res.json({
+      id: cart.id,
+      userId: cart.userId,
+      active: cart.active,
+      items: cartProductRet,
+    });
   },
   addToCart: [
     validationMiddleware,

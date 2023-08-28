@@ -130,6 +130,32 @@ describe("cart", () => {
         id: expect.any(Number),
         userId: agentId,
         active: true,
+        items: {},
+      });
+    });
+
+    it.only("should return the active cart with products for a logged in user", async () => {
+      await giveAgentACartWithProducts(agent);
+
+      const response = await agent.get(`/cart`);
+
+      expect(response.status).toBe(StatusCodes.OK);
+      expect(response.body).toEqual({
+        id: expect.any(Number),
+        userId: agentId,
+        active: true,
+        items: [
+          expect.objectContaining({
+            slug: expect.any(String),
+            name: expect.any(String),
+            price: expect.any(Number),
+            quantity: 1,
+          }),
+          expect.objectContaining({
+            slug: expect.any(String),
+            quantity: 2,
+          }),
+        ],
       });
     });
 
