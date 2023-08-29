@@ -15,14 +15,35 @@ import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { z } from "zod";
 
-const formSchema = z.object({
-  phoneNumber: z.string().optional(),
-  address: z.string().min(2),
-  postcode: z.string().min(2),
-  city: z.string().min(2),
-  paymentMethod: z.string().min(2),
-});
-
+const formSchema = z
+  .object({
+    phoneNumber: z.string().optional(),
+    address: z.string().min(2),
+    postcode: z.string().min(2),
+    city: z.string().min(2),
+    paymentMethod: z.string().min(2),
+    paymentParams: z
+      .object({
+        eMoneyNumber: z.string().optional(),
+        eMoneyPin: z.string().optional(),
+      })
+      .optional(),
+  })
+  .refine(
+    (data) =>
+      data.paymentMethod !== "e-Money" || data.paymentParams?.eMoneyNumber,
+    {
+      message: "Please provide e-Money Number",
+      path: ["paymentParams", "eMoneyNumber"],
+    },
+  )
+  .refine(
+    (data) => data.paymentMethod !== "e-Money" || data.paymentParams?.eMoneyPin,
+    {
+      message: "Please provide e-Money PIN",
+      path: ["paymentParams", "eMoneyPin"],
+    },
+  );
 type formValues = z.infer<typeof formSchema>;
 
 const CartPage: React.FC = () => {
@@ -47,6 +68,10 @@ const CartPage: React.FC = () => {
       postcode: "",
       city: "",
       paymentMethod: "e-Money",
+      paymentParams: {
+        eMoneyNumber: "",
+        eMoneyPin: "",
+      },
     },
   });
 
@@ -118,11 +143,26 @@ const CartPage: React.FC = () => {
               <FormInput
                 name="paymentMethod"
                 label="Payment Method"
-                type="radio"
+                radio
                 radioInputs={["e-Money", "Cash on Delivery"]}
                 formControl={form.control}
               />
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4"></div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4">
+                {form.watch("paymentMethod") === "e-Money" && (
+                  <>
+                    <FormInput
+                      name="paymentParams.eMoneyNumber"
+                      label="e-Money Number"
+                      formControl={form.control}
+                    />
+                    <FormInput
+                      name="paymentParams.eMoneyPin"
+                      label="e-Money PIN"
+                      formControl={form.control}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </div>
           <div className="h-min min-w-[20rem] flex-1 rounded-lg bg-white p-6 sm:p-7 lg:sticky lg:top-[100px] lg:max-w-[45rem]">
