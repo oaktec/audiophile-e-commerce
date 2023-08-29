@@ -17,7 +17,7 @@ interface FormInputProps<T extends FieldValues>
   formControl: any;
   label?: string;
   name: keyof T;
-  type?: "radio";
+  radio?: boolean;
   radioInputs?: string[];
 }
 
@@ -25,7 +25,7 @@ const FormInput: FC<FormInputProps<FieldValues>> = ({
   formControl,
   label,
   name,
-  type,
+  radio = false,
   ...props
 }) => {
   if (!formControl) throw new Error("formControl is required");
@@ -37,16 +37,14 @@ const FormInput: FC<FormInputProps<FieldValues>> = ({
       render={({ field }) => (
         <FormItem
           className={
-            type === "radio"
-              ? "grid grid-cols-1 gap-2 sm:grid-cols-2 sm:space-y-0"
-              : ""
+            radio ? "grid grid-cols-1 gap-2 sm:grid-cols-2 sm:space-y-0" : ""
           }
         >
           <FormLabel>
             {label ?? name.charAt(0).toUpperCase() + name.slice(1)}
           </FormLabel>
           <FormControl>
-            {type === "radio" ? (
+            {radio ? (
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
