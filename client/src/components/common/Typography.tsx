@@ -62,6 +62,20 @@ export const TypographyFormHeader: React.FC<TypographyProps> = ({
   </h1>
 );
 
+export const TypographyFormSectionHeader: React.FC<TypographyProps> = ({
+  children,
+  className,
+}) => (
+  <h2
+    className={cn(
+      "text-[0.8125rem] font-bold uppercase leading-[1.5625rem] tracking-[0.05806rem] text-accent",
+      className,
+    )}
+  >
+    {children}
+  </h2>
+);
+
 export const TypographyProductTitle: React.FC<TypographyProps> = ({
   children,
   className,

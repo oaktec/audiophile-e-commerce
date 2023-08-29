@@ -35,7 +35,13 @@ const FormInput: FC<FormInputProps<FieldValues>> = ({
       control={formControl}
       name={name}
       render={({ field }) => (
-        <FormItem className={type === "radio" ? "space-y-3" : ""}>
+        <FormItem
+          className={
+            type === "radio"
+              ? "grid grid-cols-1 gap-2 sm:grid-cols-2 sm:space-y-0"
+              : ""
+          }
+        >
           <FormLabel>
             {label ?? name.charAt(0).toUpperCase() + name.slice(1)}
           </FormLabel>
@@ -44,10 +50,11 @@ const FormInput: FC<FormInputProps<FieldValues>> = ({
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="flex flex-col space-y-1"
+                className="flex flex-col gap-4"
               >
                 {props.radioInputs?.map((input) => (
                   <FormItem
+                    key={input}
                     className={cn(
                       "flex h-[3.5rem] items-center space-x-3 space-y-0 rounded-xl border p-4",
                       field.value === input ? "border-accent" : "",
