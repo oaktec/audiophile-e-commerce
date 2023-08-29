@@ -79,7 +79,7 @@ const CartDropDown: FC = () => {
                 </Button>
               )}
             </div>
-            <div className="mb-8">
+            <div className="mb-8 space-y-6">
               {cart &&
                 cart.map((item) => (
                   <div key={item.slug} className="flex items-center gap-4">
