@@ -7,6 +7,7 @@ import {
 import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import { Form, FormMessage } from "@/components/ui/form";
+import { toast } from "@/components/ui/use-toast";
 import { useUser } from "@/hooks/useUser";
 import { shortenName } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,6 +50,7 @@ type formValues = z.infer<typeof formSchema>;
 const CartPage: React.FC = () => {
   const { user } = useUser();
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const { isLoading: loadingCartData, data: cartData } = useQuery(
     "cart",
@@ -80,6 +82,38 @@ const CartPage: React.FC = () => {
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setSubmitting(true);
+    api
+      .post("/cart/checkout", JSON.stringify(values), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const res = response as { message?: string };
+        if (res.message) {
+          setError(res.message);
+        } else {
+          setError("");
+          toast({
+            variant: "success",
+            description: "Checkout successful!",
+          });
+        }
+      })
+      .catch((err) => {
+        if (err?.response?.data?.message) {
+          setError(err.response.data.message);
+        } else
+          toast({
+            variant: "destructive",
+            description: `Something went wrong. Please try again later. Error: ${err.message}`,
+          });
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+
     console.log(values);
   }
 
@@ -230,8 +264,12 @@ const CartPage: React.FC = () => {
                 </div>
 
                 <FormMessage className="mb-6">{error}</FormMessage>
-                <Button type="submit" className="col-span-2 mt-8 w-full">
-                  Continue & Pay
+                <Button
+                  type="submit"
+                  className="col-span-2 mt-8 w-full"
+                  disabled={submitting}
+                >
+                  {!submitting ? "Continue & Pay" : <AnimatedProgressIcon />}
                 </Button>
               </>
             ) : (
