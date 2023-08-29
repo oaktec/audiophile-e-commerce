@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { MinusIcon, PlusIcon } from "lucide-react";
 import { FC, useState } from "react";
 import { AnimatedProgressIcon } from "../icons/Icons";
 
@@ -38,7 +39,7 @@ const NumberInput: FC<NumberInputProps> = ({
         }}
         disabled={value <= min || buffering}
       >
-        -
+        <MinusIcon className="h-3 w-3" />
       </button>
       <span className="w-full bg-inherit text-center align-middle">
         {buffering ? (
@@ -48,7 +49,7 @@ const NumberInput: FC<NumberInputProps> = ({
         )}
       </span>
       <button
-        className=" absolute right-0 px-4  font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
+        className=" absolute right-0  px-4 font-bold opacity-75 hover:opacity-100 disabled:opacity-25"
         onClick={() => {
           if (value < max) {
             setBuffering(true);
@@ -59,7 +60,7 @@ const NumberInput: FC<NumberInputProps> = ({
         }}
         disabled={value >= max || buffering}
       >
-        +
+        <PlusIcon className="h-3 w-3" />
       </button>
     </div>
   );
