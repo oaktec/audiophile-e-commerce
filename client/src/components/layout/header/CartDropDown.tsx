@@ -97,7 +97,7 @@ const CartDropDown: FC = () => {
                       </p>
                     </div>
                     <NumberInput
-                      className="ml-auto h-8 w-24"
+                      className="ml-auto h-8 min-w-[5rem]"
                       min={1}
                       max={10}
                       value={item.quantity}
