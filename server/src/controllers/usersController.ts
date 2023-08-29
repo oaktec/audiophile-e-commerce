@@ -21,7 +21,6 @@ export default {
       email: unsafeUser.email,
       firstName: unsafeUser.firstName,
       lastName: unsafeUser.lastName,
-      address: unsafeUser.address,
     });
   },
   updateUserById: [
@@ -35,7 +34,7 @@ export default {
         return next(createHttpError(404, "User not found"));
       }
 
-      const { email, password, firstName, lastName, address } = req.body;
+      const { email, password, firstName, lastName } = req.body;
 
       if (email !== unsafeUser.email) {
         const existingUser = await userService.getByEmail(email);
@@ -49,12 +48,10 @@ export default {
         password?: string;
         firstName?: string;
         lastName?: string;
-        address?: string;
       } = {
         email,
         firstName,
         lastName,
-        address,
       };
 
       let hashedPassword;
@@ -74,7 +71,6 @@ export default {
         email: updatedUser.email,
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
-        address: updatedUser.address,
       });
     },
   ],

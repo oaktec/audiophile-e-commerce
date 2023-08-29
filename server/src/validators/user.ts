@@ -35,8 +35,4 @@ export const updateUserValidationRules: ValidationChain[] = [
     .withMessage("Last name should be between 2 and 50 characters")
     .matches(/^[a-zA-Z-' ]*$/)
     .withMessage("Last name should only include alphabetic characters"),
-  body("address")
-    .optional()
-    .isLength({ min: 5, max: 100 })
-    .withMessage("Address should be between 5 and 100 characters"),
 ];

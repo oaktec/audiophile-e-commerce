@@ -21,7 +21,6 @@ const formSchema = z
     firstName: z.string().min(2),
     lastName: z.string().min(2),
     email: z.string().email(),
-    address: z.string().min(2),
     password: z
       .string()
       .min(8)
@@ -69,7 +68,6 @@ const SignUp: React.FC = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      address: "",
     },
   });
 
@@ -135,13 +133,12 @@ const SignUp: React.FC = () => {
             placeholder="Your last name"
             formControl={form.control}
           />
-          <div className="col-span-2">
-            <FormInput
-              name="email"
-              placeholder="Your email address"
-              formControl={form.control}
-            />
-          </div>
+          <FormInput
+            name="email"
+            placeholder="Your email address"
+            formControl={form.control}
+          />
+          <div />
           <FormInput
             name="password"
             placeholder="Enter a password"
@@ -155,14 +152,6 @@ const SignUp: React.FC = () => {
             formControl={form.control}
             type="password"
           />
-
-          <div className="col-span-2">
-            <FormInput
-              name="address"
-              placeholder="Your address"
-              formControl={form.control}
-            />
-          </div>
 
           <div className="col-span-2">
             <FormMessage>{error}</FormMessage>

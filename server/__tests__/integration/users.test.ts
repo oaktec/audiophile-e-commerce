@@ -43,7 +43,6 @@ describe("users", () => {
         email: "lola@granola.com",
         firstName: "Lola",
         lastName: "Granola",
-        address: "123 Lola St",
       });
     });
 
@@ -109,7 +108,6 @@ describe("users", () => {
         email: "new@email.com",
         firstName: "New",
         lastName: "Name",
-        address: "123 New St",
       });
 
       expect(response.status).toEqual(StatusCodes.OK);
@@ -118,7 +116,6 @@ describe("users", () => {
         email: "new@email.com",
         firstName: "New",
         lastName: "Name",
-        address: "123 New St",
       });
 
       const updatedUser = await db.query("SELECT * FROM users WHERE id = $1", [
@@ -131,7 +128,6 @@ describe("users", () => {
         email: "new@email.com",
         first_name: "New",
         last_name: "Name",
-        address: "123 New St",
       });
     });
 
@@ -181,7 +177,6 @@ describe("users", () => {
         email: "lola@granola.com",
         firstName: "New",
         lastName: "Name",
-        address: "123 Lola St",
       });
 
       const updatedUser = await db.query("SELECT * FROM users WHERE id = $1", [
@@ -194,7 +189,6 @@ describe("users", () => {
         email: "lola@granola.com",
         first_name: "New",
         last_name: "Name",
-        address: "123 Lola St",
       });
     });
 
@@ -210,7 +204,6 @@ describe("users", () => {
         email: "changed@password.com",
         firstName: "Lola",
         lastName: "Granola",
-        address: "123 Lola St",
       });
 
       const updatedUser = await db.query("SELECT * FROM users WHERE id = $1", [
@@ -223,7 +216,6 @@ describe("users", () => {
         email: "changed@password.com",
         first_name: "Lola",
         last_name: "Granola",
-        address: "123 Lola St",
       });
 
       expect(updatedUser.rows[0].password).not.toEqual("newpassword");
@@ -311,21 +303,6 @@ describe("users", () => {
       expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual({
         message: "Last name should be between 2 and 50 characters",
-        name: "BadRequestError",
-        status: 400,
-      });
-    });
-
-    it("returns a 400 if the address is invalid", async () => {
-      const response = await agent.put(`/users/${userId}`).send({
-        firstName: "New",
-        lastName: "Name",
-        address: "",
-      });
-
-      expect(response.status).toEqual(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual({
-        message: "Address should be between 5 and 100 characters",
         name: "BadRequestError",
         status: 400,
       });

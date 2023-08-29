@@ -3,8 +3,7 @@ CREATE TABLE users (
   email text NOT NULL,
   password text NOT NULL,
   first_name text NOT NULL,
-  last_name text NOT NULL,
-  address text NOT NULL
+  last_name text NOT NULL
 );
 
 ALTER TABLE users ADD UNIQUE (email);

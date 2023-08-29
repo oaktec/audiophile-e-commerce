@@ -139,8 +139,7 @@ const createTables = async (client: PoolClient) => {
       email text NOT NULL UNIQUE,
       password text NOT NULL,
       first_name text NOT NULL,
-      last_name text NOT NULL,
-      address text NOT NULL
+      last_name text NOT NULL
     )`);
 
   await client.query(`CREATE TABLE IF NOT EXISTS categories (

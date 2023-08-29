@@ -31,7 +31,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Test",
         lastName: "User",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.CREATED);
@@ -40,7 +39,6 @@ describe("auth", () => {
         email: "new@user.com",
         firstName: "Test",
         lastName: "User",
-        address: "123 Test St",
       });
 
       const dbRes = await db.query("SELECT * FROM users");
@@ -51,7 +49,6 @@ describe("auth", () => {
         password: expect.any(String),
         first_name: "Test",
         last_name: "User",
-        address: "123 Test St",
       });
 
       expect(dbRes.rows[0].password).not.toEqual("Password123!");
@@ -62,8 +59,8 @@ describe("auth", () => {
 
     it("should return an error if email is already in use", async () => {
       await db.query(
-        "INSERT INTO users (email, password, first_name, last_name, address) VALUES ($1, $2, $3, $4, $5)",
-        ["test@user.com", "Password123!", "Test", "User", "123 Test St"]
+        "INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4)",
+        ["test@user.com", "Password123!", "Test", "User"]
       );
 
       const res = await request(server).post("/auth/register").send({
@@ -71,7 +68,6 @@ describe("auth", () => {
         password: "AnotherPassword123!",
         firstName: "Testy",
         lastName: "User",
-        address: "123 Test St, Bristol",
       });
 
       expect(res.status).toEqual(StatusCodes.CONFLICT);
@@ -87,8 +83,8 @@ describe("auth", () => {
 
     it("should return an error if email is already in use (case insensitive)", async () => {
       await db.query(
-        "INSERT INTO users (email, password, first_name, last_name, address) VALUES ($1, $2, $3, $4, $5)",
-        ["test@user.com", "Password123!", "Test", "User", "123 Test St"]
+        "INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4)",
+        ["test@user.com", "Password123!", "Test", "User"]
       );
 
       const res = await request(server).post("/auth/register").send({
@@ -96,7 +92,6 @@ describe("auth", () => {
         password: "AnotherPassword123!",
         firstName: "Testy",
         lastName: "User",
-        address: "123 Test St, Bristol",
       });
 
       expect(res.status).toEqual(StatusCodes.CONFLICT);
@@ -115,7 +110,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Test",
         lastName: "User",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
@@ -135,7 +129,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Test",
         lastName: "User",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
@@ -154,7 +147,6 @@ describe("auth", () => {
         email: "test@user.com",
         firstName: "Test",
         lastName: "User",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
@@ -174,7 +166,6 @@ describe("auth", () => {
         password: "password",
         firstName: "Test",
         lastName: "User",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
@@ -194,7 +185,6 @@ describe("auth", () => {
         email: "test@user.com",
         password: "Password123!",
         lastName: "User",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
@@ -213,7 +203,6 @@ describe("auth", () => {
         email: "test@user.com",
         password: "Password123!",
         firstName: "Test",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
@@ -249,7 +238,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Demo",
         lastName: "User",
-        address: "123 Test St",
       });
 
       const res = await agent.post("/auth/register").send({
@@ -257,7 +245,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Try",
         lastName: "Again",
-        address: "123 Test St",
       });
 
       expect(res.status).toEqual(StatusCodes.BAD_REQUEST);
@@ -276,7 +263,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Demo",
         lastName: "User",
-        address: "123 Test St",
       });
     });
 
@@ -374,7 +360,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Demo",
         lastName: "User",
-        address: "123 Test St",
       });
 
       const res = await request(server).post("/auth/login").send({
@@ -422,7 +407,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Demo",
         lastName: "User",
-        address: "123 Test St",
       });
 
       await agent.post("/auth/login").send({
@@ -458,7 +442,6 @@ describe("auth", () => {
         password: "Password123!",
         firstName: "Demo",
         lastName: "User",
-        address: "123 Test St",
       });
 
       await agent.post("/auth/login").send({
@@ -474,7 +457,6 @@ describe("auth", () => {
         email: "demo@user.com",
         firstName: "Demo",
         lastName: "User",
-        address: "123 Test St",
       });
     });
 

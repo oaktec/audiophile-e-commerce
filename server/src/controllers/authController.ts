@@ -79,7 +79,6 @@ export default {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          address: user.address,
         });
       });
     },
@@ -110,7 +109,6 @@ export default {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        address: user.address,
       });
     }
     return res.json({});

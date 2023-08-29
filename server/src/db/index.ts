@@ -17,7 +17,6 @@ export const validTables = [
 ];
 const validFields = [
   "active",
-  "address",
   "cart_id",
   "category_id",
   "description",

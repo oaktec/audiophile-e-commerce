@@ -39,7 +39,6 @@ export const registerAndLoginAgent = async (
     password: "lol4TheB3st1!",
     firstName: "Lola",
     lastName: "Granola",
-    address: "123 Lola St",
   };
 
   if (secondAgent) {
@@ -48,7 +47,6 @@ export const registerAndLoginAgent = async (
       password: "secondAg3nt!!",
       firstName: "Second",
       lastName: "Agent",
-      address: "123 Second St",
     };
   }
 
@@ -156,14 +154,12 @@ export const clearAndPopDB = async () => {
       password: "password",
       firstName: "Demo",
       lastName: "User",
-      address: "123 Main St",
     },
     {
       email: "testy@email.com",
       password: "testpassword",
       firstName: "Test",
       lastName: "User",
-      address: "1 Test St",
     },
   ];
 
@@ -214,8 +210,8 @@ export const clearAndPopDB = async () => {
   await Promise.all(
     testUsers.map(async (user) => {
       await db.query(
-        "INSERT INTO users (email, password, first_name, last_name, address) VALUES ($1, $2, $3, $4, $5)",
-        [user.email, user.password, user.firstName, user.lastName, user.address]
+        "INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4)",
+        [user.email, user.password, user.firstName, user.lastName]
       );
     })
   );

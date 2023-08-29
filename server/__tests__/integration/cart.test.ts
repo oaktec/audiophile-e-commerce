@@ -41,80 +41,6 @@ afterAll(async () => {
 });
 
 describe("cart", () => {
-  // describe("POST /cart", () => {
-  //   beforeEach(async () => {
-  //     await deleteAllCarts();
-  //   });
-  //   it("should create a cart for a logged in user", async () => {
-  //     const response = await agent.post(`/cart`);
-
-  //     expect(response.status).toBe(StatusCodes.CREATED);
-  //     expect(response.body).toEqual({
-  //       id: expect.any(Number),
-  //     });
-
-  //     const cartRows = await db.query("SELECT * FROM carts");
-  //     expect(cartRows.rows).toHaveLength(1);
-  //     expect(cartRows.rows[0]).toEqual({
-  //       id: response.body.id,
-  //       user_id: agentId,
-  //       active: true,
-  //     });
-  //   });
-
-  //   it("should return 401 if user is not logged in", async () => {
-  //     const response = await request(server).post(`/cart/`);
-
-  //     expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
-
-  //     const cartRows = await db.query("SELECT * FROM carts");
-
-  //     expect(cartRows.rows).toHaveLength(0);
-  //   });
-
-  //   it("should return 400 if user already has an active cart", async () => {
-  //     await agent.post(`/cart/`);
-
-  //     const response = await agent.post(`/cart/`);
-
-  //     expect(response.status).toBe(StatusCodes.BAD_REQUEST);
-
-  //     const cartRows = await db.query("SELECT * FROM carts");
-  //     expect(cartRows.rows).toHaveLength(1);
-  //   });
-
-  //   it("should create a cart for a logged in user if they have an inactive cart", async () => {
-  //     await agent.post(`/cart`);
-  //     await db.query("UPDATE carts SET active = false");
-  //     const initialCartId = (
-  //       await db.query("SELECT * FROM carts WHERE active = false")
-  //     ).rows[0].id;
-
-  //     const response = await agent.post(`/cart`);
-
-  //     expect(response.status).toBe(StatusCodes.CREATED);
-
-  //     const cartRows = await db.query(
-  //       "SELECT * FROM carts WHERE active = true"
-  //     );
-  //     expect(cartRows.rows).toHaveLength(1);
-  //     expect(initialCartId).not.toEqual(cartRows.rows[0].id);
-  //   });
-
-  //   it("should return 500 if creating a cart fails", async () => {
-  //     jest.spyOn(db, "query").mockImplementationOnce(() => {
-  //       return Promise.reject(new Error("Test Error"));
-  //     });
-
-  //     const response = await agent.post(`/cart`);
-
-  //     expect(response.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR);
-
-  //     const cartRows = await db.query("SELECT * FROM carts");
-  //     expect(cartRows.rows).toHaveLength(0);
-  //   });
-  // });
-
   describe("GET /cart", () => {
     beforeEach(async () => {
       await deleteAllCarts();
@@ -426,12 +352,25 @@ describe("cart", () => {
       productIds = cartItemsRows.rows.map((row) => row.product_id);
     });
 
-    it("should update the quantity of a product in the cart", async () => {
+    it("should update the quantity of a product in the cart and return it", async () => {
       const response = await agent.patch(`/cart/update/${productId}`).send({
         quantity: 5,
       });
 
-      expect(response.status).toBe(StatusCodes.NO_CONTENT);
+      expect(response.status).toBe(StatusCodes.OK);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          active: true,
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              slug: expect.any(String),
+              name: expect.any(String),
+              price: expect.any(Number),
+              quantity: 5,
+            }),
+          ]),
+        })
+      );
 
       const cartItemsRows = await db.query(
         "SELECT * FROM cart_items WHERE product_id = $1",

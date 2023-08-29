@@ -6,7 +6,6 @@ interface DBUser {
   password: string;
   first_name: string;
   last_name: string;
-  address: string;
 }
 interface User {
   id: number;
@@ -14,7 +13,6 @@ interface User {
   password?: string;
   firstName: string;
   lastName: string;
-  address: string;
 }
 
 const mapUser = (user: DBUser): User => ({
@@ -23,7 +21,6 @@ const mapUser = (user: DBUser): User => ({
   password: user.password,
   firstName: user.first_name,
   lastName: user.last_name,
-  address: user.address,
 });
 
 export default {
@@ -32,7 +29,6 @@ export default {
     password,
     firstName,
     lastName,
-    address,
   }: {
     email: string;
     password: string;
@@ -41,8 +37,8 @@ export default {
     address: string;
   }): Promise<User | null> => {
     const { rows } = await db.query(
-      "INSERT INTO users (email, password, first_name, last_name, address) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [email, password, firstName, lastName, address]
+      "INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4) RETURNING *",
+      [email, password, firstName, lastName]
     );
 
     if (rows.length === 0) {
@@ -93,18 +89,16 @@ export default {
       password,
       firstName,
       lastName,
-      address,
     }: {
       email?: string;
       password?: string;
       firstName?: string;
       lastName?: string;
-      address?: string;
     }
   ): Promise<User | null> => {
     const { rows } = await db.queryAllowUndefined(
-      "UPDATE users SET email = COALESCE($1, email), password = COALESCE($2, password), first_name = COALESCE($3, first_name), last_name = COALESCE($4, last_name), address = COALESCE($5, address) WHERE id = $6 RETURNING *",
-      [email, password, firstName, lastName, address, id]
+      "UPDATE users SET email = COALESCE($1, email), password = COALESCE($2, password), first_name = COALESCE($3, first_name), last_name = COALESCE($4, last_name) WHERE id = $5 RETURNING *",
+      [email, password, firstName, lastName, id]
     );
 
     if (rows.length === 0) {
