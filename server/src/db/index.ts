@@ -37,6 +37,11 @@ const validFields = [
   "slug",
   "status",
   "user_id",
+  "phone",
+  "address",
+  "city",
+  "postcode",
+  "payment_method",
 ];
 
 const pool = new Pool({

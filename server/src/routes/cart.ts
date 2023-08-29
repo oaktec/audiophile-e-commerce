@@ -42,6 +42,7 @@ cartRouter.post(
   "/checkout",
   authMiddleware.isAuth,
   cartMiddleware.hasActiveCart,
+  cartValidationRules.checkoutValidationRules,
   cartController.checkoutCart
 );
 

@@ -48,30 +48,48 @@ export default {
       id: cart.id,
     });
   },
-  checkoutCart: async (req: Request, res: Response, next: NextFunction) => {
-    const cartId = req.cart?.id;
+  checkoutCart: [
+    validationMiddleware,
+    async (req: Request, res: Response, next: NextFunction) => {
+      const cartId = req.cart?.id;
 
-    if (!cartId) {
-      return next(
-        createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Failed to checkout")
+      if (!cartId) {
+        return next(
+          createHttpError(
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            "Failed to checkout"
+          )
+        );
+      }
+
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return next(
+          createHttpError(
+            StatusCodes.UNAUTHORIZED,
+            "You must be logged in to do that"
+          )
+        );
+      }
+
+      const { address, postcode, city, phone, paymentMethod, paymentParams } =
+        req.body;
+
+      await cartService.checkout(
+        userId,
+        cartId,
+        address,
+        postcode,
+        city,
+        paymentMethod,
+        paymentParams,
+        phone
       );
-    }
 
-    const userId = req.user?.id;
-
-    if (!userId) {
-      return next(
-        createHttpError(
-          StatusCodes.UNAUTHORIZED,
-          "You must be logged in to do that"
-        )
-      );
-    }
-
-    await cartService.checkout(userId, cartId);
-
-    res.status(StatusCodes.NO_CONTENT).send();
-  },
+      res.status(StatusCodes.NO_CONTENT).send();
+    },
+  ],
   getActiveCart: async (req: Request, res: Response, next: NextFunction) => {
     const cart = req.cart;
 

@@ -478,7 +478,13 @@ describe("cart", () => {
     });
 
     it("should checkout the cart", async () => {
-      const response = await agent.post(`/cart/checkout`);
+      const response = await agent.post(`/cart/checkout`).send({
+        address: "123 Fake Street",
+        city: "Fake City",
+        postcode: "FAKE123",
+        paymentMethod: "e-Money",
+        paymentParams: {},
+      });
 
       expect(response.status).toBe(StatusCodes.NO_CONTENT);
 
@@ -506,7 +512,13 @@ describe("cart", () => {
     });
 
     it("should return 404 if cart does not exist", async () => {
-      const response = await secondAgent.post(`/cart/checkout`);
+      const response = await secondAgent.post(`/cart/checkout`).send({
+        address: "123 Fake Street",
+        city: "Fake City",
+        postcode: "FAKE123",
+        paymentMethod: "e-Money",
+        paymentParams: {},
+      });
 
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual(
@@ -517,9 +529,21 @@ describe("cart", () => {
     });
 
     it("should return 400 if cart is already checked out", async () => {
-      await agent.post(`/cart/checkout`);
+      await agent.post(`/cart/checkout`).send({
+        address: "123 Fake Street",
+        city: "Fake City",
+        postcode: "FAKE123",
+        paymentMethod: "e-Money",
+        paymentParams: {},
+      });
 
-      const response = await agent.post(`/cart/checkout`);
+      const response = await agent.post(`/cart/checkout`).send({
+        address: "123 Fake Street",
+        city: "Fake City",
+        postcode: "FAKE123",
+        paymentMethod: "e-Money",
+        paymentParams: {},
+      });
 
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual(
@@ -532,7 +556,13 @@ describe("cart", () => {
     it("should return 400 if cart is empty", async () => {
       await secondAgent.post(`/cart`);
 
-      const response = await secondAgent.post(`/cart/checkout`);
+      const response = await secondAgent.post(`/cart/checkout`).send({
+        address: "123 Fake Street",
+        city: "Fake City",
+        postcode: "FAKE123",
+        paymentMethod: "e-Money",
+        paymentParams: {},
+      });
 
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual(

@@ -1,5 +1,5 @@
 import { registerValidationRules } from "./auth";
-import { quantityValidationRules } from "./cart";
+import { checkoutValidationRules, quantityValidationRules } from "./cart";
 import { updateUserValidationRules } from "./user";
 
 export const authValidationRules = {
@@ -7,6 +7,7 @@ export const authValidationRules = {
 };
 
 export const cartValidationRules = {
+  checkoutValidationRules,
   quantityValidationRules,
 };
 

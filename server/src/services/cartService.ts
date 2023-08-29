@@ -44,7 +44,19 @@ export default {
 
     return rows;
   },
-  checkout: async (userId: number, cartId: number) => {
+  checkout: async (
+    userId: number,
+    cartId: number,
+    address: string,
+    postcode: string,
+    city: string,
+    paymentMethod: string,
+    paymentParams: {
+      eMoneyNumber?: string;
+      eMoneyPin?: string;
+    },
+    phone?: string
+  ) => {
     const products = await db.query(
       "SELECT * FROM cart_items WHERE cart_id = $1",
       [cartId]
@@ -65,10 +77,17 @@ export default {
     try {
       await client.query("BEGIN");
 
-      await client.query(
-        "INSERT INTO orders (user_id, cart_id) VALUES ($1, $2)",
-        [userId, cartId]
-      );
+      if (!phone)
+        await client.query(
+          "INSERT INTO orders (user_id, cart_id, address, postcode, city, payment_method) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+          [userId, cartId, address, postcode, city, paymentMethod]
+        );
+      else
+        await client.query(
+          "INSERT INTO orders (user_id, cart_id, address, postcode, city, payment_method, phone) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+          [userId, cartId, address, postcode, city, paymentMethod, phone]
+        );
+
       await client.query("UPDATE carts SET active = false WHERE id = $1", [
         cartId,
       ]);

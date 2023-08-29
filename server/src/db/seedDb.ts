@@ -189,6 +189,11 @@ const createTables = async (client: PoolClient) => {
     user_id integer NOT NULL REFERENCES users(id),
     cart_id integer NOT NULL REFERENCES carts(id),
     order_date timestamp NOT NULL DEFAULT NOW(),
-    status text
+    status text,
+    phone text,
+    address text NOT NULL,
+    city text NOT NULL,
+    postcode text NOT NULL,
+    payment_method text NOT NULL
   )`);
 };

@@ -75,13 +75,25 @@ export const giveAgentACartWithProducts = async (
 export const giveAgentSomeOrders = async (agent: request.SuperAgentTest) => {
   await giveAgentACartWithProducts(agent);
 
-  const cartResponse = await agent.post(`/cart/checkout`);
+  const cartResponse = await agent.post(`/cart/checkout`).send({
+    address: "123 Fake Street",
+    postcode: "AB1 2CD",
+    city: "London",
+    paymentMethod: "card",
+    phone: "0123456789",
+  });
 
   expect(cartResponse.status).toBe(204);
 
   await giveAgentACartWithProducts(agent);
 
-  const secondCartResponse = await agent.post(`/cart/checkout`);
+  const secondCartResponse = await agent.post(`/cart/checkout`).send({
+    address: "123 Fake Street",
+    postcode: "AB1 2CD",
+    city: "London",
+    paymentMethod: "card",
+    phone: "0123456789",
+  });
 
   expect(secondCartResponse.status).toBe(204);
 
