@@ -56,14 +56,18 @@ const FormInput: FC<FormInputProps<FieldValues>> = ({
                   <FormItem
                     key={input}
                     className={cn(
-                      "flex h-[3.5rem] items-center space-x-3 space-y-0 rounded-xl border p-4",
-                      field.value === input ? "border-accent" : "",
+                      "relative flex h-[3.5rem] items-center space-x-0 space-y-0 rounded-xl border p-0",
+                      field.value === input
+                        ? "border-accent"
+                        : "hover:border-accent-hover",
                     )}
                   >
                     <FormControl>
                       <RadioGroupItem value={input} />
                     </FormControl>
-                    <FormLabel className="text-sm">{input}</FormLabel>
+                    <FormLabel className="h-full w-full py-4 pl-10 text-sm">
+                      {input}
+                    </FormLabel>
                   </FormItem>
                 ))}
               </RadioGroup>
