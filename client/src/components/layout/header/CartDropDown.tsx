@@ -1,5 +1,7 @@
 import api from "@/api/api";
+import { Link } from "@/components/common/Link";
 import NumberInput from "@/components/common/NumberInput";
+import { TypographyFormSectionHeader } from "@/components/common/Typography";
 import { AnimatedProgressIcon, CartIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -57,23 +59,25 @@ const CartDropDown: FC = () => {
               <span className="text-lg font-bold uppercase tracking-[0.08038rem]">
                 Cart ({totalItems || 0})
               </span>
-              <Button
-                variant="link"
-                size="min"
-                disabled={!cart || cart.length === 0}
-                className="text-[0.9375rem] font-medium leading-6 underline underline-offset-1 opacity-50 transition-all hover:text-accent hover:opacity-100 disabled:opacity-10"
-                onClick={() => {
-                  if (cart) {
-                    setLoadingCart(true);
-                    api.delete(`/cart`).then(() => {
-                      setCart(null);
-                      setLoadingCart(false);
-                    });
-                  }
-                }}
-              >
-                Remove all
-              </Button>
+              {cart && cart.length > 0 && (
+                <Button
+                  variant="link"
+                  size="min"
+                  disabled={!cart || cart.length === 0}
+                  className="text-[0.9375rem] font-medium leading-6 underline underline-offset-1 opacity-50 transition-all hover:text-accent hover:opacity-100 disabled:opacity-10"
+                  onClick={() => {
+                    if (cart) {
+                      setLoadingCart(true);
+                      api.delete(`/cart`).then(() => {
+                        setCart(null);
+                        setLoadingCart(false);
+                      });
+                    }
+                  }}
+                >
+                  Remove all
+                </Button>
+              )}
             </div>
             <div className="mb-8">
               {cart &&
@@ -111,15 +115,26 @@ const CartDropDown: FC = () => {
                   </div>
                 ))}
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
-                Total
-              </span>
-              <span className="text-lg font-bold">
-                £{Number(totalCost || 0).toLocaleString()}
-              </span>
-            </div>
-            <Button className="w-full">Checkout</Button>
+
+            {cart && cart.length > 0 ? (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                    Total
+                  </span>
+                  <span className="text-lg font-bold">
+                    £{Number(totalCost || 0).toLocaleString()}
+                  </span>
+                </div>
+                <Link variant="button" href="/cart" className="w-full">
+                  Checkout
+                </Link>
+              </>
+            ) : (
+              <TypographyFormSectionHeader>
+                Cart is empty
+              </TypographyFormSectionHeader>
+            )}
           </div>
         )}
       </DialogContent>
