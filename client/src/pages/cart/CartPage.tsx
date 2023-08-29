@@ -1,3 +1,4 @@
+import api from "@/api/api";
 import FormInput from "@/components/common/FormInput";
 import {
   TypographyFormHeader,
@@ -5,12 +6,13 @@ import {
 } from "@/components/common/Typography";
 import { AnimatedProgressIcon } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormMessage } from "@/components/ui/form";
 import { useUser } from "@/hooks/useUser";
+import { shortenName } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -24,9 +26,18 @@ const formSchema = z.object({
 type formValues = z.infer<typeof formSchema>;
 
 const CartPage: React.FC = () => {
-  const { user, isLoggedIn } = useUser();
-  const navigate = useNavigate();
+  const { user } = useUser();
   const [error, setError] = useState("");
+
+  const { isLoading: loadingCartData, data: cartData } = useQuery(
+    "cart",
+    () => api.get("/cart") as Promise<Cart>,
+  );
+
+  const totalCost = cartData?.items?.reduce(
+    (acc, item) => acc + Number(item.price) * item.quantity,
+    0,
+  );
 
   const form = useForm<formValues>({
     resolver: zodResolver(formSchema),
@@ -53,8 +64,9 @@ const CartPage: React.FC = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onChange={() => setError("")}
+          className="container relative flex w-full flex-col gap-8 lg:flex-row"
         >
-          <div className="max-w-[45rem] rounded-lg bg-white p-6  sm:p-7">
+          <div className="max-w-[50rem] flex-[4] rounded-lg bg-white  p-6 sm:p-7">
             <TypographyFormHeader className="mb-8 sm:mb-10">
               Checkout
             </TypographyFormHeader>
@@ -111,10 +123,82 @@ const CartPage: React.FC = () => {
                 formControl={form.control}
               />
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4"></div>
-              <Button type="submit" className="col-span-2 w-full">
-                Submit
-              </Button>
             </div>
+          </div>
+          <div className="h-min max-w-[45rem] flex-1 rounded-lg bg-white p-6 sm:p-7 lg:sticky lg:top-[100px]">
+            <TypographyFormHeader className="mb-8 pb-0 text-[1.125rem] tracking-[0.08038rem] sm:mb-10 sm:text-[1.125rem]">
+              Summary
+            </TypographyFormHeader>
+            {!loadingCartData && cartData ? (
+              <>
+                <div className="space-y-6">
+                  {cartData.items.map((item) => (
+                    <div key={item.slug} className="flex items-center gap-4">
+                      <img
+                        src={`/product-${item.slug}/desktop/image-product.jpg`}
+                        alt={item.name}
+                        className="mr-4 h-16 w-16 rounded-lg"
+                      />
+                      <div className="grid w-full grid-cols-[1fr_auto] items-center font-bold leading-[1.5625rem]">
+                        <p className="text-[0.9375rem] ">
+                          {shortenName(item.name)}
+                        </p>
+                        <p className="text-[0.9375rem] opacity-50">
+                          x{item.quantity}
+                        </p>
+                        <p className="text-sm opacity-50">
+                          £{Number(item.price).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="mt-8 grid grid-cols-2 items-center gap-2">
+                    <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                      Total
+                    </span>
+                    <span className="ml-auto text-lg  font-bold">
+                      £{Number(totalCost).toLocaleString()}
+                    </span>
+                    <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                      Shipping
+                    </span>
+                    <span className="ml-auto text-lg font-bold">
+                      £{Number(50).toLocaleString()}
+                    </span>
+                    <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                      VAT (Included)
+                    </span>
+                    {totalCost && (
+                      <>
+                        <span className="ml-auto text-lg font-bold">
+                          £
+                          {Number(totalCost / 6).toLocaleString(undefined, {
+                            maximumFractionDigits: 2,
+                          })}
+                        </span>
+                        <span className="mt-6 text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                          Grand Total
+                        </span>
+                        <span className="ml-auto mt-6 text-lg font-bold text-accent">
+                          £{Number(totalCost + 50).toLocaleString()}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <FormMessage className="mb-6">{error}</FormMessage>
+                <Button type="submit" className="col-span-2 mt-8 w-full">
+                  Continue & Pay
+                </Button>
+              </>
+            ) : (
+              <p className="text-[0.9375rem] opacity-50">
+                Loading cart data... <AnimatedProgressIcon />
+              </p>
+            )}
           </div>
         </form>
       </Form>
