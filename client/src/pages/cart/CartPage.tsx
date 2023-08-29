@@ -66,7 +66,7 @@ const CartPage: React.FC = () => {
           onChange={() => setError("")}
           className="container relative flex w-full flex-col gap-8 lg:flex-row"
         >
-          <div className="max-w-[50rem] flex-[4] rounded-lg bg-white  p-6 sm:p-7">
+          <div className="flex-[4] rounded-lg bg-white p-6  sm:p-7 lg:max-w-[50rem]">
             <TypographyFormHeader className="mb-8 sm:mb-10">
               Checkout
             </TypographyFormHeader>
@@ -125,7 +125,7 @@ const CartPage: React.FC = () => {
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4"></div>
             </div>
           </div>
-          <div className="h-min max-w-[45rem] flex-1 rounded-lg bg-white p-6 sm:p-7 lg:sticky lg:top-[100px]">
+          <div className="h-min min-w-[20rem] flex-1 rounded-lg bg-white p-6 sm:p-7 lg:sticky lg:top-[100px] lg:max-w-[45rem]">
             <TypographyFormHeader className="mb-8 pb-0 text-[1.125rem] tracking-[0.08038rem] sm:mb-10 sm:text-[1.125rem]">
               Summary
             </TypographyFormHeader>
