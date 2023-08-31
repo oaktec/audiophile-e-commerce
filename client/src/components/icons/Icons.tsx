@@ -26,6 +26,19 @@ export const MainLogo: React.FC = () => (
   </svg>
 );
 
+export const OrderConfirmation: React.FC = () => (
+  <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" fill-rule="evenodd">
+      <circle fill="#D87D4A" cx="32" cy="32" r="32" />
+      <path
+        stroke="#FFF"
+        stroke-width="4"
+        d="m20.754 33.333 6.751 6.751 15.804-15.803"
+      />
+    </g>
+  </svg>
+);
+
 export const AnimatedProgressIcon: React.FC<CnProps> = ({ className }) => (
   <svg
     className={cn("-mr-1 ml-3 h-5 w-5 animate-spin text-white", className)}
