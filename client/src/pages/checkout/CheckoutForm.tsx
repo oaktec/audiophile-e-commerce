@@ -55,12 +55,14 @@ interface CheckoutFormProps {
   cartData: Cart;
   shippingCost: number;
   totalCost: number;
+  setOrderComplete: (value: boolean) => void;
 }
 
 const CheckoutForm: React.FC<CheckoutFormProps> = ({
   cartData,
   shippingCost,
   totalCost,
+  setOrderComplete,
 }) => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -110,6 +112,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
             variant: "success",
             description: "Checkout successful!",
           });
+          setOrderComplete(true);
         }
       })
       .catch((err) => {
