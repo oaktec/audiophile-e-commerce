@@ -1,6 +1,6 @@
 import Layout from "@/components/layout/Layout";
-import CartPage from "@/pages/cart/CartPage";
 import CategoryPage from "@/pages/category/CategoryPage";
+import CheckoutPage from "@/pages/checkout/CheckoutPage";
 import Login from "@/pages/login/Login";
 import ProductPage from "@/pages/product/ProductPage";
 import Home from "@/pages/root/Home";
@@ -18,7 +18,7 @@ const Router: React.FC = () => {
       </Route>
 
       <Route path="/" element={<Layout isForm />}>
-        <Route path="cart" element={<CartPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
       </Route>

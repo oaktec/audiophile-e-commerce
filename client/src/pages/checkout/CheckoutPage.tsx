@@ -47,7 +47,7 @@ const formSchema = z
   );
 type formValues = z.infer<typeof formSchema>;
 
-const CartPage: React.FC = () => {
+const CheckoutPage: React.FC = () => {
   const { user } = useUser();
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -284,4 +284,4 @@ const CartPage: React.FC = () => {
   );
 };
 
-export default CartPage;
+export default CheckoutPage;

@@ -126,7 +126,7 @@ const CartDropDown: FC = () => {
                     £{Number(totalCost || 0).toLocaleString()}
                   </span>
                 </div>
-                <Link variant="button" href="/cart" className="w-full">
+                <Link variant="button" href="/checkout" className="w-full">
                   Checkout
                 </Link>
               </>
