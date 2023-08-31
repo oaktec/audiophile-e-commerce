@@ -36,6 +36,7 @@ export const CORS_CLIENT_URL = ensureEnvVar(
   NODE_ENV === "production",
   "http://localhost:5173"
 );
+export const STRIPE_SECRET_KEY = ensureEnvVar("STRIPE_SECRET_KEY");
 
 const DB_HOST = ensureEnvVar("DB_HOST", NODE_ENV !== "production");
 const DB_NAME = ensureEnvVar("DB_NAME", NODE_ENV !== "production");

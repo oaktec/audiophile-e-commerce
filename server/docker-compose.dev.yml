@@ -30,6 +30,7 @@ services:
       - DEV_DB_HOST_PORT
       - JWT_SECRET
       - SESSION_SECRET
+      - STRIPE_SECRET_KEY
     working_dir: /app
     volumes:
       - ./:/app
