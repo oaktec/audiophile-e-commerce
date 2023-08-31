@@ -18,7 +18,9 @@ const Router: React.FC = () => {
       </Route>
 
       <Route path="/" element={<Layout isForm />}>
-        <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="checkout" element={<CheckoutPage />}>
+          <Route path="success" />
+        </Route>
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
       </Route>
