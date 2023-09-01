@@ -30,7 +30,6 @@ services:
       - DEV_DB_HOST_PORT
       - JWT_SECRET
       - SESSION_SECRET
-      - STRIPE_SECRET_KEY
     working_dir: /app
     volumes:
       - ./:/app
@@ -48,6 +47,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
 
   db_test:
     container_name: test_postgres
