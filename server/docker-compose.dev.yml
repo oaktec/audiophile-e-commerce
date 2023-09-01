@@ -47,7 +47,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
 
   db_test:
     container_name: test_postgres
