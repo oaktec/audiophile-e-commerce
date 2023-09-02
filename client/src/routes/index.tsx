@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import CategoryPage from "@/pages/category/CategoryPage";
 import CheckoutPage from "@/pages/checkout/CheckoutPage";
 import Login from "@/pages/login/Login";
+import OrdersPage from "@/pages/orders/Orders";
 import ProductPage from "@/pages/product/ProductPage";
 import Home from "@/pages/root/Home";
 import SignUp from "@/pages/signup/SignUp";
@@ -23,6 +24,7 @@ const Router: React.FC = () => {
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
+        <Route path="orders" element={<OrdersPage />} />
       </Route>
     </Routes>
   );

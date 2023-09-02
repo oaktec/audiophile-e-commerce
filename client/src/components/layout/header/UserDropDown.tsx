@@ -60,9 +60,16 @@ const UserDropDown: FC = () => {
         <div className="flex w-full flex-col items-center gap-4">
           {isLoggedIn ? (
             <>
-              <TypographyDescription className="text-black opacity-100">
+              <TypographyDescription className="text-xs text-black opacity-100">
                 Logged in as {user?.email}
               </TypographyDescription>
+              <Link
+                variant="plain"
+                className="text-black underline"
+                href="/orders"
+              >
+                Your Orders
+              </Link>
               <Button onClick={handleLogout} disabled={loggingOut}>
                 {loggingOut ? <AnimatedProgressIcon /> : "Log out"}
               </Button>
