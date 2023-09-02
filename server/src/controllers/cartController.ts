@@ -263,7 +263,36 @@ export default {
 
     await cartService.removeProductFromCart(cartId, productId);
 
-    res.status(StatusCodes.NO_CONTENT).send();
+    const cart = req.cart;
+
+    if (!cart) {
+      return next(
+        createHttpError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "Failed to get active cart"
+        )
+      );
+    }
+
+    const cartItemIds = await cartService.getProducts(cart.id);
+    const cartProducts = await productService.getByIds(
+      cartItemIds.map((item) => item.product_id)
+    );
+    const cartProductRet = cartProducts.map((product) => ({
+      name: product.name,
+      id: product.id,
+      price: Number(product.price),
+      slug: product.slug,
+      quantity: cartItemIds.find((item) => item.product_id === product.id)
+        ?.quantity,
+    }));
+
+    return res.json({
+      id: cart.id,
+      userId: cart.userId,
+      active: cart.active,
+      items: cartProductRet,
+    });
   },
   deleteActiveCart: async (req: Request, res: Response, next: NextFunction) => {
     const cartId = req.cart?.id;

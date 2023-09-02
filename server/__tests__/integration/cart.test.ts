@@ -273,7 +273,21 @@ describe("cart", () => {
 
       const response = await agent.delete(`/cart/remove/${productIds[0]}`);
 
-      expect(response.status).toBe(StatusCodes.NO_CONTENT);
+      expect(response.status).toBe(StatusCodes.OK);
+
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          active: true,
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              slug: expect.any(String),
+              name: expect.any(String),
+              price: expect.any(Number),
+              quantity: 2,
+            }),
+          ]),
+        })
+      );
 
       cartRows = await db.query("SELECT * FROM carts");
       expect(cartRows.rows).toHaveLength(1);
@@ -312,7 +326,7 @@ describe("cart", () => {
     it("should return 404 if product is not in the cart", async () => {
       const delResponse = await agent.delete(`/cart/remove/${productIds[0]}`);
 
-      expect(delResponse.status).toBe(StatusCodes.NO_CONTENT);
+      expect(delResponse.status).toBe(StatusCodes.OK);
 
       const response = await agent.delete(`/cart/remove/${productIds[0]}`);
 
@@ -416,7 +430,7 @@ describe("cart", () => {
     it("should return 404 if product is not in the cart", async () => {
       const delResponse = await agent.delete(`/cart/remove/${productIds[0]}`);
 
-      expect(delResponse.status).toBe(StatusCodes.NO_CONTENT);
+      expect(delResponse.status).toBe(StatusCodes.OK);
 
       const response = await agent.patch(`/cart/update/${productIds[0]}`).send({
         quantity: 5,
