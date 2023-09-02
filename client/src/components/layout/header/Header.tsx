@@ -18,7 +18,10 @@ const Header: FC = () => {
                 <HamburgerIcon interactive />
               </button>
             </SheetTrigger>
-            <SheetContent side="top" className="top-[89px]">
+            <SheetContent
+              side="top"
+              className="top-[89px] max-h-[calc(100vh-89px)] overflow-auto"
+            >
               <Categories type="menu" />
             </SheetContent>
           </Sheet>
@@ -39,7 +42,7 @@ const Header: FC = () => {
               </Link>
             ))}
           </div>
-          <div className="flex space-x-9">
+          <div className="flex space-x-4 sm:space-x-9">
             <UserDropDown />
             <CartDropDown />
           </div>

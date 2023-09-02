@@ -53,7 +53,7 @@ const CartDropDown: FC = () => {
           }
         />
       </DialogTrigger>
-      <DialogContent className="z-[70] max-h-[85vh] max-w-[min(24rem,calc(100vw-48px))] overflow-auto px-7 py-8 sm:left-auto sm:right-4 sm:translate-x-0 2xl:translate-x-[calc(700px-50vw)]">
+      <DialogContent className="z-[70] max-h-[85vh] max-w-[min(24rem,calc(100vw-48px))] overflow-auto px-4 py-8 sm:left-auto sm:right-4 sm:translate-x-0 sm:px-7 2xl:translate-x-[calc(700px-50vw)]">
         {loadingCart ? (
           <div className="flex items-center justify-center text-center">
             <AnimatedProgressIcon className="text-accent" />
@@ -87,11 +87,14 @@ const CartDropDown: FC = () => {
             <div className="mb-8 space-y-6">
               {cart &&
                 cart.map((item) => (
-                  <div key={item.slug} className="flex items-center gap-4">
+                  <div
+                    key={item.slug}
+                    className="flex items-center gap-2 sm:gap-4"
+                  >
                     <img
                       src={`/product-${item.slug}/desktop/image-product.jpg`}
                       alt={item.name}
-                      className="mr-4 h-16 w-16 rounded-lg"
+                      className="h-16 w-16 rounded-lg sm:mr-4"
                     />
                     <div className="font-bold leading-[1.5625rem]">
                       <p className="text-[0.9375rem] ">
