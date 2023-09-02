@@ -13,9 +13,9 @@ export default session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: NODE_ENV === "production",
+    secure: false,
     httpOnly: true,
-    sameSite: NODE_ENV === "production" ? "none" : "lax",
+    sameSite: "lax",
     maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
   },
 });
