@@ -269,7 +269,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
                 </>
               ) : (
                 form.watch("paymentMethod") === "Stripe Payment" && (
-                  <PaymentElement />
+                  <PaymentElement className="sm:col-span-2" />
                 )
               )}
             </div>

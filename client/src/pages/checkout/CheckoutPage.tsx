@@ -8,7 +8,7 @@ import {
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { shortenName } from "@/lib/utils";
 import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import CheckoutForm from "./CheckoutForm";
@@ -30,8 +30,20 @@ const CheckoutPage: React.FC = () => {
     },
   );
 
-  const stripeOptions = {
+  const stripeOptions: StripeElementsOptions = {
     clientSecret,
+    fonts: [
+      {
+        cssSrc: "https://fonts.googleapis.com/css?family=Manrope",
+      },
+    ],
+    appearance: {
+      theme: "stripe",
+      variables: {
+        fontFamily: "Manrope",
+        spacingGridRow: "2rem",
+      },
+    },
   };
 
   const SHIPPING_COST = 25;
