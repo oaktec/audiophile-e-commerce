@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://audiophile-e-commerce-beneatock.netlify.app/.netlify/functions/proxy"
+    ? "https://audiophile-e-commerce-server.fly.dev/"
     : "http://localhost:3001";
 
 axios.defaults.withCredentials = true;
