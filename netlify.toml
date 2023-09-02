@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://audiophile-e-commerce-server.fly.dev/:splat"
+  status = 200
+  force = true
