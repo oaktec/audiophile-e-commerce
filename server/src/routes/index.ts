@@ -15,7 +15,7 @@ router.use("/products", productsRouter);
 router.use("/orders", ordersRouter);
 router.use("/users", usersRouter);
 
-router.get("/health", (req, res) => {
+router.get("/api/health", (req, res) => {
   res.sendStatus(200);
 });
 
