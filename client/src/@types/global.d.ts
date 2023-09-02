@@ -28,3 +28,18 @@ type Cart = {
   active: boolean;
   items: CartItem[];
 };
+
+type IOrderItem = {
+  product: Product;
+  quantity: number;
+};
+
+type Order = {
+  id: number;
+  userId: number;
+  cartId: number;
+  status: string;
+  items: IOrderItem[];
+  total: number;
+  orderDate: string;
+};
