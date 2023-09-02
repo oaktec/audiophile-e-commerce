@@ -9,6 +9,7 @@ interface DBOrder {
   user_id: number;
   cart_id: number;
   status: string;
+  order_date: Date;
 }
 
 export interface IOrderItem {
@@ -23,6 +24,7 @@ interface Order {
   status: string;
   items: IOrderItem[];
   total: number;
+  orderDate: Date;
 }
 
 const mapOrder = (order: DBOrder): Order => ({
@@ -32,6 +34,7 @@ const mapOrder = (order: DBOrder): Order => ({
   status: order.status,
   items: [],
   total: 0,
+  orderDate: order.order_date,
 });
 
 const populateOrder = async (order: DBOrder): Promise<Order> => {
