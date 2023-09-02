@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
         accept: "*/*",
         host: url.host,
       },
-      body,
+      data: body,
       withCredentials: true,
     });
 
