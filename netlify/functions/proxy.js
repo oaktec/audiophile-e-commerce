@@ -9,10 +9,15 @@ exports.handler = async (event, context) => {
       url: `https://audiophile-e-commerce-server.fly.dev${event.path}`,
       headers: {
         ...headers,
-        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin":
+          "https://audiophile-e-commerce-beneatock.netlify.app",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type",
       },
       params: queryStringParameters,
       data: body,
+      withCredentials: true,
     });
     return {
       statusCode: response.status,
