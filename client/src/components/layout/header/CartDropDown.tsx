@@ -53,7 +53,7 @@ const CartDropDown: FC = () => {
           }
         />
       </DialogTrigger>
-      <DialogContent className="z-[70] max-h-[85vh] max-w-[min(24rem,calc(100vw-48px))] overflow-scroll px-7 py-8 sm:left-auto sm:right-4 sm:translate-x-0 2xl:translate-x-[calc(700px-50vw)]">
+      <DialogContent className="z-[70] max-h-[85vh] max-w-[min(24rem,calc(100vw-48px))] overflow-auto px-7 py-8 sm:left-auto sm:right-4 sm:translate-x-0 2xl:translate-x-[calc(700px-50vw)]">
         {loadingCart ? (
           <div className="flex items-center justify-center text-center">
             <AnimatedProgressIcon className="text-accent" />
