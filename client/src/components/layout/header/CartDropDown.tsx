@@ -14,6 +14,9 @@ const CartDropDown: FC = () => {
   const [cartDropDownOpen, setCartDropDownOpen] = useState(false);
   const [loadingCart, setLoadingCart] = useState(false);
   const [cart, setCart] = useState<CartItem[] | null>(null);
+  const isCheckoutPage = window.location.pathname === "/checkout";
+
+  const disableDropDown = !isLoggedIn || isCheckoutPage;
 
   const totalItems = cart?.reduce((acc, item) => acc + item.quantity, 0);
   const totalCost = cart?.reduce(
@@ -40,11 +43,13 @@ const CartDropDown: FC = () => {
         setCartDropDownOpen(!cartDropDownOpen);
       }}
     >
-      <DialogTrigger disabled={!isLoggedIn}>
+      <DialogTrigger disabled={disableDropDown}>
         <CartIcon
           interactive
           className={
-            !isLoggedIn ? "cursor-not-allowed opacity-20 hover:text-white" : ""
+            disableDropDown
+              ? "cursor-not-allowed opacity-20 hover:text-white"
+              : ""
           }
         />
       </DialogTrigger>
