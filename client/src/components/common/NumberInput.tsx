@@ -23,7 +23,7 @@ const NumberInput: FC<NumberInputProps> = ({
   return (
     <div
       className={cn(
-        "relative  flex h-12 w-[7.5rem] items-center bg-gray-100",
+        "relative  flex h-12 w-[7.5rem] flex-shrink-0 items-center bg-gray-100",
         className,
       )}
     >
