@@ -98,18 +98,25 @@ const CartDropDown: FC = () => {
                     </div>
                     <NumberInput
                       className="ml-auto h-8 min-w-[5rem]"
-                      min={1}
+                      min={0}
                       max={10}
                       value={item.quantity}
                       setValue={(val) =>
-                        api
-                          .patch(`/cart/update/${item.id}`, {
-                            quantity: val,
-                          })
-                          .then((data) => {
-                            const cartData = data as Cart;
-                            setCart(cartData.items);
-                          })
+                        val === 0
+                          ? api
+                              .delete(`/cart/remove/${item.id}`)
+                              .then((data) => {
+                                const cartData = data as Cart;
+                                setCart(cartData.items);
+                              })
+                          : api
+                              .patch(`/cart/update/${item.id}`, {
+                                quantity: val,
+                              })
+                              .then((data) => {
+                                const cartData = data as Cart;
+                                setCart(cartData.items);
+                              })
                       }
                     />
                   </div>
