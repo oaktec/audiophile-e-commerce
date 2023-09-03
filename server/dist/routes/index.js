@@ -16,7 +16,7 @@ router.use("/cart", cart_1.default);
 router.use("/products", products_1.default);
 router.use("/orders", orders_1.default);
 router.use("/users", users_1.default);
-router.get("/api/health", (req, res) => {
+router.get("/health", (req, res) => {
     res.sendStatus(200);
 });
 router.get("/stripe-secret", async (req, res) => {
