@@ -48,7 +48,6 @@ console.info("NODE_ENV", NODE_ENV);
 
 const pool = new Pool({
   connectionString: NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
-  ssl: true,
 });
 
 export default {
