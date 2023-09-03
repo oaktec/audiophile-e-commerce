@@ -44,6 +44,8 @@ const validFields = [
   "payment_method",
 ];
 
+console.log("NODE_ENV", NODE_ENV);
+
 const pool = new Pool({
   connectionString: NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
   ssl: NODE_ENV === "production",
