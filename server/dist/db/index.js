@@ -47,6 +47,7 @@ const validFields = [
     "postcode",
     "payment_method",
 ];
+console.info("NODE_ENV", config_1.NODE_ENV);
 const pool = new pg_1.Pool({
     connectionString: config_1.NODE_ENV === "test" ? config_1.TEST_DATABASE_URL : config_1.DATABASE_URL,
 });
@@ -63,16 +64,21 @@ exports.default = {
         return result;
     },
     end: () => pool.end(),
-    checkConnection: () => new Promise((resolve, reject) => [
-        pool.query("SELECT NOW()", (err, res) => {
-            if (err) {
-                reject(err);
-            }
-            else {
-                resolve(res);
-            }
-        }),
-    ]),
+    checkConnection: () => {
+        console.info("Checking database connection...");
+        console.info("NODE_ENV", config_1.NODE_ENV);
+        console.info("SEED_DB", process.env.SEED_DB);
+        return new Promise((resolve, reject) => [
+            pool.query("SELECT NOW()", (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(res);
+                }
+            }),
+        ]);
+    },
     sessionStorage: {
         pool,
         tableName: "session",

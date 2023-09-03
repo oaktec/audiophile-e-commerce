@@ -9,7 +9,6 @@ const http_status_codes_1 = require("http-status-codes");
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
-const path_1 = __importDefault(require("path"));
 const routes_1 = __importDefault(require("../routes"));
 const middlewares_1 = require("../middlewares");
 const session_1 = __importDefault(require("../config/session"));
@@ -41,10 +40,7 @@ const createServer = () => {
     app.use(session_1.default);
     app.use(passport_1.default.initialize());
     app.use(passport_1.default.session());
-    app.use("/api", routes_1.default);
-    app.use("*", (req, res) => {
-        res.sendFile(path_1.default.join(__dirname, "../../client/build/index.html"));
-    });
+    app.use(routes_1.default);
     app.all("/*", (req, res) => {
         res.status(http_status_codes_1.StatusCodes.NOT_FOUND).send(http_status_codes_1.ReasonPhrases.NOT_FOUND);
     });
