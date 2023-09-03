@@ -38,8 +38,8 @@ export const seedData = async () => {
 
     // Drop all tables
     console.log("Dropping tables");
-    await client.query(`DROP SCHEMA public CASCADE`);
-    await client.query(`CREATE SCHEMA public`);
+    // await client.query(`DROP SCHEMA public CASCADE`);
+    // await client.query(`CREATE SCHEMA public`);
 
     await createTables(client);
 

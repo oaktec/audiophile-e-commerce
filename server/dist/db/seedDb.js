@@ -35,8 +35,6 @@ const seedData = async () => {
     try {
         await client.query("BEGIN");
         console.log("Dropping tables");
-        await client.query(`DROP SCHEMA public CASCADE`);
-        await client.query(`CREATE SCHEMA public`);
         await createTables(client);
         console.log("Seeding database");
         const dataFilePath = path.resolve(__dirname, "../data/data.json");
