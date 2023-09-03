@@ -20,7 +20,7 @@ afterAll(async () => {
 describe("server", () => {
   describe("GET /health", () => {
     it("should return 200", async () => {
-      const response = await request(server).get("/api/health");
+      const response = await request(server).get("/health");
 
       expect(response.status).toBe(StatusCodes.OK);
     });
