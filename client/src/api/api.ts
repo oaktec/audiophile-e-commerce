@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const BASE_URL =
-  process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3001";
+  process.env.NODE_ENV === "production"
+    ? "https://audiophile-e-commerce-server.internal"
+    : "http://localhost:3001";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = BASE_URL;
