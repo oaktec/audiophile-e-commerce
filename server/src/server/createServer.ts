@@ -5,8 +5,6 @@ import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
 
-import path from "path";
-
 import routes from "../routes";
 import { errorHandlingMiddleware } from "../middlewares";
 import session from "../config/session";
@@ -51,10 +49,7 @@ const createServer = () => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.use("/api", routes);
-  app.use("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../../client/build/index.html"));
-  });
+  app.use(routes);
 
   // Temporary 404 handler
   app.all("/*", (req, res) => {

@@ -75,8 +75,12 @@ export default {
     return result;
   },
   end: () => pool.end(),
-  checkConnection: () =>
-    new Promise<QueryResult>((resolve, reject) => [
+  checkConnection: () => {
+    console.info("Checking database connection...");
+    console.info("NODE_ENV", NODE_ENV);
+    console.info("SEED_DB", process.env.SEED_DB);
+
+    return new Promise<QueryResult>((resolve, reject) => [
       pool.query("SELECT NOW()", (err: Error | null, res: QueryResult) => {
         if (err) {
           reject(err);
@@ -84,7 +88,8 @@ export default {
           resolve(res);
         }
       }),
-    ]),
+    ]);
+  },
   sessionStorage: {
     pool,
     tableName: "session",
