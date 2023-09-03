@@ -16,6 +16,7 @@ export default session({
     secure: false,
     httpOnly: true,
     sameSite: "lax",
+    domain: NODE_ENV === "production" ? ".beneatock.com" : undefined,
     maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
   },
 });
