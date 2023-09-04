@@ -12,6 +12,8 @@ You can access the live app [here](https://audiophile.beneatock.com/).
 
 This project was built as an exercise to learn more about full-stack development. I felt that a full-stack e-commerce site was a valuable practice project as it required me to learn about many different aspects of full-stack development, including authentication, session management, database management, payment processing and more.
 
+![Product page screenshot](./screenshots/product-page.png)
+
 The backend and database are hosted on fly.io, and the frontend is hosted on Netlify. I tried to implement as many best practices as possible, including using TypeScript, using a linter and formatter, using a CI/CD pipeline and more.
 
 ## Features
