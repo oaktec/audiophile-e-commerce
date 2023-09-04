@@ -101,7 +101,9 @@ export default {
       const user = await userService.getById(req.user.id);
 
       if (!user) {
-        return next(createHttpError(StatusCodes.NOT_FOUND, "User not found"));
+        return next(
+          createHttpError(StatusCodes.UNAUTHORIZED, "User not found")
+        );
       }
 
       return res.json({
