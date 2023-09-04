@@ -80,7 +80,7 @@ const CheckoutPage: React.FC = () => {
         />
       </Elements>
       <Dialog open={orderComplete}>
-        <DialogContent className="max-h-[85vh] w-max max-w-[90%] overflow-scroll p-8 sm:right-auto">
+        <DialogContent className="max-h-[85dvh] w-max max-w-[90%] overflow-scroll p-8 sm:right-auto">
           <OrderConfirmation />
           <p className="max-w-[20ch] text-2xl font-bold uppercase leading-7 tracking-[0.05356rem] sm:mt-4 sm:text-[2rem] sm:leading-9 sm:tracking-[0.07144rem]">
             Thank you for your order

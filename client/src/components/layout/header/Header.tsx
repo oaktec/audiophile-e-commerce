@@ -20,7 +20,7 @@ const Header: FC = () => {
             </SheetTrigger>
             <SheetContent
               side="top"
-              className="top-[89px] max-h-[calc(100vh-89px)] overflow-auto"
+              className="top-[89px] max-h-[calc(100dvh-89px)] overflow-auto"
             >
               <Categories type="menu" />
             </SheetContent>

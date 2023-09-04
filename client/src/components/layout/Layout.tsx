@@ -11,7 +11,7 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ isForm }) => {
   return (
-    <div className="flex min-h-screen flex-col font-manrope">
+    <div className="flex min-h-[100dvh] flex-col font-manrope">
       <Header />
       <main className={cn("flex-1", isForm ? "bg-gray-100" : "")}>
         {isForm ? (
