@@ -1,6 +1,6 @@
 # Audiophile - Full-stack e-commerce website
 
-This project is a full-stack e-commerce website built with Node.js and React, with a Postgres database. It is a fictional website for a fictional company called Audiophile. The website has user accounts, Stripe integration, a server-side cart and pulls product data from a PostgreSQL database. It is fully responsive and should work well on all screen sizes.
+This project is a full-stack e-commerce website built with Node.js and React, with a Postgres database. It is a website for a fictional company called Audiophile. The website has user accounts, a server-side cart, pulls product data from a PostgreSQL database and has Stripe integration for payment. It is fully responsive and should work well on all screen sizes.
 
 ![Homepage screenshot](./screenshots/homepage.png)
 
@@ -8,13 +8,11 @@ The design for the website, along with the sample product data is from a challen
 
 You can access the live app [here](https://audiophile.beneatock.com/).
 
-## Purpose
+The backend and database are hosted on fly.io, and the frontend is hosted on Netlify. Learning was at the fore of a lot of my decision making, so I really tried to follow best practices as much as I could.
 
-This project was built as an exercise to learn more about full-stack development. I felt that a full-stack e-commerce site was a valuable practice project as it required me to learn about many different aspects of full-stack development, including authentication, session management, database management, payment processing and more.
+I implemented a simple CI/CD pipeline for the backend, which triggers on every push to the server folder in the main branch. The pipeline builds the backend in a test environment with Docker, runs the tests and then builds and deploys to fly.io if the tests pass. The frontend deployment is handled by Netlify.
 
 ![Product page screenshot](./screenshots/product-page.png)
-
-The backend and database are hosted on fly.io, and the frontend is hosted on Netlify. I tried to implement as many best practices as possible, including using TypeScript, using a linter and formatter, using a CI/CD pipeline and more.
 
 ## Features
 
@@ -25,7 +23,8 @@ The backend and database are hosted on fly.io, and the frontend is hosted on Net
 
 ## Tech
 
+- **General**: TypeScript, Docker
 - **Frontend**: React, Vite, TypeScript, React Router, React Query, TailwindCSS, Shadcn-UI
-- **Backend**: Node.js, Express, TypeScript, Passport.js
-- **Database**: PostgreSQL, node-postgres
+- **Backend**: Node.js, Express, TypeScript, Passport.js, node-postgres
+- **Database**: PostgreSQL
 - **Other**: Stripe
