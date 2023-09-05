@@ -24,7 +24,7 @@ I implemented a simple CI/CD pipeline for the backend, which triggers on every p
 ## Tech
 
 - **General**: TypeScript, Docker
-- **Frontend**: React, Vite, TypeScript, React Router, React Query, TailwindCSS, Shadcn-UI
-- **Backend**: Node.js, Express, TypeScript, Passport.js, node-postgres
+- **Frontend**: React, Vite, React Router, React Query, TailwindCSS, Shadcn-UI
+- **Backend**: Node.js, Express, Passport.js, node-postgres
 - **Database**: PostgreSQL
 - **Other**: Stripe
