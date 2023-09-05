@@ -148,7 +148,7 @@ export default {
 
       if (!product) {
         return next(
-          createHttpError(StatusCodes.BAD_REQUEST, "Product not found")
+          createHttpError(StatusCodes.NOT_FOUND, "Product not found")
         );
       }
 
