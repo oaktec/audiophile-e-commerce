@@ -50,6 +50,36 @@ components:
           type: number
         categoryID:
           type: integer
+        features:
+          type: string
+        slug:
+          type: string
+        new:
+          type: boolean
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        active:
+          type: boolean
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              slug:
+                type: string
+              price:
+                type: number
+              quantity:
+                type: integer
     User:
       type: object
       properties:
@@ -61,8 +91,6 @@ components:
         firstName:
           type: string
         lastName:
-          type: string
-        address:
           type: string
     Order:
       type: object
@@ -201,6 +229,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /auth/check-session:
+    get:
+      summary: Check if a user is logged in
+      operationId: checkSession
+      responses:
+        "200":
+          description: User is logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized (user is not logged in)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /users/{id}:
     get:
       summary: Get user details by ID
@@ -316,17 +361,17 @@ paths:
                   $ref: "#/components/schemas/Product"
         "400":
           description: Invalid category ID
-  /products/{id}:
+  /products/{slug}:
     get:
-      summary: Get product details by ID
-      operationId: getProductById
+      summary: Get product details by slug
+      operationId: getProductBySlug
       parameters:
-        - name: id
+        - name: slug
           in: path
-          description: Unique ID of the product
+          description: Unique slug of the product
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "200":
           description: A product
@@ -347,31 +392,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
   /cart:
-    post:
-      summary: Create a new cart for the current user
-      description: Creates a new cart for the current user. Does not create a new cart if there's an existing active cart.
-      operationId: createCart
-      responses:
-        "201":
-          description: Cart created successfully
-        "400":
-          description: User already has an active cart or invalid user ID
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
     get:
       summary: Get active cart for the current user
       operationId: getActiveCart
       responses:
         "200":
           description: Active cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
         "404":
           description: User does not have an active cart
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete active cart for the current user
+      operationId: deleteActiveCart
+      responses:
+        204:
+          description: Cart deleted
+        400:
+          description: Error during deletion
   /cart/add/{productId}:
     post:
       summary: Add a product to the cart of the current user
@@ -406,7 +450,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         "404":
-          description: User does not have an active cart
+          description: Product not found
           content:
             application/json:
               schema:
@@ -458,7 +502,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         "404":
-          description: User does not have an active cart or product is not in the cart
+          description: Product is not in the cart
           content:
             application/json:
               schema:
@@ -473,6 +517,12 @@ paths:
           description: Cart checked out successfully
         "400":
           description: Invalid user ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: User not logged in
           content:
             application/json:
               schema:
@@ -540,3 +590,18 @@ paths:
       responses:
         "200":
           description: API is healthy
+  /stripe-secret:
+    get:
+      summary: Get Stripe secret
+      description: Get the Stripe secret for the current user
+      operationId: getStripeSecret
+      responses:
+        "200":
+          description: Stripe secret
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientSecret:
+                    type: string
