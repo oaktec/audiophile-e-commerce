@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@/hooks/useUser";
-import { shortenName } from "@/lib/utils";
+import { cn, shortenName } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   PaymentElement,
@@ -66,6 +66,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 }) => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
 
   const { toast } = useToast();
   const { user } = useUser();
@@ -131,6 +132,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   useEffect(() => {
     if (window.location.pathname === "/checkout/success") {
+      setOrderSubmitted(true);
       const clientSecret = new URLSearchParams(window.location.search).get(
         "payment_intent_client_secret",
       );
@@ -144,12 +146,15 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
             break;
           case "processing":
             setError("Payment is processing. Please wait.");
+            setOrderSubmitted(false);
             break;
           case "requires_payment_method":
             setError("Payment failed. Please try another payment method.");
+            setOrderSubmitted(false);
             break;
           default:
             setError("Something went wrong.");
+            setOrderSubmitted(false);
             break;
         }
       });
@@ -191,161 +196,191 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        onChange={() => setError("")}
-        className="container relative flex w-full flex-col gap-8 lg:flex-row"
-      >
-        <div className="flex-[4] rounded-lg bg-white p-6  sm:p-7 lg:max-w-[50rem]">
-          <TypographyFormHeader className="mb-8 sm:mb-10">
-            Checkout
-          </TypographyFormHeader>
-          <div>
-            <TypographyFormSectionHeader className="mb-4">
-              Billing Details
-            </TypographyFormSectionHeader>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4">
-              <FormInput
-                name="name"
-                defaultValue={`${user.firstName} ${user.lastName}`}
-                formControl={form.control}
-                disabled={true}
-              />
-              <FormInput
-                label="Email Address"
-                name="email"
-                defaultValue={user.email}
-                formControl={form.control}
-                disabled={true}
-              />
-              <FormInput
-                label="Phone Number (optional)"
-                name="phoneNumber"
-                formControl={form.control}
-              />
-            </div>
-          </div>
-          <div className="mt-8 sm:mt-12">
-            <TypographyFormSectionHeader className="mb-4">
-              Shipping Info
-            </TypographyFormSectionHeader>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4">
-              <div className="sm:col-span-2">
-                <FormInput
-                  label="Your Address"
-                  name="address"
-                  formControl={form.control}
-                />
-              </div>
-              <FormInput name="postcode" formControl={form.control} />
-              <FormInput name="city" formControl={form.control} />
-            </div>
-          </div>
-          <div className="mt-8 sm:mt-12">
-            <TypographyFormSectionHeader className="mb-4">
-              Payment Details
-            </TypographyFormSectionHeader>
-            <FormInput
-              name="paymentMethod"
-              label="Payment Method"
-              radio
-              radioInputs={["Stripe Payment", "e-Money", "Cash on Delivery"]}
-              formControl={form.control}
-            />
-            <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4">
-              {form.watch("paymentMethod") === "e-Money" ? (
-                <>
-                  <FormInput
-                    name="paymentParams.eMoneyNumber"
-                    label="e-Money Number"
-                    formControl={form.control}
-                  />
-                  <FormInput
-                    name="paymentParams.eMoneyPin"
-                    label="e-Money PIN"
-                    formControl={form.control}
-                  />
-                </>
-              ) : (
-                form.watch("paymentMethod") === "Stripe Payment" && (
-                  <PaymentElement className="sm:col-span-2" />
-                )
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="h-min min-w-[20rem] flex-1 rounded-lg bg-white p-6 sm:p-7 lg:sticky lg:top-[100px] lg:max-w-[45rem]">
-          <TypographyFormHeader className="mb-8 pb-0 text-[1.125rem] tracking-[0.08038rem] sm:mb-10 sm:text-[1.125rem]">
-            Summary
-          </TypographyFormHeader>
-          <div className="space-y-6">
-            {cartData.items.map((item) => (
-              <div key={item.slug} className="flex items-center gap-4">
-                <img
-                  src={`/product-${item.slug}/desktop/image-product.jpg`}
-                  alt={item.name}
-                  className="mr-4 h-16 w-16 rounded-lg"
-                />
-                <div className="grid w-full grid-cols-[1fr_auto] items-center font-bold leading-[1.5625rem]">
-                  <p className="text-[0.9375rem] ">{shortenName(item.name)}</p>
-                  <p className="text-[0.9375rem] opacity-50">
-                    x{item.quantity}
-                  </p>
-                  <p className="text-sm opacity-50">
-                    £{Number(item.price).toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div className="mt-8 grid grid-cols-2 items-center gap-2">
-              <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
-                Total
-              </span>
-              <span className="ml-auto text-lg  font-bold">
-                £{Number(totalCost - shippingCost).toLocaleString()}
-              </span>
-              <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
-                Shipping
-              </span>
-              <span className="ml-auto text-lg font-bold">
-                £{shippingCost.toLocaleString()}
-              </span>
-              <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
-                VAT (Included)
-              </span>
-              {cartData && (
-                <>
-                  <span className="ml-auto text-lg font-bold">
-                    £
-                    {Number(totalCost / 6).toLocaleString(undefined, {
-                      maximumFractionDigits: 2,
-                    })}
-                  </span>
-                  <span className="mt-6 text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
-                    Grand Total
-                  </span>
-                  <span className="ml-auto mt-6 text-lg font-bold text-accent">
-                    £{Number(totalCost).toLocaleString()}
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-
-          <FormMessage className="my-6">{error}</FormMessage>
-          <Button
-            type="submit"
-            className="col-span-2 mt-8 w-full"
-            disabled={submitting}
+    <>
+      {orderSubmitted && (
+        <TypographyFormSectionHeader className="mb-8">
+          Processing payment...
+          <br />
+          Please wait.
+          <AnimatedProgressIcon className="mt-2" />
+        </TypographyFormSectionHeader>
+      )}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          onChange={() => setError("")}
+          className="container relative flex w-full flex-col gap-8 lg:flex-row"
+        >
+          <div
+            className={cn(
+              "flex-[4] rounded-lg bg-white p-6  sm:p-7 lg:max-w-[50rem]",
+              orderSubmitted && "opacity-25",
+            )}
           >
-            {!submitting ? "Continue & Pay" : <AnimatedProgressIcon />}
-          </Button>
-        </div>
-      </form>
-    </Form>
+            <TypographyFormHeader className="mb-8 sm:mb-10">
+              Checkout
+            </TypographyFormHeader>
+            <div>
+              <TypographyFormSectionHeader className="mb-4">
+                Billing Details
+              </TypographyFormSectionHeader>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4">
+                <FormInput
+                  name="name"
+                  defaultValue={`${user.firstName} ${user.lastName}`}
+                  formControl={form.control}
+                  disabled={true}
+                />
+                <FormInput
+                  label="Email Address"
+                  name="email"
+                  defaultValue={user.email}
+                  formControl={form.control}
+                  disabled={true}
+                />
+                <FormInput
+                  label="Phone Number (optional)"
+                  name="phoneNumber"
+                  formControl={form.control}
+                  disabled={orderSubmitted}
+                />
+              </div>
+            </div>
+            <div className="mt-8 sm:mt-12">
+              <TypographyFormSectionHeader className="mb-4">
+                Shipping Info
+              </TypographyFormSectionHeader>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4">
+                <div className="sm:col-span-2">
+                  <FormInput
+                    label="Your Address"
+                    name="address"
+                    formControl={form.control}
+                    disabled={orderSubmitted}
+                  />
+                </div>
+                <FormInput
+                  name="postcode"
+                  formControl={form.control}
+                  disabled={orderSubmitted}
+                />
+                <FormInput
+                  name="city"
+                  formControl={form.control}
+                  disabled={orderSubmitted}
+                />
+              </div>
+            </div>
+            <div className="mt-8 sm:mt-12">
+              <TypographyFormSectionHeader className="mb-4">
+                Payment Details
+              </TypographyFormSectionHeader>
+              <FormInput
+                name="paymentMethod"
+                label="Payment Method"
+                radio
+                radioInputs={["Stripe Payment", "e-Money", "Cash on Delivery"]}
+                formControl={form.control}
+                disabled={orderSubmitted}
+              />
+              <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-4">
+                {form.watch("paymentMethod") === "e-Money" ? (
+                  <>
+                    <FormInput
+                      name="paymentParams.eMoneyNumber"
+                      label="e-Money Number"
+                      formControl={form.control}
+                      disabled={orderSubmitted}
+                    />
+                    <FormInput
+                      name="paymentParams.eMoneyPin"
+                      label="e-Money PIN"
+                      formControl={form.control}
+                      disabled={orderSubmitted}
+                    />
+                  </>
+                ) : (
+                  form.watch("paymentMethod") === "Stripe Payment" && (
+                    <PaymentElement className="sm:col-span-2" />
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="h-min min-w-[20rem] flex-1 rounded-lg bg-white p-6 sm:p-7 lg:sticky lg:top-[100px] lg:max-w-[45rem]">
+            <TypographyFormHeader className="mb-8 pb-0 text-[1.125rem] tracking-[0.08038rem] sm:mb-10 sm:text-[1.125rem]">
+              Summary
+            </TypographyFormHeader>
+            <div className="space-y-6">
+              {cartData.items.map((item) => (
+                <div key={item.slug} className="flex items-center gap-4">
+                  <img
+                    src={`/product-${item.slug}/desktop/image-product.jpg`}
+                    alt={item.name}
+                    className="mr-4 h-16 w-16 rounded-lg"
+                  />
+                  <div className="grid w-full grid-cols-[1fr_auto] items-center font-bold leading-[1.5625rem]">
+                    <p className="text-[0.9375rem] ">
+                      {shortenName(item.name)}
+                    </p>
+                    <p className="text-[0.9375rem] opacity-50">
+                      x{item.quantity}
+                    </p>
+                    <p className="text-sm opacity-50">
+                      £{Number(item.price).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div className="mt-8 grid grid-cols-2 items-center gap-2">
+                <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                  Total
+                </span>
+                <span className="ml-auto text-lg  font-bold">
+                  £{Number(totalCost - shippingCost).toLocaleString()}
+                </span>
+                <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                  Shipping
+                </span>
+                <span className="ml-auto text-lg font-bold">
+                  £{shippingCost.toLocaleString()}
+                </span>
+                <span className="text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                  VAT (Included)
+                </span>
+                {cartData && (
+                  <>
+                    <span className="ml-auto text-lg font-bold">
+                      £
+                      {Number(totalCost / 6).toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </span>
+                    <span className="mt-6 text-[0.9375rem] font-medium uppercase leading-[1.5625rem] opacity-50">
+                      Grand Total
+                    </span>
+                    <span className="ml-auto mt-6 text-lg font-bold text-accent">
+                      £{Number(totalCost).toLocaleString()}
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <FormMessage className="my-6">{error}</FormMessage>
+            <Button
+              type="submit"
+              className="col-span-2 mt-8 w-full"
+              disabled={submitting || orderSubmitted}
+            >
+              {!submitting ? "Continue & Pay" : <AnimatedProgressIcon />}
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </>
   );
 };
 
