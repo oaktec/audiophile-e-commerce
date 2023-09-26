@@ -189,14 +189,14 @@ describe("cart", () => {
       expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
     });
 
-    it("should return 400 if product does not exist", async () => {
+    it("should return 404 if product does not exist", async () => {
       await agent.post(`/cart`);
 
       const response = await agent.post(`/cart/add/42342341`).send({
         quantity: 1,
       });
 
-      expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodes.NOT_FOUND);
       expect(response.body).toEqual(
         expect.objectContaining({
           message: "Product not found",
